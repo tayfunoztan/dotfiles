@@ -1,0 +1,148 @@
+#=========== general ============================
+# Set prefix key to c-f instead of default c-b
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+set -g default-command $SHELL
+set-option -g default-shell $SHELL
+
+# Source file
+unbind r
+bind r source-file ~/.tmux.conf \; display "Reloaded!"
+
+# {n}vim compability
+set -g default-terminal "screen-256color"
+
+# Mouse mode on
+set -g mouse on
+
+#=============== display ==============================
+set -g base-index 1           # start windows numbering at 1
+setw -g pane-base-index 1     # make pane numbering consistent with windows
+set -g focus-events on
+set -s escape-time 10                     # faster command sequences
+
+set -g history-limit 10000                 # boost history
+
+setw -g automatic-rename on   # rename window to reflect current program
+set -g renumber-windows on    # renumber windows when a window is closed
+
+set -g display-panes-time 1000 # Show times longer than supposed
+set -g display-time 2000 # tmux messages are displayed for 4 seconds
+
+set -g set-titles on          # set terminal title
+set-option -g set-titles-string "tmux.#I.#W"
+
+# Set window notifications.
+set-window-option -g monitor-activity on
+set-option -g visual-activity on
+#================= navigation ========================
+# super useful when using "grouped sessions" and multi-monitor setup
+setw -g aggressive-resize on
+
+# split current window horizontally
+bind s split-window -v
+# split current window vertically
+bind v split-window -h
+
+#pane navigation
+bind -r h select-pane -L  # move left
+bind -r j select-pane -D  # move down
+bind -r k select-pane -U  # move up
+bind -r l select-pane -R  # move right
+bind > swap-pane -D       # swap current pane with the next one
+bind < swap-pane -U       # swap current pane with the previous one
+
+# pane resizing
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+
+# window navigation
+# unbind n
+# unbind p
+# bind -r C-h previous-window # select previous window
+# bind -r C-l next-window     # select next window
+bind-key C-a last-window # last window
+
+# Equally resize all panes
+bind-key | select-layout even-horizontal
+bind-key = select-layout even-vertical
+
+
+# Sync panes (Send input to all panes in the window). When enabled, pane
+# borders become red as an indication.
+bind C-s if -F '#{pane_synchronized}' \
+                     'setw synchronize-panes off; \
+		                           setw pane-active-border-style fg=colour63,bg=default; \
+					                         setw pane-border-format       " #P "' \
+                   'setw synchronize-panes on; \
+		                       setw pane-active-border-style fg=red; \
+				                           setw pane-border-format       " #P - Pane Synchronization ON "'
+#========================
+# Use vim keybindings in copy mode
+setw -g mode-keys vi
+
+bind Enter copy-mode # enter copy mode
+
+bind-key -T edit-mode-vi Up send-keys -X history-up
+bind-key -T edit-mode-vi Down send-keys -X history-down
+
+# setup 'v' to begin selection as in Vim
+bind-key -T copy-mode-vi 'v' send-keys -X begin-selection
+
+# copy text with `y` in copy mode
+bind-key -T copy-mode-vi 'y' send -X copy-selection-and-cancel
+
+# copy text with mouse selection without pressing any key
+bind-key -T copy-mode-vi MouseDragEnd1Pane send -X copy-selection-and-cancel\; run "tmux save -|pbcopy >/dev/null 2>&1"
+
+bind -Tcopy-mode-vi Escape send -X cancel
+
+bind -T copy-mode-vi H send -X start-of-line
+bind -T copy-mode-vi L send -X end-of-line
+
+
+# Use key map for the status bar.
+set-option -g status-keys vi
+
+#======================= color =========================
+set-option -g status-position top
+set -g status-justify centre
+set-option -g status-style                 fg=colour15,bg=colour235
+set -g status-right '#{prefix_highlight} |#[fg=yellow,bg=colour235] %H:%M %a %d-%m-%Y'
+set -g status-left "#[fg=colour15,bg=red,bold] #S #[fg=colour148,bg=colour235,nobold,nounderscore,noitalics]"
+
+set -g @prefix_highlight_fg 'white' # default is 'colour231'
+set -g @prefix_highlight_bg 'blue'  # default is 'colour04'
+set -g @prefix_highlight_show_copy_mode 'on'
+set -g @prefix_highlight_empty_has_affixes 'on' # default is 'off'
+set -g @prefix_highlight_empty_prompt '^A'          # default is '' (empty char)
+set -g @prefix_highlight_empty_attr 'fg=yellow ,bg=colour235' # default is 'fg=default,bg=default'
+
+setw -g window-status-separator "  "
+set-option -g window-status-current-style  fg=colour15,bg=colour24 # colour24
+set-option -g window-status-style          fg=colour15,bg=colour235
+setw -g window-status-format "  #I: #W  "
+setw -g window-status-current-format "  #I: #W  "
+
+set-option -g pane-border-style fg=colour240 
+set-option -g pane-active-border-style fg=colour63 
+
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-open'
+set -g @plugin 'tmux-plugins/tmux-yank'
+set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
+# set -g @plugin 'christoomey/vim-tmux-navigator'
+
+# Other examples:
+# set -g @plugin 'github_username/plugin_name'
+# set -g @plugin 'git@github.com/user/plugin'
+# set -g @plugin 'git@bitbucket.com/user/plugin'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run -b '~/.tmux/plugins/tpm/tpm'

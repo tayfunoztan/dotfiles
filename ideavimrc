@@ -1,0 +1,30 @@
+" M->cmd, A->option, C->control
+" <ESC> - escape, <BS> - backspace, <CR> - return
+
+
+set ignorecase 
+set smartcase
+set showmode
+
+let mapleader = ','
+
+
+inoremap jj <Esc>`^
+
+inoremap J <Esc>`^o
+
+
+" easy window navigation
+nnoremap <c-l> <c-w>l
+nnoremap <c-j> <c-w>j
+nnoremap <c-h> <c-w>h
+nnoremap <c-k> <c-w>k
+
+
+nnoremap H ^
+nnoremap L $
+vnoremap H ^
+vnoremap L g_
+
+
+
