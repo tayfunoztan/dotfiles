@@ -10,6 +10,7 @@ Plug 'junegunn/vim-peekaboo'
 
 Plug 'Valloric/MatchTagAlways'
 Plug 'junegunn/rainbow_parentheses.vim'
+" Plug 'Yggdroot/hiPairs'
 Plug 'Yggdroot/indentLine'
 Plug 'RRethy/vim-illuminate'
 
@@ -53,7 +54,7 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 
 
 Plug 'ervandew/supertab'
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --ts-completer' }
+Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --ts-completer --java-completer' }
 let g:python3_host_prog = '/usr/local/bin/python3'
 
 
@@ -67,7 +68,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'fatih/molokai'
 " Plug 'patstockwell/vim-monokai-tasty'
 " let g:airline_theme='monokai_tasty'
-
 
 
 call plug#end()
@@ -281,7 +281,7 @@ let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
 let g:ycm_semantic_triggers = {
     \   'css': [ 're!^', 're!^\s+', ': ', ':'],
     \   'python': [ 're!\w{2}' ],
-    \   'javascript' : ['.', '["', "['", 'new '],
+    \   'javascript': [ 're!\w{2}' ],
     \ }
 "=============================================================
 
@@ -331,6 +331,7 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
+
 
 "================================
 
@@ -388,10 +389,20 @@ augroup END
 let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 "=============================
 
+"=========== hiPairs ==========
+"    let g:hiPairs_hl_matchPair = { 'term'    : 'underline,bold',
+"                \                  'cterm'   : 'underline,bold',
+"                \                  'ctermfg' : 'NONE',
+"                \                  'ctermbg' : '143',
+"                \                  'gui'     : 'underline,bold',
+"                \                  'guifg'   : 'NONE',
+"                \                  'guibg'   : 'NONE' }
+"=============================
 
 "=================== ack ======================
 cnoreabbrev Ack Ack!
 let g:ackprg = 'ag --vimgrep --smart-case'
+" let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:ack_mappings = {
       \ "t": "<C-W><CR><C-W>T",
       \ "T": "<C-W><CR><C-W>TgT<C-W>j",
@@ -432,12 +443,6 @@ let g:vim_markdown_folding_disabled = 1
 " let g:delimitMate_smart_quotes = 1
 " let g:delimitMate_expand_inside_quotes = 0
 " let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'
-
-" " au FileType vim,html,xhtml let b:delimitMate_matchpairs = "(:),[:],{:}"
-
-" imap <silent> <C-l> <Plug>delimitMateJumpMany
-
-" imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
 
 let g:AutoPairsFlyMode = 1
 
