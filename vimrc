@@ -105,6 +105,7 @@ set showmatch 			"highlight matching [{()}]
 " set matchpairs=<:>  
 set cursorline
 set wildmenu
+set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
 set completeopt=menu,menuone,longest,preview
 set updatetime=300
 set ruler
@@ -119,11 +120,11 @@ set clipboard^=unnamed
 set clipboard^=unnamedplus
 
 syntax enable	"syntax enable
-colorscheme molokai
 set t_Co=256
 set background=dark
 let g:molokai_original = 1
 let g:rehash256 = 1
+colorscheme molokai
 
 
 " Toggle paste
@@ -145,7 +146,7 @@ let mapleader = ","
 " Some useful quickfix shortcuts for quickfix
 map <C-n> :cn<CR>
 map <C-m> :cp<CR>
-nnoremap <leader>a :cclose<CR>
+nnoremap <leader>a :ccl<CR>
 
 " Exit on j
 imap jj <Esc>
@@ -224,7 +225,7 @@ vmap > >gv
 
 
 let g:lightline = {
-      \ 'colorscheme': 'powerline',
+      \ 'colorscheme': 'default',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'filename' ] ],
       \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
@@ -251,6 +252,10 @@ let g:lightline = {
 
 "=========================================================
 
+"==================== vim-signify ========================
+nnoremap <silent><leader>p :SignifyHunkDiff<cr>
+nnoremap <silent><leader>u :SignifyHunkUndo<cr>
+"========================================================
 
 "========================== ale ==========================
 let g:ale_linters = {
@@ -264,6 +269,7 @@ let g:ale_fixers = {
 "========================= supertab ===========================
 let g:SuperTabDefaultCompletionType    = '<C-n>'
 let g:SuperTabCrMapping                = 0
+let g:SuperTabMappingBackward = '<s-c-space>'
 "=============================================================
 
 "===================== YouCompleteMe ==========================
@@ -282,6 +288,7 @@ let g:ycm_semantic_triggers = {
     \   'css': [ 're!^', 're!^\s+', ': ', ':'],
     \   'python': [ 're!\w{2}' ],
     \   'javascript': [ 're!\w{2}' ],
+    \   'java': [ 're!\w{2}' ],
     \ }
 "=============================================================
 
@@ -346,6 +353,7 @@ let g:NERDTreeMinimalUI=1
 let NERDTreeMapOpenSplit      = 's'
 let NERDTreeMapOpenVSplit     = 'v'
 let NERDTreeIgnore=['.DS_Store', '\.pyc$', '^__pycache__$']
+let NERDTreeRespectWildIgnore=1
 let NERDTreeCascadeSingleChildDir=0
 let NERDTreeCascadeOpenSingleChildDir=0
 
@@ -456,7 +464,6 @@ let g:indentLine_first_char='┊'
 let g:indentLine_char = '┆'
 let g:indentLine_bufNameExclude = ['startify']
 "===========================================================
-
 
 "============= Pymode ==============
 let g:pymode_python = 'python3'
