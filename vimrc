@@ -202,6 +202,17 @@ map <C-f> :echo expand("%:p")<cr>
 " Source (reload configuration)
 nnoremap <silent> <F5> :source $MNVIMRC<CR>
 
+" Visual Mode */# from Scrooloose {{{
+function! s:VSetSearch()
+  let temp = @@
+  norm! gvy
+  let @/ = '\V' . substitute(escape(@@, '\'), '\n', '\\n', 'g')
+  let @@ = temp
+endfunction
+
+vnoremap * :<C-u>call <SID>VSetSearch()<CR>//<CR><c-o>
+vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR><c-o>
+
 " Remove search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
@@ -225,7 +236,7 @@ vmap > >gv
 
 
 let g:lightline = {
-      \ 'colorscheme': 'default',
+      \ 'colorscheme': 'molokai',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'filename' ] ],
       \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
@@ -393,6 +404,7 @@ let g:tagbar_autofocus = 1
 augroup rainbow_list
   autocmd!
   autocmd FileType python RainbowParentheses
+  autocmd FileType java RainbowParentheses
 augroup END
 let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 "=============================
