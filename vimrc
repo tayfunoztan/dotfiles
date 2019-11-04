@@ -7,6 +7,7 @@ Plug 'weilbith/nerdtree_choosewin-plugin'
 Plug 't9md/vim-choosewin'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/vim-peekaboo'
+Plug 'junegunn/vim-slash'
 
 Plug 'Valloric/MatchTagAlways'
 Plug 'junegunn/rainbow_parentheses.vim'
@@ -25,6 +26,7 @@ Plug 'djoshea/vim-autoread'
 Plug 'mbbill/undotree'
 
 Plug 'plasticboy/vim-markdown'
+Plug 'junegunn/goyo.vim'
 
 Plug 'SirVer/ultisnips'
 "Plug 'honza/vim-snippets'
@@ -66,6 +68,7 @@ Plug 'itchyny/lightline.vim'
 
 "Themes
 Plug 'fatih/molokai'
+Plug 'junegunn/seoul256.vim'
 " Plug 'patstockwell/vim-monokai-tasty'
 " let g:airline_theme='monokai_tasty'
 
@@ -126,6 +129,8 @@ let g:molokai_original = 1
 let g:rehash256 = 1
 colorscheme molokai
 
+"seoul256 dark
+let g:seoul256_background = 234
 
 " Toggle paste
 set pastetoggle=<F9>
@@ -195,6 +200,8 @@ vnoremap L g_
 
 " Yank from the cursor to the end of the line, to be consistent with C and D.
 nnoremap Y y$
+" qq to record, Q to replay
+nnoremap Q @q
 
 " print file full path
 map <C-f> :echo expand("%:p")<cr>
@@ -264,6 +271,7 @@ let g:lightline = {
 "=========================================================
 
 "==================== vim-signify ========================
+let g:signify_vcs_list = ['git']
 nnoremap <silent><leader>p :SignifyHunkDiff<cr>
 nnoremap <silent><leader>u :SignifyHunkUndo<cr>
 "========================================================
@@ -470,11 +478,17 @@ let g:AutoPairsFlyMode = 1
 
 "======================== indentLine ========================
 let g:indentLine_enabled = 1
-let g:indentLine_color_term = 87
+let g:indentLine_color_term = 239 "87
 let g:indentLine_showFirstIndentLevel=1
 let g:indentLine_first_char='┊'
 let g:indentLine_char = '┆'
 let g:indentLine_bufNameExclude = ['startify']
+"===========================================================
+
+"================= vim-slash ==========================
+if has('timers')
+  noremap <expr> <plug>(slash-after) slash#blink(2, 50)
+endif
 "===========================================================
 
 "============= Pymode ==============
