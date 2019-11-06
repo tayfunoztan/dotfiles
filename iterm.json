@@ -53,6 +53,7 @@
         "configuration" : {
           "knobs" : {
             "path" : "path",
+            "minwidth" : 0,
             "shared text color" : {
               "Red Component" : 0.90000000000000002,
               "Color Space" : "sRGB",
@@ -61,7 +62,6 @@
               "Green Component" : 0.63
             },
             "base: priority" : 5,
-            "minwidth" : 0,
             "base: compression resistance" : 1,
             "maxwidth" : 1.7976931348623157e+308
           },
@@ -401,6 +401,7 @@
     "Alpha Component" : 0.5,
     "Green Component" : 0.1491314172744751
   },
+  "Smart Cursor Color" : false,
   "Ambiguous Double Width" : false,
   "Blur Radius" : 8.0835164181472052,
   "Cursor Type" : 2,
@@ -434,11 +435,11 @@
   },
   "Transparency" : 0,
   "Background Color" : {
-    "Red Component" : 0.070588235294117646,
+    "Red Component" : 0.10980392156862745,
     "Color Space" : "sRGB",
-    "Blue Component" : 0.070588235294117646,
+    "Blue Component" : 0.10980392156862745,
     "Alpha Component" : 1,
-    "Green Component" : 0.070588235294117646
+    "Green Component" : 0.10980392156862745
   },
   "Screen" : -1,
   "Non Ascii Font" : "Monaco 12",
