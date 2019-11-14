@@ -7,13 +7,14 @@ Plug 'weilbith/nerdtree_choosewin-plugin'
 Plug 't9md/vim-choosewin'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/vim-peekaboo'
-Plug 'junegunn/vim-slash'
+" Plug 'junegunn/vim-slash'
 
 Plug 'Valloric/MatchTagAlways'
 Plug 'junegunn/rainbow_parentheses.vim'
 " Plug 'Yggdroot/hiPairs'
 Plug 'Yggdroot/indentLine'
 Plug 'RRethy/vim-illuminate'
+Plug 'unblevable/quick-scope'
 
 Plug 'godlygeek/tabular'
 " Plug 'Raimondi/delimitMate'
@@ -35,6 +36,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-eunuch'
 
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
@@ -68,7 +70,9 @@ Plug 'itchyny/lightline.vim'
 
 "Themes
 Plug 'fatih/molokai'
+" Plug 'tomasr/molokai'
 Plug 'junegunn/seoul256.vim'
+Plug 'mhinz/vim-janah'
 " Plug 'patstockwell/vim-monokai-tasty'
 " let g:airline_theme='monokai_tasty'
 
@@ -109,7 +113,7 @@ set showmatch 			"highlight matching [{()}]
 set cursorline
 set wildmenu
 set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
-set completeopt=menu,menuone,longest,preview
+set completeopt=menu,menuone,longest ",preview
 set updatetime=300
 set ruler
 
@@ -358,7 +362,6 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
-
 "================================
 
 
@@ -446,10 +449,10 @@ let g:ack_mappings = {
 
 "================ vim-javascript ===========
 let g:javascript_plugin_flow = 1
-augroup javascript_folding
-    au!
-    au FileType javascript setlocal foldmethod=syntax
-augroup END
+" augroup javascript_folding
+"     au!
+"     au FileType javascript setlocal foldmethod=syntax
+" augroup END
 "=============================================
 
 "================ vim-jsx =====================
@@ -486,9 +489,11 @@ let g:indentLine_bufNameExclude = ['startify']
 "===========================================================
 
 "================= vim-slash ==========================
-if has('timers')
-  noremap <expr> <plug>(slash-after) slash#blink(2, 50)
-endif
+" noremap <plug>(slash-after) zz
+
+" if has('timers')
+"   noremap <expr> <plug>(slash-after) slash#blink(2, 50)
+" endif
 "===========================================================
 
 "============= Pymode ==============
@@ -506,5 +511,7 @@ let g:choosewin_blink_on_land      = 0 " don't blink at land
 let g:choosewin_statusline_replace = 1 " don't replace statusline
 let g:choosewin_tabline_replace    = 0 " don't replace tabline
 "=============================
-"
+
+" Trigger a highlight in the appropriate direction when pressing these keys:
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 "=============================== plugins ==============================================

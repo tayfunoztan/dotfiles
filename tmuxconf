@@ -61,10 +61,10 @@ bind -r K resize-pane -U 5
 bind -r L resize-pane -R 5
 
 # window navigation
-# unbind n
-# unbind p
-# bind -r C-h previous-window # select previous window
-# bind -r C-l next-window     # select next window
+unbind n
+unbind p
+bind -r C-h previous-window # select previous window
+bind -r C-l next-window     # select next window
 bind-key C-a last-window # last window
 
 # Equally resize all panes
@@ -112,7 +112,7 @@ set-option -g status-keys vi
 set-option -g status-position top
 set -g status-justify centre
 set-option -g status-style                 fg=colour15,bg=colour235
-set -g status-right '#{prefix_highlight} |#[fg=yellow,bg=colour235] %H:%M %a %d-%m-%Y'
+set -g status-right '#{prefix_highlight}|#[fg=yellow,bg=colour235] %H:%M %a %d-%m-%Y'
 set -g status-left "#[fg=colour15,bg=red,bold] #S #[fg=colour148,bg=colour235,nobold,nounderscore,noitalics]"
 
 set -g @prefix_highlight_fg 'white' # default is 'colour231'

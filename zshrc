@@ -15,7 +15,6 @@ export EDITOR='vim'
 
 alias vi=vim
 
-
 #================== tmuxinator =============================
 _tmuxinator() {
   local commands projects
@@ -40,3 +39,7 @@ _tmuxinator() {
 compdef _tmuxinator tmuxinator mux
 alias mux="tmuxinator"
 #=======================================================
+
+#=========================== fzf ==============================
+export FZF_DEFAULT_OPTS='--height 50% --layout=reverse --border'
+#==============================================================
