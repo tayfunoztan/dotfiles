@@ -24,7 +24,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'mhinz/vim-startify'
 Plug 'mhinz/vim-signify'
 Plug 'djoshea/vim-autoread'
-Plug 'mbbill/undotree'
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'  }
 
 Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/goyo.vim'
@@ -102,10 +102,10 @@ set splitright               " Split vertical windows right to the current windo
 set splitbelow                 " Split horizontal windows below to the current windows
 set autowrite                " Automatically save before :next, :make etc.
 set title
-if has('persistent_undo')
-  set undofile
-  set undodir=~/.cache/vim
-endif
+
+set undofile
+set undodir=~/.cache/vim
+
 set number    	 		"line number on
 set showcmd			"display an incomplate command in statusline
 set showmatch 			"highlight matching [{()}]
@@ -448,7 +448,7 @@ let g:ack_mappings = {
 "===============================================
 
 "================ vim-javascript ===========
-let g:javascript_plugin_flow = 1
+" let g:javascript_plugin_flow = 1
 " augroup javascript_folding
 "     au!
 "     au FileType javascript setlocal foldmethod=syntax
