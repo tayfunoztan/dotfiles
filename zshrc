@@ -12,8 +12,18 @@ fi
 
 # Customize to your needs...
 export EDITOR='vim'
-
+export VISUAL='vim'
 alias vi=vim
+
+#========================== homebrew ========================
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
+#=============================================================
+
+#=========================== fzf ==============================
+export FZF_DEFAULT_OPTS='--height 50% --layout=reverse --border'
+#==============================================================
 
 #================== tmuxinator =============================
 _tmuxinator() {
@@ -39,7 +49,3 @@ _tmuxinator() {
 compdef _tmuxinator tmuxinator mux
 alias mux="tmuxinator"
 #=======================================================
-
-#=========================== fzf ==============================
-export FZF_DEFAULT_OPTS='--height 50% --layout=reverse --border'
-#==============================================================
