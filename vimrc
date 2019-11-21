@@ -59,7 +59,7 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 
 Plug 'ervandew/supertab'
 Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --ts-completer --java-completer' }
-let g:python3_host_prog = '/usr/local/bin/python3'
+" let g:python3_host_prog = '/usr/local/bin/python3'
 
 
 Plug 'dense-analysis/ale'
@@ -111,9 +111,11 @@ set showcmd			"display an incomplate command in statusline
 set showmatch 			"highlight matching [{()}]
 " set matchpairs=<:>  
 set cursorline
+set wildmode=longest,list,full
 set wildmenu
 set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
-set completeopt=menu,menuone,longest ",preview
+set completeopt=menu,menuone,longest,preview
+set pumheight=15
 set updatetime=300
 set ruler
 
@@ -211,7 +213,7 @@ nnoremap Q @q
 map <C-f> :echo expand("%:p")<cr>
 
 " Source (reload configuration)
-nnoremap <silent> <F5> :source $MNVIMRC<CR>
+" nnoremap <silent> <F5> :source $MNVIMRC<CR>
 
 " Visual Mode */# from Scrooloose {{{
 function! s:VSetSearch()
