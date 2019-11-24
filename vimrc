@@ -87,48 +87,77 @@ set nocompatible              " be iMproved, required
 filetype off
 filetype plugin indent on
 
-
-set ttyfast
-
-set laststatus=2
 set encoding=utf-8              " Set default encoding to UTF-8
-set autoread                    " Automatically reread changed files without asking me anything
-set autoindent
-set backspace=indent,eol,start  " Makes backspace key more powerful.
-set mouse=a                     "Enable mouse mode
-set noswapfile               " Don't use swapfile
-set nobackup                 " Don't create annoying backup files
-set splitright               " Split vertical windows right to the current windows
-set splitbelow                 " Split horizontal windows below to the current windows
-set autowrite                " Automatically save before :next, :make etc.
-set title
 
+"indent settings
+set autoindent
+set expandtab
+set smarttab
+set tabstop=2
+set shiftwidth=2
+
+" backup/swap/info/undo settings
+set noswapfile         " Don't use swapfile
+set nobackup           " Don't create annoying backup files
 set undofile
 set undodir=~/.cache/vim
+set viminfo='500
 
-set number    	 		"line number on
-set showcmd			"display an incomplate command in statusline
-set showmatch 			"highlight matching [{()}]
-" set matchpairs=<:>  
+"better navigation
 set cursorline
-set wildmode=longest,list,full
-set wildmenu
-set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*
-set completeopt=menu,menuone,longest,preview
-set pumheight=15
-set updatetime=300
-set ruler
-
-"search
-set incsearch  			 " Shows the match while typing
-set hlsearch   			 " Highlight found searches
-set ignorecase               " Search case insensitive...
+set hlsearch    " Highlight found searches
+set ignorecase  " Search case insensitive...
+set incsearch   " Shows the match while typing
 set smartcase
+set mouse=a     "Enable mouse mode
 
-set clipboard^=unnamed
-set clipboard^=unnamedplus
+"misc settings
+set autoread                    " Automatically reread changed files without asking me anything
+set autowrite                " Automatically save before :next, :make etc.
+set backspace=indent,eol,start  " Makes backspace key more powerful.
+set clipboard=unnamed
+" set clipboard^=unnamed
+" set clipboard^=unnamedplus
+set completeopt=menu,menuone,longest,preview
+set pumheight=10
+set lazyredraw
+set pastetoggle=<F9> " Toggle paste
+set splitright               " Split vertical windows right to the current windows
+set splitbelow                 " Split horizontal windows below to the current windows
+set title
+set nojoinspaces
+set ttyfast
 
-syntax enable	"syntax enable
+"wild stuff
+set wildmode=full
+set wildmenu
+set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*,.idea
+set updatetime=300
+
+"display 
+set laststatus=2
+set ruler
+set showcmd    "display an incomplate command in statusline
+set number     "line number on
+set showmatch "highlight matching [{()}]
+set showmode
+set list
+set listchars=tab:\|\ ,
+" set matchpairs=<:>  
+
+"breaking
+set wrap
+set formatoptions+=1
+if has('patch-7.3.541')
+  set formatoptions+=j
+endif
+if has('patch-7.4.338')
+  let &showbreak = '↳ '
+  set breakindent
+  set breakindentopt=sbr
+endif
+
+syntax enable "syntax enable
 set t_Co=256
 set background=dark
 let g:molokai_original = 1
@@ -138,8 +167,6 @@ colorscheme molokai
 "seoul256 dark
 let g:seoul256_background = 234
 
-" Toggle paste
-set pastetoggle=<F9>
 
 autocmd FileType html,css,xml,htmldjango set tabstop=4 shiftwidth=4 softtabstop=4 expandtab ai
 setlocal omnifunc=syntaxcomplete#Complete
@@ -433,7 +460,7 @@ let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 "=============================
 
 "=================== ack ======================
-cnoreabbrev Ack Ack!
+" cnoreabbrev Ack Ack!
 let g:ackprg = 'ag --vimgrep --smart-case'
 " let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:ack_mappings = {
