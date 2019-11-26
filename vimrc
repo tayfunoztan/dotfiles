@@ -15,8 +15,10 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'Yggdroot/indentLine'
 Plug 'RRethy/vim-illuminate'
 Plug 'unblevable/quick-scope'
+Plug 'easymotion/vim-easymotion'
 
-Plug 'godlygeek/tabular'
+Plug 'junegunn/vim-easy-align'
+" Plug 'godlygeek/tabular'
 " Plug 'Raimondi/delimitMate'
 Plug 'jiangmiao/auto-pairs'
 Plug 'AndrewRadev/splitjoin.vim'
@@ -59,7 +61,7 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 
 Plug 'ervandew/supertab'
 Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --ts-completer --java-completer' }
-" let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 
 Plug 'dense-analysis/ale'
@@ -73,6 +75,7 @@ Plug 'fatih/molokai'
 " Plug 'tomasr/molokai'
 Plug 'junegunn/seoul256.vim'
 Plug 'mhinz/vim-janah'
+Plug 'liuchengxu/space-vim-dark'
 " Plug 'patstockwell/vim-monokai-tasty'
 " let g:airline_theme='monokai_tasty'
 
@@ -164,8 +167,9 @@ let g:molokai_original = 1
 let g:rehash256 = 1
 colorscheme molokai
 
-"seoul256 dark
 let g:seoul256_background = 234
+let g:space_vim_dark_background = 234
+
 
 
 autocmd FileType html,css,xml,htmldjango set tabstop=4 shiftwidth=4 softtabstop=4 expandtab ai
@@ -240,7 +244,7 @@ nnoremap Q @q
 map <C-f> :echo expand("%:p")<cr>
 
 " Source (reload configuration)
-" nnoremap <silent> <F5> :source $MNVIMRC<CR>
+nnoremap <silent> <F5> :source $MYVIMRC<CR>
 
 " Visual Mode */# from Scrooloose {{{
 function! s:VSetSearch()
@@ -274,9 +278,8 @@ vmap > >gv
 "highlight TabLineFill  ctermfg=White  ctermbg=236     cterm=NONE
 "highlight TabLineSel   ctermfg=White  ctermbg=DarkBlue  cterm=NONE
 
-
 let g:lightline = {
-      \ 'colorscheme': 'default',
+      \ 'colorscheme': 'molokai',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'filename' ] ],
       \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
@@ -290,6 +293,7 @@ let g:lightline = {
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
+      \   'mode': 'LightlineMode',
       \ },
       \ 'tabline': {
       \   'left': [ [ 'tabs' ] ],
@@ -301,6 +305,14 @@ let g:lightline = {
       \ },
       \ }
 
+function! LightlineMode()
+  let fname = expand('%:t')
+  return fname == '__Tagbar__.1' ? 'Tagbar' :
+        \ fname =~ 'NERD_tree_1' ? 'NERDTree' :
+        \ fname =~ 'undotree_2' ? 'UndoTree' :
+        \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
+        \ winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
 "=========================================================
 
 "==================== vim-signify ========================
@@ -317,6 +329,19 @@ let g:ale_fixers = {
 			\  'javascript': ['eslint'],
 \}
 "=========================================================
+
+"=================== easy-motion ==========================
+let g:EasyMotion_do_mapping = 0
+nmap s <Plug>(easymotion-overwin-f2)
+" nmap s <Plug>(easymotion-overwin-w)
+"==========================================================
+
+"==================== vim-easy-align =====================
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+"========================================================
 
 "========================= supertab ===========================
 let g:SuperTabDefaultCompletionType    = '<C-n>'
@@ -359,7 +384,7 @@ let g:undotree_DiffpanelHeight=8
 let g:undotree_SetFocusWhenToggle=1
 "======================================================
 
-"======= FZF ====================
+"==================  FZF ====================
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_layout = { 'down': '~20%' }
 
@@ -390,8 +415,7 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
-
-"================================
+"=========================================
 
 
 "=========== NERDTree =============
@@ -449,7 +473,7 @@ augroup END
 let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 "=============================
 
-"=========== hiPairs ==========
+"======================= hiPairs =================
 "    let g:hiPairs_hl_matchPair = { 'term'    : 'underline,bold',
 "                \                  'cterm'   : 'underline,bold',
 "                \                  'ctermfg' : 'NONE',
@@ -457,7 +481,7 @@ let g:rainbow#pairs = [['(', ')'], ['[', ']']]
 "                \                  'gui'     : 'underline,bold',
 "                \                  'guifg'   : 'NONE',
 "                \                  'guibg'   : 'NONE' }
-"=============================
+"===============================================
 
 "=================== ack ======================
 " cnoreabbrev Ack Ack!
