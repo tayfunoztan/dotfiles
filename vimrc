@@ -16,6 +16,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'RRethy/vim-illuminate'
 Plug 'unblevable/quick-scope'
 Plug 'easymotion/vim-easymotion'
+Plug 'mattn/emmet-vim', {'for': 'html'}
 
 Plug 'junegunn/vim-easy-align'
 " Plug 'godlygeek/tabular'
@@ -279,7 +280,7 @@ vmap > >gv
 "highlight TabLineSel   ctermfg=White  ctermbg=DarkBlue  cterm=NONE
 
 let g:lightline = {
-      \ 'colorscheme': 'molokai',
+      \ 'colorscheme': 'default',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'filename' ] ],
       \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
@@ -293,6 +294,7 @@ let g:lightline = {
       \ },
       \ 'component_function': {
       \   'gitbranch': 'fugitive#head',
+      \   'filename': 'LightlineFilename',
       \   'mode': 'LightlineMode',
       \ },
       \ 'tabline': {
@@ -305,6 +307,25 @@ let g:lightline = {
       \ },
       \ }
 
+function! LightlineModified()
+  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! LightlineReadonly()
+  return &ft !~? 'help' && &readonly ? 'RO' : ''
+endfunction
+
+function! LightlineFilename()
+  let fname = expand('%:t')
+  return fname == '__Tagbar__.1' ? g:lightline.fname :
+        \ fname =~ 'NERD_tree_1' ? b:NERDTree.root.path.str() :
+        \ fname =~ 'undotree_2' ? 'UndoTree' :
+        \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
+        \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+        \ ('' != fname ? fname : '[No Name]') .
+        \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
+endfunction
+
 function! LightlineMode()
   let fname = expand('%:t')
   return fname == '__Tagbar__.1' ? 'Tagbar' :
@@ -312,6 +333,12 @@ function! LightlineMode()
         \ fname =~ 'undotree_2' ? 'UndoTree' :
         \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
         \ winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
+let g:tagbar_status_func = 'TagbarStatusFunc'
+function! TagbarStatusFunc(current, sort, fname, ...) abort
+    let g:lightline.fname = a:fname
+  return lightline#statusline(0)
 endfunction
 "=========================================================
 
@@ -351,7 +378,7 @@ let g:SuperTabMappingBackward = '<s-c-space>'
 
 "===================== YouCompleteMe ==========================
 let g:ycm_min_num_of_chars_for_completion = 2
-let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_complete_in_comments = 1 " Completion in comments
 let g:ycm_complete_in_strings = 1 " Completion in string
@@ -379,9 +406,10 @@ let g:UltiSnipsJumpForwardTrigger="<s-tab>"
 
 "========================= undotree ==================
 nnoremap <f3>  :UndotreeToggle<cr>
-let g:undotree_WindowLayout=2
-let g:undotree_DiffpanelHeight=8
-let g:undotree_SetFocusWhenToggle=1
+let g:undotree_WindowLayout       = 2
+let g:undotree_DiffpanelHeight    = 8
+let g:undotree_SetFocusWhenToggle = 1
+let g:undotree_ShortIndicators    = 1
 "======================================================
 
 "==================  FZF ====================
@@ -421,20 +449,20 @@ let g:fzf_colors =
 "=========== NERDTree =============
 noremap <Leader>n :NERDTreeToggle<cr>
 noremap <Leader>f :NERDTreeFind<cr>
-let NERDTreeShowHidden=1
-let g:NERDTreeMouseMode = 2
-let g:NERDTreeWinSize = 30
-let g:NERDTreeMinimalUI=1
-let NERDTreeMapOpenSplit      = 's'
-let NERDTreeMapOpenVSplit     = 'v'
-let NERDTreeIgnore=['.DS_Store', '\.pyc$', '^__pycache__$']
-let NERDTreeRespectWildIgnore=1
-let NERDTreeCascadeSingleChildDir=0
-let NERDTreeCascadeOpenSingleChildDir=0
+let NERDTreeShowHidden                = 1
+let g:NERDTreeMouseMode               = 2
+let g:NERDTreeWinSize                 = 30
+let g:NERDTreeMinimalUI               = 1
+let NERDTreeMapOpenSplit              = 's'
+let NERDTreeMapOpenVSplit             = 'v'
+let NERDTreeIgnore                    = ['.DS_Store', '\.pyc$', '^__pycache__$']
+let NERDTreeRespectWildIgnore         = 1
+let NERDTreeCascadeSingleChildDir     = 0
+let NERDTreeCascadeOpenSingleChildDir = 0
 
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
+let g:netrw_liststyle                 = 3
+let g:netrw_browse_split              = 4
+let g:netrw_altv                      = 1
 "===================================
 
 "============ Nerdtree git plugin ======
@@ -460,7 +488,7 @@ hi illuminatedWord ctermbg=236 ctermfg=None cterm=None
 "=========== tagbar ==========
 nmap <F8> :TagbarToggle<CR>
 
-let g:tagbar_compact = 1
+let g:tagbar_compact   = 1
 let g:tagbar_autofocus = 1
 "=============================
 
@@ -533,12 +561,12 @@ let g:AutoPairsFlyMode = 1
 "==========================================================
 
 "======================== indentLine ========================
-let g:indentLine_enabled = 1
-let g:indentLine_color_term = 239 "87
-let g:indentLine_showFirstIndentLevel=1
-let g:indentLine_first_char='┊'
-let g:indentLine_char = '┆'
-let g:indentLine_bufNameExclude = ['startify']
+let g:indentLine_enabled              = 1
+let g:indentLine_color_term           = 239 "87
+let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_first_char           = '┊'
+let g:indentLine_char                 = '┆'
+let g:indentLine_bufNameExclude       = ['startify']
 "===========================================================
 
 "================= vim-slash ==========================
@@ -550,16 +578,16 @@ let g:indentLine_bufNameExclude = ['startify']
 "===========================================================
 
 "============= Pymode ==============
-let g:pymode_python = 'python3'
-let g:pymode_lint = 0
-let g:pymode_rope = 0
+let g:pymode_python          = 'python3'
+let g:pymode_lint            = 0
+let g:pymode_rope            = 0
 let g:pymode_rope_completion = 0
 "===================================
 
 "======== vim-choosin =========
 " invoke with '-'
 nmap  -  <Plug>(choosewin)
-let g:choosewin_label_padding = 5
+let g:choosewin_label_padding      = 5
 let g:choosewin_blink_on_land      = 0 " don't blink at land
 let g:choosewin_statusline_replace = 1 " don't replace statusline
 let g:choosewin_tabline_replace    = 0 " don't replace tabline
