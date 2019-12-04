@@ -105,6 +105,8 @@ set noswapfile         " Don't use swapfile
 set nobackup           " Don't create annoying backup files
 set undofile
 set undodir=~/.cache/vim
+" ~/.viminfo needs to be writable and readable. Set oldfiles to 1000 last
+" recently opened files, :FzfHistory uses it
 set viminfo='500
 
 "better navigation
@@ -145,6 +147,7 @@ set showcmd    "display an incomplate command in statusline
 set number     "line number on
 set showmatch "highlight matching [{()}]
 set showmode
+set nostartofline
 set list
 set listchars=tab:\|\ ,
 " set matchpairs=<:>  
@@ -280,7 +283,7 @@ vmap > >gv
 "highlight TabLineSel   ctermfg=White  ctermbg=DarkBlue  cterm=NONE
 
 let g:lightline = {
-      \ 'colorscheme': 'default',
+      \ 'colorscheme': 'molokai',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'filename' ] ],
       \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
@@ -481,7 +484,7 @@ let g:NERDTreeGitStatusIndicatorMap = {
 "========================================
 
 "========== vim-illumunati ============
-let g:Illuminate_ftblacklist = ['nerdtree', 'gitconfig','fugitive', 'git']"
+let g:Illuminate_ftblacklist = ['nerdtree', 'gitconfig','fugitive', 'git']
 hi illuminatedWord ctermbg=236 ctermfg=None cterm=None
 "=====================================
 
@@ -556,7 +559,7 @@ let g:vim_markdown_folding_disabled = 1
 " let g:delimitMate_expand_inside_quotes = 0
 " let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'
 
-let g:AutoPairsFlyMode = 1
+" let g:AutoPairsFlyMode = 1
 
 "==========================================================
 
