@@ -29,7 +29,7 @@ Plug 'mhinz/vim-signify'
 Plug 'djoshea/vim-autoread'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'  }
 
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/goyo.vim'
 
 Plug 'SirVer/ultisnips'
@@ -48,6 +48,8 @@ Plug 'mileszs/ack.vim'
 "Python
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 
+Plug 'rust-lang/rust.vim'
+
 Plug 'pangloss/vim-javascript'
 Plug 'othree/html5.vim'
 Plug 'mxw/vim-jsx'
@@ -60,10 +62,9 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 " Plug 'christoomey/vim-tmux-navigator'
 
 
-Plug 'ervandew/supertab'
-Plug 'ycm-core/YouCompleteMe', { 'do': './install.py --ts-completer --java-completer' }
+" Plug 'ervandew/supertab'
+Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 ./install.py --clang-completer --ts-completer --java-completer --rust-completer' }
 let g:python3_host_prog = '/usr/local/bin/python3'
-
 
 Plug 'dense-analysis/ale'
 
@@ -74,7 +75,7 @@ Plug 'itchyny/lightline.vim'
 "Themes
 Plug 'fatih/molokai'
 " Plug 'tomasr/molokai'
-Plug 'junegunn/seoul256.vim'
+" Plug 'junegunn/seoul256.vim'
 Plug 'mhinz/vim-janah'
 Plug 'liuchengxu/space-vim-dark'
 " Plug 'patstockwell/vim-monokai-tasty'
@@ -124,7 +125,7 @@ set backspace=indent,eol,start  " Makes backspace key more powerful.
 set clipboard=unnamed
 " set clipboard^=unnamed
 " set clipboard^=unnamedplus
-set completeopt=menu,menuone,longest,preview
+set completeopt=menu,menuone,longest ",preview
 set pumheight=10
 set lazyredraw
 set pastetoggle=<F9> " Toggle paste
@@ -146,7 +147,7 @@ set ruler
 set showcmd    "display an incomplate command in statusline
 set number     "line number on
 set showmatch "highlight matching [{()}]
-set showmode
+set noshowmode
 set nostartofline
 set list
 set listchars=tab:\|\ ,
@@ -285,11 +286,11 @@ vmap > >gv
 let g:lightline = {
       \ 'colorscheme': 'molokai',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'filename' ] ],
+      \   'left': [ [ 'mode', 'paste' ], [ 'filename', 'gitbranch'] ],
       \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
       \ },
       \ 'inactive': {
-      \   'left': [ [ 'filename' ] ],
+      \   'left': [ [ 'filename', 'gitbranch' ] ],
       \   'right': [ [ 'lineinfo' ], [ 'percent' ] ]
       \ },
       \ 'component': {
@@ -349,6 +350,10 @@ endfunction
 let g:signify_vcs_list = ['git']
 nnoremap <silent><leader>p :SignifyHunkDiff<cr>
 nnoremap <silent><leader>u :SignifyHunkUndo<cr>
+
+highlight SignifySignAdd guifg=#87ff5f ctermfg=119 guibg=#3a3a3a ctermbg=237 gui=bold cterm=bold
+highlight SignifySignDelete guifg=#df5f5f ctermfg=167 guibg=#3a3a3a ctermbg=237 gui=bold cterm=bold
+highlight SignifySignChange guifg=#ffff5f ctermfg=227 guibg=#3a3a3a ctermbg=237 gui=bold cterm=bold
 "========================================================
 
 "========================== ale ==========================
@@ -364,6 +369,10 @@ let g:ale_fixers = {
 let g:EasyMotion_do_mapping = 0
 nmap s <Plug>(easymotion-overwin-f2)
 " nmap s <Plug>(easymotion-overwin-w)
+
+highlight EasyMotionTarget guifg=#ffff5f ctermfg=227 guibg=NONE ctermbg=NONE gui=bold cterm=bold
+highlight EasyMotionTarget2First guifg=#df005f ctermfg=161 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
+highlight EasyMotionTarget2Second guifg=#ffff5f ctermfg=227 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 "==========================================================
 
 "==================== vim-easy-align =====================
@@ -374,9 +383,9 @@ nmap ga <Plug>(EasyAlign)
 "========================================================
 
 "========================= supertab ===========================
-let g:SuperTabDefaultCompletionType    = '<C-n>'
-let g:SuperTabCrMapping                = 0
-let g:SuperTabMappingBackward = '<s-c-space>'
+" let g:SuperTabDefaultCompletionType    = '<C-n>'
+" let g:SuperTabCrMapping                = 0
+" let g:SuperTabMappingBackward = '<s-c-space>'
 "=============================================================
 
 "===================== YouCompleteMe ==========================
@@ -386,23 +395,25 @@ let g:ycm_use_ultisnips_completer = 1
 let g:ycm_complete_in_comments = 1 " Completion in comments
 let g:ycm_complete_in_strings = 1 " Completion in string
 
-let g:ycm_key_list_select_completion   = ['<C-j>', '<C-n>', '<Down>']
+let g:ycm_key_list_select_completion   = ['<TAB>', '<C-j>', '<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
 
-" let g:ycm_global_ycm_extra_conf = '~/.vim/global_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_global_extra_conf.py'
 
 let g:ycm_semantic_triggers = {
     \   'css': [ 're!^', 're!^\s+', ': ', ':'],
     \   'python': [ 're!\w{2}' ],
     \   'javascript': [ 're!\w{2}' ],
     \   'java': [ 're!\w{2}' ],
+    \   'c': [ 're!\w{2}' ],
+    \   'cpp': [ 're!\w{2}' ],
     \ }
 "=============================================================
 
 " =========== Completion + Snippet ==============
 let g:UltiSnipsUsePythonVersion = 3
 let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips"
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<s-tab>"
 let g:UltiSnipsJumpForwardTrigger="<s-tab>"
 " let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 "===================================================
@@ -412,7 +423,7 @@ nnoremap <f3>  :UndotreeToggle<cr>
 let g:undotree_WindowLayout       = 2
 let g:undotree_DiffpanelHeight    = 8
 let g:undotree_SetFocusWhenToggle = 1
-let g:undotree_ShortIndicators    = 1
+let g:undotree_ShortIndicators    = 0
 "======================================================
 
 "==================  FZF ====================
@@ -458,10 +469,30 @@ let g:NERDTreeWinSize                 = 30
 let g:NERDTreeMinimalUI               = 1
 let NERDTreeMapOpenSplit              = 's'
 let NERDTreeMapOpenVSplit             = 'v'
-let NERDTreeIgnore                    = ['.DS_Store', '\.pyc$', '^__pycache__$']
+let NERDTreeIgnore                    = ['.DS_Store', '\.pyc$', '^__pycache__$', '.git']
 let NERDTreeRespectWildIgnore         = 1
 let NERDTreeCascadeSingleChildDir     = 0
 let NERDTreeCascadeOpenSingleChildDir = 0
+
+" NERDTress File highlighting
+function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+ exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+ exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+endfunction
+
+call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('py', 'blue', 'none', '#3366FF', '#151515')
+call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('conf', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('json', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('html', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('styl', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
+call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
+call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
+call NERDTreeHighlightFile('md', 'Magenta', 'none', '#ff00ff', '#151515')
 
 let g:netrw_liststyle                 = 3
 let g:netrw_browse_split              = 4

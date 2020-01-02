@@ -11,8 +11,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-export EDITOR='vim'
-export VISUAL='vim'
 alias vi=vim
 
 #========================== homebrew ========================
@@ -25,27 +23,11 @@ fi
 export FZF_DEFAULT_OPTS='--height 50% --layout=reverse --border'
 #==============================================================
 
-#================== tmuxinator =============================
-_tmuxinator() {
-  local commands projects
-  commands=(${(f)"$(tmuxinator commands zsh)"})
-  projects=(${(f)"$(tmuxinator completions start)"})
+#========================= tmux ===========================
+if which tmux >/dev/null 2>&1; then
+    #if not inside a tmux session, and if no session is started, start a new session
+    test -z "$TMUX" && (tmux attach || tmux new-session)
+fi
+#==========================================================
 
-  if (( CURRENT == 2 )); then
-    _alternative \
-      'commands:: _describe -t commands "tmuxinator subcommands" commands' \
-      'projects:: _describe -t projects "tmuxinator projects" projects'
-  elif (( CURRENT == 3)); then
-    case $words[2] in
-      copy|debug|delete|open|start)
-        _arguments '*:projects:($projects)'
-      ;;
-    esac
-  fi
 
-  return
-}
-
-compdef _tmuxinator tmuxinator mux
-alias mux="tmuxinator"
-#=======================================================
