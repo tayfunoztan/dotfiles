@@ -1,7 +1,7 @@
 "=========================== SCRIPT  and PLUGIN =====================
 call plug#begin('~/.vim/plugged')
 
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'weilbith/nerdtree_choosewin-plugin'
 Plug 't9md/vim-choosewin'
@@ -59,7 +59,7 @@ Plug 'elzr/vim-json', {'for' : 'json'}
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
 Plug 'tmux-plugins/vim-tmux-focus-events'
-" Plug 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 
 
 " Plug 'ervandew/supertab'

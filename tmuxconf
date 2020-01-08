@@ -29,7 +29,7 @@ setw -g automatic-rename on   # rename window to reflect current program
 set -g renumber-windows on    # renumber windows when a window is closed
 
 set -g display-panes-time 1000 # Show times longer than supposed
-set -g display-time 2000 # tmux messages are displayed for 4 seconds
+set -g display-time 1000 # tmux messages are displayed for 4 seconds
 
 set -g set-titles on          # set terminal title
 set-option -g set-titles-string "tmux.#I.#W"
@@ -137,7 +137,8 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
-# set -g @plugin 'christoomey/vim-tmux-navigator'
+set -g @plugin 'tmux-plugins/tmux-urlview'
+set -g @plugin 'christoomey/vim-tmux-navigator'
 
 # Other examples:
 # set -g @plugin 'github_username/plugin_name'
