@@ -59,7 +59,7 @@ Plug 'elzr/vim-json', {'for' : 'json'}
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
 Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'christoomey/vim-tmux-navigator'
+" Plug 'christoomey/vim-tmux-navigator'
 
 
 " Plug 'ervandew/supertab'
@@ -68,9 +68,6 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 
 Plug 'dense-analysis/ale'
 
-Plug 'itchyny/lightline.vim'
-" Plug 'vim-airline/vim-airline'
-" let g:airline_extensions = []
 
 "Themes
 Plug 'fatih/molokai'
@@ -78,6 +75,7 @@ Plug 'fatih/molokai'
 " Plug 'junegunn/seoul256.vim'
 Plug 'mhinz/vim-janah'
 Plug 'liuchengxu/space-vim-dark'
+Plug 'tpope/vim-vividchalk'
 " Plug 'patstockwell/vim-monokai-tasty'
 " let g:airline_theme='monokai_tasty'
 
@@ -272,80 +270,6 @@ vmap > >gv
 
 
 "======================================= PLUGINS ================================
-
-"========================= vim-airline ====================
-"let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
-"let g:airline#extensions#tabline#left_sep = "  "
-"let g:airline#extensions#tabline#left_alt_sep = "  "
-""
-" Tab line
-"highlight TabLine      ctermfg=White  ctermbg=236     cterm=NONE
-"highlight TabLineFill  ctermfg=White  ctermbg=236     cterm=NONE
-"highlight TabLineSel   ctermfg=White  ctermbg=DarkBlue  cterm=NONE
-
-let g:lightline = {
-      \ 'colorscheme': 'molokai',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], [ 'filename', 'gitbranch'] ],
-      \   'right': [ [ 'lineinfo' ], [ 'percent' ], [ 'filetype', 'fileencoding', 'fileformat' ] ]
-      \ },
-      \ 'inactive': {
-      \   'left': [ [ 'filename', 'gitbranch' ] ],
-      \   'right': [ [ 'lineinfo' ], [ 'percent' ] ]
-      \ },
-      \ 'component': {
-      \   'lineinfo': '%3l:%-2c',
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
-      \   'filename': 'LightlineFilename',
-      \   'mode': 'LightlineMode',
-      \ },
-      \ 'tabline': {
-      \   'left': [ [ 'tabs' ] ],
-      \   'right': []
-      \ },
-      \ 'tab': {
-      \   'active': [ 'tabnum', 'readonly', 'filename', 'modified' ],
-      \   'inactive': [ 'tabnum', 'readonly', 'filename', 'modified' ]
-      \ },
-      \ }
-
-function! LightlineModified()
-  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-endfunction
-
-function! LightlineReadonly()
-  return &ft !~? 'help' && &readonly ? 'RO' : ''
-endfunction
-
-function! LightlineFilename()
-  let fname = expand('%:t')
-  return fname == '__Tagbar__.1' ? g:lightline.fname :
-        \ fname =~ 'NERD_tree_1' ? b:NERDTree.root.path.str() :
-        \ fname =~ 'undotree_2' ? 'UndoTree' :
-        \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
-        \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
-        \ ('' != fname ? fname : '[No Name]') .
-        \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
-endfunction
-
-function! LightlineMode()
-  let fname = expand('%:t')
-  return fname == '__Tagbar__.1' ? 'Tagbar' :
-        \ fname =~ 'NERD_tree_1' ? 'NERDTree' :
-        \ fname =~ 'undotree_2' ? 'UndoTree' :
-        \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
-        \ winwidth(0) > 60 ? lightline#mode() : ''
-endfunction
-
-let g:tagbar_status_func = 'TagbarStatusFunc'
-function! TagbarStatusFunc(current, sort, fname, ...) abort
-    let g:lightline.fname = a:fname
-  return lightline#statusline(0)
-endfunction
-"=========================================================
-
 "==================== vim-signify ========================
 let g:signify_vcs_list = ['git']
 nnoremap <silent><leader>p :SignifyHunkDiff<cr>
@@ -516,7 +440,7 @@ let g:NERDTreeGitStatusIndicatorMap = {
 
 "========== vim-illumunati ============
 let g:Illuminate_ftblacklist = ['nerdtree', 'gitconfig','fugitive', 'git']
-hi illuminatedWord ctermbg=236 ctermfg=None cterm=None
+hi illuminatedWord ctermbg=238 ctermfg=None cterm=None
 "=====================================
 
 "=========== tagbar ==========
