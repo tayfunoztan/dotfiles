@@ -12,6 +12,7 @@ fi
 
 # Customize to your needs...
 alias vi=vim
+alias mux=tmuxinator
 
 #========================== homebrew ========================
 if type brew &>/dev/null; then

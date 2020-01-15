@@ -112,11 +112,11 @@ set-option -g status-keys vi
 set-option -g status-position top
 set -g status-justify centre
 set-option -g status-style                 fg=colour15,bg=colour235
-set -g status-right '#{prefix_highlight}|#[fg=yellow,bg=colour235] %H:%M %a %d-%m-%Y'
+set -g status-right '#{prefix_highlight}#[fg=yellow,bg=colour235]|#[fg=yellow,bg=colour235] %H:%M %a %d-%m-%Y'
 set -g status-left "#[fg=colour15,bg=red,bold] #S #[fg=colour148,bg=colour235,nobold,nounderscore,noitalics]"
 
 set -g @prefix_highlight_fg 'white' # default is 'colour231'
-set -g @prefix_highlight_bg 'blue'  # default is 'colour04'
+set -g @prefix_highlight_bg 'colour24'  # default is 'colour04'
 set -g @prefix_highlight_show_copy_mode 'on'
 set -g @prefix_highlight_empty_has_affixes 'on' # default is 'off'
 set -g @prefix_highlight_empty_prompt '^A'          # default is '' (empty char)
@@ -138,7 +138,8 @@ set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
 set -g @plugin 'tmux-plugins/tmux-urlview'
-set -g @plugin 'christoomey/vim-tmux-navigator'
+set -g @plugin 'jbnicolai/tmux-fpp'
+# set -g @plugin 'christoomey/vim-tmux-navigator'
 
 # Other examples:
 # set -g @plugin 'github_username/plugin_name'

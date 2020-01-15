@@ -68,6 +68,7 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 
 Plug 'dense-analysis/ale'
 
+Plug 'itchyny/lightline.vim'
 
 "Themes
 Plug 'fatih/molokai'
@@ -173,8 +174,6 @@ colorscheme molokai
 let g:seoul256_background = 234
 let g:space_vim_dark_background = 234
 
-
-
 autocmd FileType html,css,xml,htmldjango set tabstop=4 shiftwidth=4 softtabstop=4 expandtab ai
 setlocal omnifunc=syntaxcomplete#Complete
 autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
@@ -182,7 +181,6 @@ au BufNewFile,BufRead *.html set filetype=htmldjango
 let g:html_indent_inctags = "html,body,head,tbody,a"
 let b:html_omni_flavor = 'html5'
 "=================================== settings =========================================
-
 
 "=============================== MAPPINGS ===================================
 
@@ -202,7 +200,7 @@ nnoremap <leader>w :w!<cr>
 " Center the screen
 nnoremap <space> zz
 
-"
+" new line insert mode
 imap <S-j> <Esc>o
 
 " Easy window navigation
@@ -270,6 +268,85 @@ vmap > >gv
 
 
 "======================================= PLUGINS ================================
+
+"====================== lightline ===========================
+let g:lightline = {
+       \ 'colorscheme': 'toztan',
+       \ 'active': {
+       \   'left': [ [ 'mode', 'paste' ], [ 'filename', 'gitbranch'] ],
+       \   'right': [ [ 'filetype', 'fileencoding', 'fileformat' ] ]
+       \ },
+       \ 'inactive': {
+       \   'left': [ [ 'filename', 'gitbranch'] ],
+       \   'right': [ [ 'filetype', 'fileencoding', 'fileformat' ] ]
+       \ },
+       \ 'component': {
+       \ },
+       \ 'component_function': {
+       \   'gitbranch': 'fugitive#head',
+       \   'filename': 'LightlineFilename',
+       \   'fileformat': 'LightlineFileformat',
+       \   'filetype': 'LightlineFiletype',
+       \   'fileencoding': 'LightlineFileencoding',
+       \   'mode': 'LightlineMode',
+       \ },
+       \ 'tabline': {
+       \   'left': [ [ 'tabs' ] ],
+       \   'right': []
+       \ },
+       \ 'tab': {
+       \   'active': [ 'tabnum', 'readonly', 'filename', 'modified' ],
+       \   'inactive': [ 'tabnum', 'readonly', 'filename', 'modified' ]
+       \ },
+       \ }
+
+ function! LightlineModified()
+   return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+ endfunction
+
+ function! LightlineReadonly()
+   return &ft !~? 'help' && &readonly ? 'RO' : ''
+ endfunction
+
+ function! LightlineFilename()
+   let fname = @%
+   return fname == '__Tagbar__.1' ? g:lightline.fname :
+         \ fname =~ 'NERD_tree_1' ? b:NERDTree.root.path.str() :
+         \ fname =~ 'undotree_2' ? 'UndoTree' :
+         \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
+         \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+         \ ('' != fname ? fname : '[No Name]') .
+         \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
+ endfunction
+
+ function! LightlineMode()
+   let fname = expand('%:t')
+   return fname == '__Tagbar__.1' ? 'Tagbar' :
+         \ fname =~ 'NERD_tree_1' ? 'NERDTree' :
+         \ fname =~ 'undotree_2' ? 'UndoTree' :
+         \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
+         \ winwidth(0) > 60 ? lightline#mode() : ''
+ endfunction
+
+	function! LightlineFileformat()
+	  return winwidth(0) > 50 ? &fileformat : ''
+	endfunction
+
+	function! LightlineFiletype()
+	  return winwidth(0) > 50 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+	endfunction
+
+	function! LightlineFileencoding()
+	  return winwidth(0) > 50 ? (&fenc !=# '' ? &fenc : &enc) : ''
+	endfunction
+
+ let g:tagbar_status_func = 'TagbarStatusFunc'
+ function! TagbarStatusFunc(current, sort, fname, ...) abort
+     let g:lightline.fname = a:fname
+   return lightline#statusline(0)
+ endfunction
+ "=========================================================
+
 "==================== vim-signify ========================
 let g:signify_vcs_list = ['git']
 nnoremap <silent><leader>p :SignifyHunkDiff<cr>
