@@ -72,6 +72,7 @@ Plug 'itchyny/lightline.vim'
 
 "Themes
 Plug 'fatih/molokai'
+Plug 'mhartington/oceanic-next'
 " Plug 'tomasr/molokai'
 " Plug 'junegunn/seoul256.vim'
 Plug 'mhinz/vim-janah'
@@ -125,6 +126,7 @@ set clipboard=unnamed
 " set clipboard^=unnamed
 " set clipboard^=unnamedplus
 set completeopt=menu,menuone,longest ",preview
+set complete-=i
 set pumheight=10
 set lazyredraw
 set pastetoggle=<F9> " Toggle paste
@@ -311,7 +313,7 @@ let g:lightline = {
  function! LightlineFilename()
    let fname = @%
    return fname == '__Tagbar__.1' ? g:lightline.fname :
-         \ fname =~ 'NERD_tree_1' ? b:NERDTree.root.path.str() :
+         \ fname =~ 'NERD_tree_1' ? split(b:NERDTree.root.path.str(), '/')[-1] :
          \ fname =~ 'undotree_2' ? 'UndoTree' :
          \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
          \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
@@ -357,7 +359,15 @@ highlight SignifySignDelete guifg=#df5f5f ctermfg=167 guibg=#3a3a3a ctermbg=237 
 highlight SignifySignChange guifg=#ffff5f ctermfg=227 guibg=#3a3a3a ctermbg=237 gui=bold cterm=bold
 "========================================================
 
+"=================== matchtagalway =====================
+let g:mta_use_matchparen_group = 0
+let g:mta_set_default_matchtag_color = 0
+highlight MatchTag ctermfg=white ctermbg=red guifg=black guibg=lightgreen
+"=======================================================
+
 "========================== ale ==========================
+let g:ale_enabled=0
+let g:airline#extensions#ale#enabled=0
 let g:ale_linters = {
 			\ 'python': ['flake8'],
 			\}
