@@ -16,7 +16,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'RRethy/vim-illuminate'
 Plug 'unblevable/quick-scope'
 Plug 'easymotion/vim-easymotion'
-Plug 'mattn/emmet-vim', {'for': 'html'}
+Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango']}
 
 Plug 'junegunn/vim-easy-align'
 " Plug 'godlygeek/tabular'
@@ -40,6 +40,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-rhubarb'
 
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
@@ -69,6 +70,7 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 Plug 'dense-analysis/ale'
 
 Plug 'itchyny/lightline.vim'
+Plug 'itchyny/vim-gitbranch'
 
 "Themes
 Plug 'fatih/molokai'
@@ -125,7 +127,8 @@ set backspace=indent,eol,start  " Makes backspace key more powerful.
 set clipboard=unnamed
 " set clipboard^=unnamed
 " set clipboard^=unnamedplus
-set completeopt=menu,menuone,longest ",preview
+" set completeopt=menu,menuone,longest ",preview
+set completeopt=menuone ",preview
 set complete-=i
 set pumheight=10
 set lazyredraw
@@ -135,6 +138,8 @@ set splitbelow                 " Split horizontal windows below to the current w
 set title
 set nojoinspaces
 set ttyfast
+set splitbelow
+set splitright
 
 "wild stuff
 set wildmode=full
@@ -152,6 +157,7 @@ set noshowmode
 set nostartofline
 set list
 set listchars=tab:\|\ ,
+set shortmess=aoOTI
 " set matchpairs=<:>  
 
 "breaking
@@ -176,7 +182,7 @@ colorscheme molokai
 let g:seoul256_background = 234
 let g:space_vim_dark_background = 234
 
-autocmd FileType html,css,xml,htmldjango set tabstop=4 shiftwidth=4 softtabstop=4 expandtab ai
+autocmd FileType html,css,xml,htmldjango set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
 setlocal omnifunc=syntaxcomplete#Complete
 autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
 au BufNewFile,BufRead *.html set filetype=htmldjango 
@@ -210,15 +216,23 @@ map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
+nnoremap <tab>   <c-w>w
+
+" East tab navigation
+nnoremap ]t :tabn<cr>
+nnoremap [t :tabp<cr>
 
 " Visual linewise up and down by default (and use gj gk to go quicker)
-noremap <Up> gk
-noremap <Down> gj
+" noremap <Up> gk
+" noremap <Down> gj
 noremap j gj
 noremap k gk
 
-" Close all but the current one
-nnoremap <leader>o :only<CR>
+" window resize 
+nnoremap <left>   <c-w>>
+nnoremap <right>  <c-w><
+nnoremap <up>     <c-w>-
+nnoremap <down>   <c-w>+
 
 " Do not show stupid q: window
 map q: :q
@@ -266,6 +280,20 @@ nnoremap <leader><space> :nohlsearch<CR>
 "" Vmap for maintain Visual Mode after shifting > and <
 vmap < <gv
 vmap > >gv
+
+" Close all but the current one
+nnoremap <leader>o :only<CR>
+
+" Zoom
+function! s:zoom()
+  if winnr('$') > 1
+    tab split
+  elseif len(filter(map(range(tabpagenr('$')), 'tabpagebuflist(v:val + 1)'),
+                  \ 'index(v:val, '.bufnr('').') >= 0')) > 1
+    tabclose
+  endif
+endfunction
+nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 "==============================  mappings ==============================================
 
 
@@ -285,7 +313,7 @@ let g:lightline = {
        \ 'component': {
        \ },
        \ 'component_function': {
-       \   'gitbranch': 'fugitive#head',
+       \   'gitbranch': 'gitbranch#name',
        \   'filename': 'LightlineFilename',
        \   'fileformat': 'LightlineFileformat',
        \   'filetype': 'LightlineFiletype',
@@ -302,52 +330,52 @@ let g:lightline = {
        \ },
        \ }
 
- function! LightlineModified()
-   return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
- endfunction
+function! LightlineModified()
+ return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
 
- function! LightlineReadonly()
-   return &ft !~? 'help' && &readonly ? 'RO' : ''
- endfunction
+function! LightlineReadonly()
+ return &ft !~? 'help' && &readonly ? 'RO' : ''
+endfunction
 
- function! LightlineFilename()
-   let fname = @%
-   return fname == '__Tagbar__.1' ? g:lightline.fname :
-         \ fname =~ 'NERD_tree_1' ? split(b:NERDTree.root.path.str(), '/')[-1] :
-         \ fname =~ 'undotree_2' ? 'UndoTree' :
-         \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
-         \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
-         \ ('' != fname ? fname : '[No Name]') .
-         \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
- endfunction
+function! LightlineFilename()
+ let fname = @%
+ return fname == '__Tagbar__.1' ? g:lightline.fname :
+       \ fname =~ 'NERD_tree_1' ? split(b:NERDTree.root.path.str(), '/')[-1] :
+       \ fname =~ 'undotree_2' ? 'UndoTree' :
+       \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
+       \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+       \ ('' != fname ? fname : '[No Name]') .
+       \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
+endfunction
 
- function! LightlineMode()
-   let fname = expand('%:t')
-   return fname == '__Tagbar__.1' ? 'Tagbar' :
-         \ fname =~ 'NERD_tree_1' ? 'NERDTree' :
-         \ fname =~ 'undotree_2' ? 'UndoTree' :
-         \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
-         \ winwidth(0) > 60 ? lightline#mode() : ''
- endfunction
+function! LightlineMode()
+ let fname = expand('%:t')
+ return fname == '__Tagbar__.1' ? 'Tagbar' :
+       \ fname =~ 'NERD_tree_1' ? 'NERDTree' :
+       \ fname =~ 'undotree_2' ? 'UndoTree' :
+       \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
+       \ winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
 
-	function! LightlineFileformat()
-	  return winwidth(0) > 50 ? &fileformat : ''
-	endfunction
+function! LightlineFileformat()
+  return winwidth(0) > 50 ? &fileformat : ''
+endfunction
 
-	function! LightlineFiletype()
-	  return winwidth(0) > 50 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
-	endfunction
+function! LightlineFiletype()
+  return winwidth(0) > 50 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
 
-	function! LightlineFileencoding()
-	  return winwidth(0) > 50 ? (&fenc !=# '' ? &fenc : &enc) : ''
-	endfunction
+function! LightlineFileencoding()
+  return winwidth(0) > 50 ? (&fenc !=# '' ? &fenc : &enc) : ''
+endfunction
 
- let g:tagbar_status_func = 'TagbarStatusFunc'
- function! TagbarStatusFunc(current, sort, fname, ...) abort
-     let g:lightline.fname = a:fname
-   return lightline#statusline(0)
- endfunction
- "=========================================================
+let g:tagbar_status_func = 'TagbarStatusFunc'
+function! TagbarStatusFunc(current, sort, fname, ...) abort
+   let g:lightline.fname = a:fname
+ return lightline#statusline(0)
+endfunction
+"=========================================================
 
 "==================== vim-signify ========================
 let g:signify_vcs_list = ['git']
@@ -378,6 +406,7 @@ let g:ale_fixers = {
 
 "=================== easy-motion ==========================
 let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_smartcase = 1
 nmap s <Plug>(easymotion-overwin-f2)
 " nmap s <Plug>(easymotion-overwin-w)
 
@@ -624,6 +653,9 @@ let g:indentLine_bufNameExclude       = ['startify']
 
 "============= Pymode ==============
 let g:pymode_python          = 'python3'
+let g:pymode_options         = 0
+let g:pymode_doc             = 0
+let g:pymode_motion          = 1
 let g:pymode_lint            = 0
 let g:pymode_rope            = 0
 let g:pymode_rope_completion = 0
