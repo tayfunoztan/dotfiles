@@ -1,40 +1,35 @@
 "=========================== SCRIPT  and PLUGIN =====================
 call plug#begin('~/.vim/plugged')
 
-Plug 'preservim/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'weilbith/nerdtree_choosewin-plugin'
+Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
+Plug 'weilbith/nerdtree_choosewin-plugin', { 'on':  'NERDTreeToggle' }
 Plug 't9md/vim-choosewin'
-Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'junegunn/vim-peekaboo'
-" Plug 'junegunn/vim-slash'
 
 Plug 'Valloric/MatchTagAlways'
 Plug 'junegunn/rainbow_parentheses.vim'
-" Plug 'Yggdroot/hiPairs'
 Plug 'Yggdroot/indentLine'
 Plug 'RRethy/vim-illuminate'
 Plug 'unblevable/quick-scope'
-Plug 'easymotion/vim-easymotion'
+Plug 'easymotion/vim-easymotion', {'on': '<Plug>(easymotion-overwin-f2)'}
 Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango']}
 
-Plug 'junegunn/vim-easy-align'
-" Plug 'godlygeek/tabular'
-" Plug 'Raimondi/delimitMate'
+Plug 'junegunn/vim-easy-align', {'on': '<plug>(LiveEasyAlign)'}
 Plug 'jiangmiao/auto-pairs'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'kshenoy/vim-signature'
 Plug 'mhinz/vim-startify'
 Plug 'mhinz/vim-signify'
-Plug 'djoshea/vim-autoread'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'  }
 
 " Plug 'plasticboy/vim-markdown'
-Plug 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim', {'on': 'Goyo'}
 
 Plug 'SirVer/ultisnips'
-"Plug 'honza/vim-snippets'
-"
+Plug 'tayfunoztan/vim-snippets'
+
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
@@ -49,7 +44,7 @@ Plug 'mileszs/ack.vim'
 "Python
 Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
 
-Plug 'rust-lang/rust.vim'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
 Plug 'pangloss/vim-javascript'
 Plug 'othree/html5.vim'
@@ -63,11 +58,10 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 " Plug 'christoomey/vim-tmux-navigator'
 
 
-" Plug 'ervandew/supertab'
-Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 ./install.py --clang-completer --ts-completer --java-completer --rust-completer' }
+Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 ./install.py --clang-completer --ts-completer' }
 let g:python3_host_prog = '/usr/local/bin/python3'
 
-Plug 'dense-analysis/ale'
+Plug 'dense-analysis/ale', {'on': 'ALEToggle'}
 
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
@@ -75,14 +69,10 @@ Plug 'itchyny/vim-gitbranch'
 "Themes
 Plug 'fatih/molokai'
 Plug 'mhartington/oceanic-next'
-" Plug 'tomasr/molokai'
-" Plug 'junegunn/seoul256.vim'
-Plug 'mhinz/vim-janah'
 Plug 'liuchengxu/space-vim-dark'
 Plug 'tpope/vim-vividchalk'
-" Plug 'patstockwell/vim-monokai-tasty'
-" let g:airline_theme='monokai_tasty'
-
+Plug 'morhetz/gruvbox'
+let g:gruvbox_contrast_dark='dark'
 
 call plug#end()
 "=========================== script and plugin=====================================
@@ -145,7 +135,6 @@ set splitright
 set wildmode=full
 set wildmenu
 set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*,.idea
-set updatetime=300
 
 "display 
 set laststatus=2
@@ -159,6 +148,8 @@ set list
 set listchars=tab:\|\ ,
 set shortmess=aoOTI
 " set matchpairs=<:>  
+
+set updatetime=300
 
 "breaking
 set wrap
@@ -294,6 +285,8 @@ function! s:zoom()
   endif
 endfunction
 nnoremap <silent> <leader>z :call <sid>zoom()<cr>
+
+nnoremap g. :normal! `[v`]<cr><left>
 "==============================  mappings ==============================================
 
 
@@ -422,18 +415,14 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 "========================================================
 
-"========================= supertab ===========================
-" let g:SuperTabDefaultCompletionType    = '<C-n>'
-" let g:SuperTabCrMapping                = 0
-" let g:SuperTabMappingBackward = '<s-c-space>'
-"=============================================================
-
 "===================== YouCompleteMe ==========================
-let g:ycm_min_num_of_chars_for_completion = 2
+let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_use_ultisnips_completer = 1
 let g:ycm_complete_in_comments = 1 " Completion in comments
 let g:ycm_complete_in_strings = 1 " Completion in string
+let g:ycm_min_num_identifier_candidate_chars = 4
+let g:ycm_max_num_identifier_candidates = 10
 
 let g:ycm_key_list_select_completion   = ['<TAB>', '<C-j>', '<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
@@ -442,17 +431,13 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_global_extra_conf.py'
 
 let g:ycm_semantic_triggers = {
     \   'css': [ 're!^', 're!^\s+', ': ', ':'],
-    \   'python': [ 're!\w{2}' ],
-    \   'javascript': [ 're!\w{2}' ],
-    \   'java': [ 're!\w{2}' ],
-    \   'c': [ 're!\w{2}' ],
-    \   'cpp': [ 're!\w{2}' ],
     \ }
+
 "=============================================================
 
 " =========== Completion + Snippet ==============
 let g:UltiSnipsUsePythonVersion = 3
-let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips"
+" let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips"
 let g:UltiSnipsExpandTrigger="<s-tab>"
 let g:UltiSnipsJumpForwardTrigger="<s-tab>"
 " let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
@@ -534,9 +519,6 @@ call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
 call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
 call NERDTreeHighlightFile('md', 'Magenta', 'none', '#ff00ff', '#151515')
 
-let g:netrw_liststyle                 = 3
-let g:netrw_browse_split              = 4
-let g:netrw_altv                      = 1
 "===================================
 
 "============ Nerdtree git plugin ======
@@ -622,18 +604,6 @@ let g:vim_json_syntax_conceal = 0
 let g:vim_markdown_folding_disabled = 1
 "===========================================
 
-
-"======================= delimitMate ======================
-" let g:delimitMate_expand_cr = 1
-" let g:delimitMate_expand_space = 1
-" let g:delimitMate_smart_quotes = 1
-" let g:delimitMate_expand_inside_quotes = 0
-" let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'
-
-" let g:AutoPairsFlyMode = 1
-
-"==========================================================
-
 "======================== indentLine ========================
 let g:indentLine_enabled              = 1
 let g:indentLine_color_term           = 239 "87
@@ -641,14 +611,6 @@ let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_first_char           = '┊'
 let g:indentLine_char                 = '┆'
 let g:indentLine_bufNameExclude       = ['startify']
-"===========================================================
-
-"================= vim-slash ==========================
-" noremap <plug>(slash-after) zz
-
-" if has('timers')
-"   noremap <expr> <plug>(slash-after) slash#blink(2, 50)
-" endif
 "===========================================================
 
 "============= Pymode ==============
