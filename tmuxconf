@@ -115,12 +115,16 @@ set-option -g status-style                 fg=colour15,bg=colour235
 set -g status-right '#{prefix_highlight}#[fg=yellow,bg=colour235]|#[fg=yellow,bg=colour235] %H:%M %A, %d-%m-%Y'
 set -g status-left "#[fg=colour15,bg=red,bold] #S #[fg=colour148,bg=colour235,nobold,nounderscore,noitalics]"
 
-set -g @prefix_highlight_fg 'white' # default is 'colour231'
-set -g @prefix_highlight_bg 'colour24'  # default is 'colour04'
-set -g @prefix_highlight_show_copy_mode 'on'
 set -g @prefix_highlight_empty_has_affixes 'on' # default is 'off'
-set -g @prefix_highlight_empty_prompt '^A'          # default is '' (empty char)
-set -g @prefix_highlight_empty_attr 'fg=yellow ,bg=colour235' # default is 'fg=default,bg=default'
+set -g @prefix_highlight_show_copy_mode 'on'
+set -g @prefix_highlight_show_sync_mode 'on'
+set -g @prefix_highlight_prefix_prompt '^A'
+set -g @prefix_highlight_fg 'red,bold' # default is 'colour231'
+set -g @prefix_highlight_bg 'colour235'  # default is 'colour04'
+set -g @prefix_highlight_empty_prompt '  '          # default is '' (empty char)
+set -g @prefix_highlight_empty_attr 'fg=yellow,bg=red' # default is 'fg=default,bg=default'
+set -g @prefix_highlight_copy_mode_attr 'fg=white,bg=yellow' # default is 'fg=default,bg=yellow'
+set -g @prefix_highlight_sync_mode_attr 'fg=white,bg=red' # default is 'fg=default,bg=yellow'
 
 setw -g window-status-separator "  "
 set-option -g window-status-current-style  fg=colour15,bg=colour24 # colour24
@@ -131,14 +135,12 @@ setw -g window-status-current-format "  #I: #W  "
 set-option -g pane-border-style fg=colour240 
 set-option -g pane-active-border-style fg=colour63 
 
-
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
 set -g @plugin 'tmux-plugins/tmux-urlview'
-set -g @plugin 'jbnicolai/tmux-fpp'
 # set -g @plugin 'christoomey/vim-tmux-navigator'
 
 # Other examples:

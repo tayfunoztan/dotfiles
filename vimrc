@@ -1,88 +1,93 @@
+"====================================================
+" vimrc
+"===================================================
+
+augroup vimrc
+  autocmd!
+augroup END
+
+let s:darwin = has('mac')
+
 "=========================== SCRIPT  and PLUGIN =====================
 call plug#begin('~/.vim/plugged')
 
 Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on':  'NERDTreeToggle' }
-Plug 'weilbith/nerdtree_choosewin-plugin', { 'on':  'NERDTreeToggle' }
 Plug 't9md/vim-choosewin'
-Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
-Plug 'junegunn/vim-peekaboo'
-
-Plug 'Valloric/MatchTagAlways'
-Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'Yggdroot/indentLine'
-Plug 'RRethy/vim-illuminate'
-Plug 'unblevable/quick-scope'
 Plug 'easymotion/vim-easymotion', {'on': '<Plug>(easymotion-overwin-f2)'}
-Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango']}
-
-Plug 'junegunn/vim-easy-align', {'on': '<plug>(LiveEasyAlign)'}
-Plug 'jiangmiao/auto-pairs'
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'kshenoy/vim-signature'
 Plug 'mhinz/vim-startify'
 Plug 'mhinz/vim-signify'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'  }
-
-" Plug 'plasticboy/vim-markdown'
-Plug 'junegunn/goyo.vim', {'on': 'Goyo'}
-
-Plug 'SirVer/ultisnips'
-Plug 'tayfunoztan/vim-snippets'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'Yggdroot/indentLine'
+Plug 'Valloric/MatchTagAlways'
+Plug 'michaeljsmith/vim-indent-object'
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-rhubarb'
 
-Plug '/usr/local/opt/fzf'
+Plug 'junegunn/vim-easy-align', {'on': '<plug>(LiveEasyAlign)'}
+Plug 'junegunn/vim-peekaboo'
+Plug 'junegunn/goyo.vim', {'on': 'Goyo'}
+Plug 'junegunn/gv.vim', {'on': 'GV'}
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'mileszs/ack.vim'
 
-"Python
-Plug 'python-mode/python-mode', { 'for': 'python', 'branch': 'develop' }
+if exists('##TextYankPost')
+  Plug 'machakann/vim-highlightedyank'
+  let g:highlightedyank_highlight_duration = 200
+endif
 
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
-
-Plug 'pangloss/vim-javascript'
-Plug 'othree/html5.vim'
-Plug 'mxw/vim-jsx'
-Plug 'elzr/vim-json', {'for' : 'json'}
-
-"Tmux
+"tmux
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
 Plug 'tmux-plugins/vim-tmux-focus-events'
-" Plug 'christoomey/vim-tmux-navigator'
 
+if v:version >= 800
+  Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install() }}
+endif
 
-Plug 'ycm-core/YouCompleteMe', { 'do': 'python3 ./install.py --clang-completer --ts-completer' }
-let g:python3_host_prog = '/usr/local/bin/python3'
+"python
+" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+Plug 'vim-python/python-syntax'
+let g:python_highlight_all = 1
+Plug 'Vimjas/vim-python-pep8-indent'
 
-Plug 'dense-analysis/ale', {'on': 'ALEToggle'}
+"javascript, html 
+Plug 'pangloss/vim-javascript'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'alvan/vim-closetag', {'for': ['html','htmldjango','javascript']}
 
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 
-"Themes
+Plug 'w0rp/ale', {'on': 'ALEToggle'}
+let g:ale_linters = {'python': ['flake8']}
+let g:ale_fixers = { 'python': ['autopep8'] }
+let g:ale_lint_delay = 1000
+nmap ]a <Plug>(ale_next_wrap)
+nmap [a <Plug>(ale_previous_wrap)
+
+"theme
 Plug 'fatih/molokai'
-Plug 'mhartington/oceanic-next'
-Plug 'liuchengxu/space-vim-dark'
-Plug 'tpope/vim-vividchalk'
+let g:molokai_original = 1
+let g:rehash256 = 1
+Plug 'junegunn/seoul256.vim'
+let g:seoul256_background = 234
 Plug 'morhetz/gruvbox'
-let g:gruvbox_contrast_dark='dark'
+let g:gruvbox_contrast_dark='hard'
+" Plug 'arzg/vim-colors-xcode'
 
 call plug#end()
 "=========================== script and plugin=====================================
 
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 "=================================  SETTINGS ===================================
-
-set nocompatible              " be iMproved, required
-filetype off
-filetype plugin indent on
 
 set encoding=utf-8              " Set default encoding to UTF-8
 
@@ -118,7 +123,7 @@ set clipboard=unnamed
 " set clipboard^=unnamed
 " set clipboard^=unnamedplus
 " set completeopt=menu,menuone,longest ",preview
-set completeopt=menuone ",preview
+set completeopt=menuone,preview
 set complete-=i
 set pumheight=10
 set lazyredraw
@@ -128,6 +133,7 @@ set splitbelow                 " Split horizontal windows below to the current w
 set title
 set nojoinspaces
 set ttyfast
+set hidden
 set splitbelow
 set splitright
 
@@ -164,21 +170,9 @@ if has('patch-7.4.338')
 endif
 
 syntax enable "syntax enable
-set t_Co=256
+" set t_Co=256
 set background=dark
-let g:molokai_original = 1
-let g:rehash256 = 1
-colorscheme molokai
-
-let g:seoul256_background = 234
-let g:space_vim_dark_background = 234
-
-autocmd FileType html,css,xml,htmldjango set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
-setlocal omnifunc=syntaxcomplete#Complete
-autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
-au BufNewFile,BufRead *.html set filetype=htmldjango 
-let g:html_indent_inctags = "html,body,head,tbody,a"
-let b:html_omni_flavor = 'html5'
+colorscheme gruvbox
 "=================================== settings =========================================
 
 "=============================== MAPPINGS ===================================
@@ -200,7 +194,7 @@ nnoremap <leader>w :w!<cr>
 nnoremap <space> zz
 
 " new line insert mode
-imap <S-j> <Esc>o
+" imap <S-j> <Esc>o
 
 " Easy window navigation
 map <C-h> <C-w>h
@@ -289,12 +283,57 @@ nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 nnoremap g. :normal! `[v`]<cr><left>
 "==============================  mappings ==============================================
 
+augroup vimrc
+  autocmd FileType python,scheme RainbowParentheses
+augroup END
 
 "======================================= PLUGINS ================================
+"=================================== coc-nvim =============================
+if has_key(g:plugs, 'coc.nvim')
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+  imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+  inoremap <silent><expr> <c-space> coc#refresh()
+
+  function! s:show_documentation()
+    if (index(['vim', 'help'], &filetype) >= 0)
+      execute 'h' expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
+
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+  let g:coc_global_extensions = ['coc-yaml',
+    \ 'coc-python', 'coc-html', 'coc-json', 'coc-css', 'coc-html',
+    \ 'coc-prettier', 'coc-eslint', 'coc-tsserver']
+  command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+  let g:go_doc_keywordprg_enabled = 0
+
+  augroup coc-config
+    autocmd!
+    autocmd VimEnter * nmap <silent> gd <Plug>(coc-definition)
+    autocmd VimEnter * nmap <silent> gi <Plug>(coc-implementation)
+    autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
+  augroup END
+endif
+"============================================================================
 
 "====================== lightline ===========================
 let g:lightline = {
-       \ 'colorscheme': 'toztan',
+       \ 'colorscheme': 'toztan2',
        \ 'active': {
        \   'left': [ [ 'mode', 'paste' ], [ 'filename', 'gitbranch'] ],
        \   'right': [ [ 'filetype', 'fileencoding', 'fileformat' ] ]
@@ -380,32 +419,11 @@ highlight SignifySignDelete guifg=#df5f5f ctermfg=167 guibg=#3a3a3a ctermbg=237 
 highlight SignifySignChange guifg=#ffff5f ctermfg=227 guibg=#3a3a3a ctermbg=237 gui=bold cterm=bold
 "========================================================
 
-"=================== matchtagalway =====================
-let g:mta_use_matchparen_group = 0
-let g:mta_set_default_matchtag_color = 0
-highlight MatchTag ctermfg=white ctermbg=red guifg=black guibg=lightgreen
-"=======================================================
-
-"========================== ale ==========================
-let g:ale_enabled=0
-let g:airline#extensions#ale#enabled=0
-let g:ale_linters = {
-			\ 'python': ['flake8'],
-			\}
-let g:ale_fixers = {
-			\  'javascript': ['eslint'],
-\}
-"=========================================================
-
 "=================== easy-motion ==========================
 let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
 nmap s <Plug>(easymotion-overwin-f2)
 " nmap s <Plug>(easymotion-overwin-w)
-
-highlight EasyMotionTarget guifg=#ffff5f ctermfg=227 guibg=NONE ctermbg=NONE gui=bold cterm=bold
-highlight EasyMotionTarget2First guifg=#df005f ctermfg=161 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
-highlight EasyMotionTarget2Second guifg=#ffff5f ctermfg=227 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE
 "==========================================================
 
 "==================== vim-easy-align =====================
@@ -415,34 +433,6 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 "========================================================
 
-"===================== YouCompleteMe ==========================
-let g:ycm_min_num_of_chars_for_completion = 1
-let g:ycm_autoclose_preview_window_after_completion = 0
-let g:ycm_use_ultisnips_completer = 1
-let g:ycm_complete_in_comments = 1 " Completion in comments
-let g:ycm_complete_in_strings = 1 " Completion in string
-let g:ycm_min_num_identifier_candidate_chars = 4
-let g:ycm_max_num_identifier_candidates = 10
-
-let g:ycm_key_list_select_completion   = ['<TAB>', '<C-j>', '<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
-
-let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_global_extra_conf.py'
-
-let g:ycm_semantic_triggers = {
-    \   'css': [ 're!^', 're!^\s+', ': ', ':'],
-    \ }
-
-"=============================================================
-
-" =========== Completion + Snippet ==============
-let g:UltiSnipsUsePythonVersion = 3
-" let g:UltiSnipsSnippetsDir = "~/.vim/UltiSnips"
-let g:UltiSnipsExpandTrigger="<s-tab>"
-let g:UltiSnipsJumpForwardTrigger="<s-tab>"
-" let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-"===================================================
-
 "========================= undotree ==================
 nnoremap <f3>  :UndotreeToggle<cr>
 let g:undotree_WindowLayout       = 2
@@ -451,22 +441,30 @@ let g:undotree_SetFocusWhenToggle = 1
 let g:undotree_ShortIndicators    = 0
 "======================================================
 
-"==================  FZF ====================
+"=========================  FZF ========================
+
+if has('nvim') 
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+endif
+
 let g:fzf_command_prefix = 'Fzf'
-let g:fzf_layout = { 'down': '~20%' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
 
+autocmd! FileType fzf
+autocmd  FileType fzf set noshowmode noruler nonu
+
 " search
 nmap <C-p> :FzfHistory<cr>
-imap <C-p> <esc>:<C-u>FzfHistory<cr>
+" imap <C-p> <esc>:<C-u>FzfHistory<cr>
 
 " search across files in the current directory
 nmap <C-b> :FzfFiles<cr>
-imap <C-b> <esc>:<C-u>FzfFiles<cr>
+" imap <C-b> <esc>:<C-u>FzfFiles<cr>
 
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
@@ -482,10 +480,48 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
-"=========================================
 
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let options = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  if a:fullscreen
+    let options = fzf#vim#with_preview(options)
+  endif
+  call fzf#vim#grep(initial_command, 1, options, a:fullscreen)
+endfunction
 
-"=========== NERDTree =============
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+"=======================================================
+
+"======================== indentLine ========================
+let g:indentLine_enabled              = 0
+let g:indentLine_color_term           = 239 "87
+let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_first_char           = '|'
+let g:indentLine_char                 = '|'
+let g:indentLine_bufNameExclude       = ['startify']
+let g:indentLine_fileTypeExclude      = ['json']
+"===========================================================
+
+"======================== vim-choosin =====================
+" invoke with '-'
+nmap  -  <Plug>(choosewin)
+let g:choosewin_label_padding      = 5
+let g:choosewin_blink_on_land      = 0 " don't blink at land
+let g:choosewin_statusline_replace = 1 " don't replace statusline
+let g:choosewin_tabline_replace    = 0 " don't replace tabline
+"==========================================================
+
+"=================== matchtagalway =====================
+let g:mta_use_matchparen_group = 0
+let g:mta_set_default_matchtag_color = 0
+let g:mta_filetypes = { 'html' : 1, 'xhtml' : 1, 'xml' : 1, 'jinja' : 1, 'htmldjango' : 1 }
+highlight MatchTag ctermfg=white ctermbg=93 guifg=black guibg=lightgreen
+"=======================================================
+
+"============================= NERDTree =================
 noremap <Leader>n :NERDTreeToggle<cr>
 noremap <Leader>f :NERDTreeFind<cr>
 let NERDTreeShowHidden                = 1
@@ -518,120 +554,5 @@ call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
 call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
 call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
 call NERDTreeHighlightFile('md', 'Magenta', 'none', '#ff00ff', '#151515')
-
-"===================================
-
-"============ Nerdtree git plugin ======
-let g:NERDTreeGitStatusIndicatorMap = {
-        \ 'Modified'  : '✹',
-        \ 'Staged'    : '✚',
-        \ 'Untracked' : '✭',
-        \ 'Renamed'   : '➜',
-        \ 'Unmerged'  : '═',
-        \ 'Deleted'   : '✖',
-        \ 'Dirty'     : '✗',
-        \ 'Clean'     : '✔︎',
-        \ 'Ignored'   : '',
-        \ 'Unknown'   : '?'
-        \ }
-"========================================
-
-"========== vim-illumunati ============
-let g:Illuminate_ftblacklist = ['nerdtree', 'gitconfig','fugitive', 'git']
-hi illuminatedWord ctermbg=238 ctermfg=None cterm=None
-"=====================================
-
-"=========== tagbar ==========
-nmap <F8> :TagbarToggle<CR>
-
-let g:tagbar_compact   = 1
-let g:tagbar_autofocus = 1
-"=============================
-
-"=========== RainbowParentheses ==========
-augroup rainbow_list
-  autocmd!
-  autocmd FileType python RainbowParentheses
-  autocmd FileType java RainbowParentheses
-augroup END
-let g:rainbow#pairs = [['(', ')'], ['[', ']']]
-"=============================
-
-"======================= hiPairs =================
-"    let g:hiPairs_hl_matchPair = { 'term'    : 'underline,bold',
-"                \                  'cterm'   : 'underline,bold',
-"                \                  'ctermfg' : 'NONE',
-"                \                  'ctermbg' : '143',
-"                \                  'gui'     : 'underline,bold',
-"                \                  'guifg'   : 'NONE',
-"                \                  'guibg'   : 'NONE' }
-"===============================================
-
-"=================== ack ======================
-" cnoreabbrev Ack Ack!
-let g:ackprg = 'ag --vimgrep --smart-case'
-" let g:ackprg = 'ag --nogroup --nocolor --column'
-let g:ack_mappings = {
-      \ "t": "<C-W><CR><C-W>T",
-      \ "T": "<C-W><CR><C-W>TgT<C-W>j",
-      \ "o": "<CR>",
-      \ "O": "<CR><C-W><C-W>:ccl<CR>",
-      \ "go": "<CR><C-W>j",
-      \ "s": "<C-W><CR><C-W>K",  
-      \ "S": "<C-W><CR><C-W>K<C-W>b",
-      \ "v": "<C-W><CR><C-W>H<C-W>b<C-W>J<C-W>t",
-      \ "gv": "<C-W><CR><C-W>H<C-W>b<C-W>J" 
-      \ } 
-"===============================================
-
-"================ vim-javascript ===========
-" let g:javascript_plugin_flow = 1
-" augroup javascript_folding
-"     au!
-"     au FileType javascript setlocal foldmethod=syntax
-" augroup END
-"=============================================
-
-"================ vim-jsx =====================
-let g:jsx_ext_required = 0
-"===============================================
-
-"================ vim-json ===================
-let g:vim_json_syntax_conceal = 0
-"=============================================
-
-"============== vim-markdown =================
-let g:vim_markdown_folding_disabled = 1
-"===========================================
-
-"======================== indentLine ========================
-let g:indentLine_enabled              = 1
-let g:indentLine_color_term           = 239 "87
-let g:indentLine_showFirstIndentLevel = 1
-let g:indentLine_first_char           = '┊'
-let g:indentLine_char                 = '┆'
-let g:indentLine_bufNameExclude       = ['startify']
-"===========================================================
-
-"============= Pymode ==============
-let g:pymode_python          = 'python3'
-let g:pymode_options         = 0
-let g:pymode_doc             = 0
-let g:pymode_motion          = 1
-let g:pymode_lint            = 0
-let g:pymode_rope            = 0
-let g:pymode_rope_completion = 0
-"===================================
-
-"======== vim-choosin =========
-" invoke with '-'
-nmap  -  <Plug>(choosewin)
-let g:choosewin_label_padding      = 5
-let g:choosewin_blink_on_land      = 0 " don't blink at land
-let g:choosewin_statusline_replace = 1 " don't replace statusline
-let g:choosewin_tabline_replace    = 0 " don't replace tabline
-"=============================
-
-" Trigger a highlight in the appropriate direction when pressing these keys:
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+"========================================================
 "=============================== plugins ==============================================
