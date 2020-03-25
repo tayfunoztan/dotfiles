@@ -4,16 +4,14 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-alias vi=nvim
-alias vim=nvim
+alias vi=$EDITOR
+alias vim=$EDITOR
 alias mux=tmuxinator
 
 # Virtualenvwrapper
 VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 export WORKON_HOME=$HOME/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
-
-
 
 # =================== fzf ===================================
 
@@ -57,3 +55,4 @@ z() {
 # ===============================================================
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+bindkey "ç" fzf-cd-widget
