@@ -17,6 +17,7 @@ Plug 'easymotion/vim-easymotion', {'on': '<Plug>(easymotion-overwin-f2)'}
 Plug 'mhinz/vim-startify'
 Plug 'mhinz/vim-signify'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'  }
+Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
@@ -29,7 +30,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 
-Plug 'junegunn/vim-easy-align', {'on': '<plug>(LiveEasyAlign)'}
+Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/goyo.vim', {'on': 'Goyo'}
 Plug 'junegunn/gv.vim', {'on': 'GV'}
@@ -57,15 +58,24 @@ Plug 'vim-python/python-syntax'
 let g:python_highlight_all = 1
 Plug 'Vimjas/vim-python-pep8-indent'
 
+"rust
+Plug 'rust-lang/rust.vim', {'for': 'rust'}
+
+"go
+if v:version >= 800
+  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+endif
+
 "javascript, html 
 Plug 'pangloss/vim-javascript'
 Plug 'MaxMEllon/vim-jsx-pretty'
-Plug 'alvan/vim-closetag', {'for': ['html','htmldjango','javascript']}
+Plug 'alvan/vim-closetag'
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
 
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 
-Plug 'w0rp/ale', {'on': 'ALEToggle'}
+Plug 'dense-analysis/ale', {'on': 'ALEToggle'}
 let g:ale_linters = {'python': ['flake8']}
 let g:ale_fixers = { 'python': ['autopep8'] }
 let g:ale_lint_delay = 1000
@@ -138,8 +148,8 @@ set splitbelow
 set splitright
 
 "wild stuff
-set wildmode=full
 set wildmenu
+set wildmode=full
 set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*,.idea
 
 "display 
@@ -201,7 +211,7 @@ map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
-nnoremap <tab>   <c-w>w
+" nnoremap <tab>   <c-w>w
 
 " East tab navigation
 nnoremap ]t :tabn<cr>
@@ -284,7 +294,17 @@ nnoremap g. :normal! `[v`]<cr><left>
 "==============================  mappings ==============================================
 
 augroup vimrc
-  autocmd FileType python,scheme RainbowParentheses
+  autocmd FileType python,javascript,scheme RainbowParentheses
+
+  " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
+  au BufNewFile,BufRead,InsertLeave * silent! match ExtraWhitespace /\s\+$/
+  au InsertEnter * silent! match ExtraWhitespace /\s\+\%#\@<!$/
+
+  " Automatic rename of tmux window
+  if exists('$TMUX') && !exists('$NORENAME')
+    au BufEnter * if empty(&buftype) | call system('tmux rename-window '.expand('%:t:S')) | endif
+    au VimLeave * call system('tmux set-window automatic-rename on')
+  endif
 augroup END
 
 "======================================= PLUGINS ================================
@@ -315,8 +335,10 @@ if has_key(g:plugs, 'coc.nvim')
 
   nnoremap <silent> K :call <SID>show_documentation()<CR>
 
+  nmap <leader>rn <Plug>(coc-rename)
+
   let g:coc_global_extensions = ['coc-yaml',
-    \ 'coc-python', 'coc-html', 'coc-json', 'coc-css', 'coc-html',
+    \ 'coc-python', 'coc-rls',  'coc-html', 'coc-json', 'coc-css', 'coc-html',
     \ 'coc-prettier', 'coc-eslint', 'coc-tsserver']
   command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
@@ -335,11 +357,11 @@ endif
 let g:lightline = {
        \ 'colorscheme': 'toztan2',
        \ 'active': {
-       \   'left': [ [ 'mode', 'paste' ], [ 'filename', 'gitbranch'] ],
+       \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'filename', 'coc' ] ],
        \   'right': [ [ 'filetype', 'fileencoding', 'fileformat' ] ]
        \ },
        \ 'inactive': {
-       \   'left': [ [ 'filename', 'gitbranch'] ],
+       \   'left': [ [ 'gitbranch', 'filename', 'coc'] ],
        \   'right': [ [ 'filetype', 'fileencoding', 'fileformat' ] ]
        \ },
        \ 'component': {
@@ -351,6 +373,7 @@ let g:lightline = {
        \   'filetype': 'LightlineFiletype',
        \   'fileencoding': 'LightlineFileencoding',
        \   'mode': 'LightlineMode',
+       \   'coc': 'Coc',
        \ },
        \ 'tabline': {
        \   'left': [ [ 'tabs' ] ],
@@ -364,6 +387,10 @@ let g:lightline = {
 
 function! LightlineModified()
  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! Coc()
+ return get(b:,"coc_current_function","")
 endfunction
 
 function! LightlineReadonly()
@@ -434,7 +461,7 @@ nmap ga <Plug>(EasyAlign)
 "========================================================
 
 "========================= undotree ==================
-nnoremap <f3>  :UndotreeToggle<cr>
+nnoremap U :UndotreeToggle<cr>
 let g:undotree_WindowLayout       = 2
 let g:undotree_DiffpanelHeight    = 8
 let g:undotree_SetFocusWhenToggle = 1
@@ -442,7 +469,6 @@ let g:undotree_ShortIndicators    = 0
 "======================================================
 
 "=========================  FZF ========================
-
 if has('nvim') 
   let $FZF_DEFAULT_OPTS .= ' --inline-info'
 endif
@@ -517,7 +543,7 @@ let g:choosewin_tabline_replace    = 0 " don't replace tabline
 "=================== matchtagalway =====================
 let g:mta_use_matchparen_group = 0
 let g:mta_set_default_matchtag_color = 0
-let g:mta_filetypes = { 'html' : 1, 'xhtml' : 1, 'xml' : 1, 'jinja' : 1, 'htmldjango' : 1 }
+let g:mta_filetypes = { 'html' : 1, 'xhtml' : 1, 'xml' : 1, 'jinja' : 1, 'htmldjango' : 1, 'javascript': 1}
 highlight MatchTag ctermfg=white ctermbg=93 guifg=black guibg=lightgreen
 "=======================================================
 

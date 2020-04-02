@@ -6,15 +6,10 @@ fi
 
 alias vi=$EDITOR
 alias vim=$EDITOR
+alias vimrc="vim $HOME/.vimrc"
 alias mux=tmuxinator
 
-# Virtualenvwrapper
-VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-export WORKON_HOME=$HOME/.virtualenvs
-source /usr/local/bin/virtualenvwrapper.sh
-
 # =================== fzf ===================================
-
 Rg() {
   local selected=$(
     rg --column --line-number --no-heading --color=always --smart-case "$1" |
@@ -35,7 +30,6 @@ RG() {
   [ -n "$selected" ] && $EDITOR "$selected"
 }
 
-
 if command -v fd > /dev/null; then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
   export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
@@ -52,7 +46,30 @@ z() {
   [ $# -gt 0 ] && _z "$*" && return
   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
-# ===============================================================
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 bindkey "ç" fzf-cd-widget
+# ===============================================================
+
+# ======================= python =================================
+# Virtualenvwrapper
+VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+ipython(){
+  source $HOME/Desktop/python/envs/bin/activate
+  ipython
+}
+
+spyder(){
+  source $HOME/Desktop/python/envs/bin/activate
+  spyder3
+}
+
+jupyter(){
+  source $HOME/Desktop/python/envs/bin/activate
+  jupyter-lab
+}
+# ===============================================================
+
