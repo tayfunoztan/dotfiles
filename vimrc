@@ -537,8 +537,8 @@ command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 "=======================================================
 
 "======================== indentLine ========================
-let g:indentLine_enabled              = 0
-let g:indentLine_color_term           = 239 "87
+" let g:indentLine_enabled              = 0
+" let g:indentLine_color_term           = 239 "87
 let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_first_char           = '|'
 let g:indentLine_char                 = '|'
