@@ -122,7 +122,7 @@ set -g @prefix_highlight_prefix_prompt '^A'
 set -g @prefix_highlight_fg 'red,bold' # default is 'colour231'
 set -g @prefix_highlight_bg 'colour235'  # default is 'colour04'
 set -g @prefix_highlight_empty_prompt '  '          # default is '' (empty char)
-set -g @prefix_highlight_empty_attr 'fg=yellow,bg=red' # default is 'fg=default,bg=default'
+set -g @prefix_highlight_empty_attr 'fg=yellow,bg=235' # default is 'fg=default,bg=default'
 set -g @prefix_highlight_copy_mode_attr 'fg=white,bg=yellow' # default is 'fg=default,bg=yellow'
 set -g @prefix_highlight_sync_mode_attr 'fg=white,bg=red' # default is 'fg=default,bg=yellow'
 

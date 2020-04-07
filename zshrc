@@ -9,6 +9,15 @@ alias vim=$EDITOR
 alias vimrc="vim $HOME/.vimrc"
 alias mux=tmuxinator
 
+updateAll(){
+  zprezto-update
+  brew update 
+  brew upgrade
+  brew cask upgrade
+  vim +PlugUpdate +qall
+  brew cleanup --prune=all
+}
+
 # =================== fzf ===================================
 Rg() {
   local selected=$(

@@ -1,0 +1,13 @@
+{
+  "python.venvFolders": ["envs", ".pyenv", ".direnv", ".virtualenvs"],
+  "python.linting.enabled": false,
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "disableWorkspaceFolders": true,
+      "filetypes": ["go"]
+    }
+  }
+}

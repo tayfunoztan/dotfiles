@@ -23,6 +23,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'Yggdroot/indentLine'
 Plug 'Valloric/MatchTagAlways'
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -37,6 +38,8 @@ Plug 'junegunn/gv.vim', {'on': 'GV'}
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+
+Plug 'justinmk/vim-gtfo'
 
 if exists('##TextYankPost')
   Plug 'machakann/vim-highlightedyank'
@@ -212,6 +215,12 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 " nnoremap <tab>   <c-w>w
+
+" Movement in insert mode
+" inoremap <C-h> <C-o>h
+" inoremap <C-l> <C-o>a
+" inoremap <C-j> <C-o>j
+" inoremap <C-k> <C-o>k
 
 " East tab navigation
 nnoremap ]t :tabn<cr>
@@ -445,6 +454,12 @@ highlight SignifySignAdd guifg=#87ff5f ctermfg=119 guibg=#3a3a3a ctermbg=237 gui
 highlight SignifySignDelete guifg=#df5f5f ctermfg=167 guibg=#3a3a3a ctermbg=237 gui=bold cterm=bold
 highlight SignifySignChange guifg=#ffff5f ctermfg=227 guibg=#3a3a3a ctermbg=237 gui=bold cterm=bold
 "========================================================
+
+"=========== tagbar ==========================
+nmap <F8> :TagbarToggle<CR>
+
+let g:tagbar_width     = 35
+"=============================================
 
 "=================== easy-motion ==========================
 let g:EasyMotion_do_mapping = 0
