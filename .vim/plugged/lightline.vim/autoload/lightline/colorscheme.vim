@@ -38,7 +38,7 @@ let s:cuicolor = {
       \
       \ 'gray0'          : 233,
       \ 'gray1'          : 235,
-      \ 'gray2'          : 238,
+      \ 'gray2'          : 236,
       \ 'gray3'          : 239,
       \ 'gray4'          : 240,
       \ 'gray5'          : 241,
@@ -47,7 +47,7 @@ let s:cuicolor = {
       \ 'gray8'          : 247,
       \ 'gray9'          : 250,
       \ 'gray10'         : 252,
-      \ 'gray19'         : 236,
+      \ 'gray19'         : 238,
       \
       \ 'yellow'         : 136,
       \ 'orange'         : 166,
