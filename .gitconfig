@@ -17,6 +17,10 @@
 
 [core]
 	editor = vim
+	excludesFile = /Users/toztan/.gitignore_global
+
+[merge]
+	tool = vimdiff
 
 [filter "lfs"]
 	process = git-lfs filter-process

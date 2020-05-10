@@ -1,0 +1,33 @@
+{
+  "coc.preferences.formatOnType": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "go",
+    "markdown",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "jsonc"
+  ],
+  "prettier.disableSuccessMessage": true,
+  "prettier.eslintIntegration": true,
+  "eslint.enable": true,
+  "eslint.autoFixOnSave": true,
+  "eslint.filetypes": ["javascript", "typescript", "javascriptreact"],
+  "python.venvFolders": ["envs", ".pyenv", ".direnv", ".virtualenvs"],
+  "python.linting.enabled": false,
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "snippets.extends": {
+    "javascriptreact": ["javascript"],
+    "typescript": ["javascript"]
+  },
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "disableWorkspaceFolders": true,
+      "filetypes": ["go"]
+    }
+  }
+}

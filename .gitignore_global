@@ -1,0 +1,19 @@
+
+# Python
+*.pyc
+__pycache__/
+
+# Logs
+*.log
+
+# OS
+Thumbs.db
+._*
+.Spotlight-V100
+.Trashes
+.DS_Store
+
+# VSCode
+.vscode
+
+.idea

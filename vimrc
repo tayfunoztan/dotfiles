@@ -6,9 +6,12 @@ augroup vimrc
   autocmd!
 augroup END
 
+let g:plug_window = '-tabnew'
+let g:plug_pwindow = 'vertical rightbelow new'
+
 let s:darwin = has('mac')
 
-"=========================== SCRIPT  and PLUGIN =====================
+"=========================== SCRIPT and PLUGIN =====================
 call plug#begin('~/.vim/plugged')
 
 Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
@@ -20,10 +23,14 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'  }
 Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'Yggdroot/indentLine'
 Plug 'Valloric/MatchTagAlways'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+Plug 'justinmk/vim-gtfo'
+
+Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
+  autocmd! User indentLine doautocmd indentLine Syntax
+  let g:indentLine_color_term = 239
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -38,9 +45,10 @@ Plug 'junegunn/gv.vim', {'on': 'GV'}
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/vim-after-object'
+"   autocmd VimEnter * silent! call after_object#enable('=', ':', '#', ' ', '|')
 
-Plug 'justinmk/vim-gtfo'
-
+" Plug 'sgur/vim-editorconfig'
 if exists('##TextYankPost')
   Plug 'machakann/vim-highlightedyank'
   let g:highlightedyank_highlight_duration = 200
@@ -52,13 +60,15 @@ Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
 if v:version >= 800
-  Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install() }}
+  Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 
 "python
 " Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'vim-python/python-syntax'
-let g:python_highlight_all = 1
+  let g:python_highlight_all = 1
+  let g:python_highlight_space_errors = 0
 Plug 'Vimjas/vim-python-pep8-indent'
 
 "rust
@@ -66,34 +76,36 @@ Plug 'rust-lang/rust.vim', {'for': 'rust'}
 
 "go
 if v:version >= 800
-  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+  Plug 'fatih/vim-go'
+  let g:go_code_completion_enabled = 0
 endif
 
 "javascript, html 
 Plug 'pangloss/vim-javascript'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'alvan/vim-closetag'
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
+  let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
 
 Plug 'itchyny/lightline.vim'
 Plug 'itchyny/vim-gitbranch'
 
 Plug 'dense-analysis/ale', {'on': 'ALEToggle'}
-let g:ale_linters = {'python': ['flake8']}
-let g:ale_fixers = { 'python': ['autopep8'] }
-let g:ale_lint_delay = 1000
-nmap ]a <Plug>(ale_next_wrap)
-nmap [a <Plug>(ale_previous_wrap)
+  let g:ale_linters = {'python': ['flake8']}
+  let g:ale_fixers = { 'python': ['autopep8'] }
+  let g:ale_lint_delay = 1000
+  nmap ]a <Plug>(ale_next_wrap)
+  nmap [a <Plug>(ale_previous_wrap)
 
 "theme
 Plug 'fatih/molokai'
-let g:molokai_original = 1
-let g:rehash256 = 1
+  let g:molokai_original = 1
+  let g:rehash256 = 1
 Plug 'junegunn/seoul256.vim'
-let g:seoul256_background = 234
+  let g:seoul256_background = 234
 Plug 'morhetz/gruvbox'
-let g:gruvbox_contrast_dark='hard'
+  let g:gruvbox_contrast_dark='hard'
 " Plug 'arzg/vim-colors-xcode'
+Plug 'tayfunoztan/vim-tomorrow-theme'
 
 call plug#end()
 "=========================== script and plugin=====================================
@@ -114,8 +126,10 @@ set shiftwidth=2
 " backup/swap/info/undo settings
 set noswapfile         " Don't use swapfile
 set nobackup           " Don't create annoying backup files
-set undofile
-set undodir=~/.cache/vim
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.vim/undo
+endif
 " ~/.viminfo needs to be writable and readable. Set oldfiles to 1000 last
 " recently opened files, :FzfHistory uses it
 set viminfo='500
@@ -129,6 +143,7 @@ set smartcase
 set mouse=a     "Enable mouse mode
 
 "misc settings
+set diffopt=filler,vertical
 set autoread                    " Automatically reread changed files without asking me anything
 set autowrite                " Automatically save before :next, :make etc.
 set backspace=indent,eol,start  " Makes backspace key more powerful.
@@ -165,6 +180,7 @@ set noshowmode
 set nostartofline
 set list
 set listchars=tab:\|\ ,
+set virtualedit=block
 set shortmess=aoOTI
 " set matchpairs=<:>  
 
@@ -185,7 +201,7 @@ endif
 syntax enable "syntax enable
 " set t_Co=256
 set background=dark
-colorscheme gruvbox
+colorscheme Tomorrow-Night-Bright
 "=================================== settings =========================================
 
 "=============================== MAPPINGS ===================================
@@ -193,9 +209,15 @@ colorscheme gruvbox
 let mapleader = ","
 
 " Some useful quickfix shortcuts for quickfix
-map <C-n> :cn<CR>
-map <C-m> :cp<CR>
-nnoremap <leader>a :ccl<CR>
+nnoremap ]q :cnext<cr>zz
+nnoremap [q :cprev<cr>zz
+nnoremap ]l :lnext<cr>zz
+nnoremap [l :lprev<cr>zz
+nnoremap <leader>c :cclose<bar>lclose<cr>
+
+" Buffers
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
 
 " Exit on j
 imap jj <Esc>
@@ -227,16 +249,10 @@ nnoremap ]t :tabn<cr>
 nnoremap [t :tabp<cr>
 
 " Visual linewise up and down by default (and use gj gk to go quicker)
-" noremap <Up> gk
-" noremap <Down> gj
+noremap <Up> gk
+noremap <Down> gj
 noremap j gj
 noremap k gk
-
-" window resize 
-nnoremap <left>   <c-w>>
-nnoremap <right>  <c-w><
-nnoremap <up>     <c-w>-
-nnoremap <down>   <c-w>+
 
 " Do not show stupid q: window
 map q: :q
@@ -300,9 +316,15 @@ endfunction
 nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 
 nnoremap g. :normal! `[v`]<cr><left>
+
+if has('nvim')
+  nnoremap <leader>T :vsplit +terminal<cr>
+  tnoremap jj <c-\><c-n>
+endif
 "==============================  mappings ==============================================
 
 augroup vimrc
+  let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
   autocmd FileType python,javascript,scheme RainbowParentheses
 
   " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
@@ -310,10 +332,10 @@ augroup vimrc
   au InsertEnter * silent! match ExtraWhitespace /\s\+\%#\@<!$/
 
   " Automatic rename of tmux window
-  if exists('$TMUX') && !exists('$NORENAME')
-    au BufEnter * if empty(&buftype) | call system('tmux rename-window '.expand('%:t:S')) | endif
-    au VimLeave * call system('tmux set-window automatic-rename on')
-  endif
+  " if exists('$TMUX') && !exists('$NORENAME')
+  "   au BufEnter * if empty(&buftype) | call system('tmux rename-window '.expand('%:t:S')) | endif
+  "   au VimLeave * call system('tmux set-window automatic-rename on')
+  " endif
 augroup END
 
 "======================================= PLUGINS ================================
@@ -348,13 +370,15 @@ if has_key(g:plugs, 'coc.nvim')
 
   let g:coc_global_extensions = ['coc-yaml',
     \ 'coc-python', 'coc-rls',  'coc-html', 'coc-json', 'coc-css', 'coc-html',
-    \ 'coc-prettier', 'coc-eslint', 'coc-tsserver']
+    \ 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-snippets']
   command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
   let g:go_doc_keywordprg_enabled = 0
 
   augroup coc-config
     autocmd!
+    autocmd VimEnter * nmap <silent> [d <Plug>(coc-diagnostic-prev)
+    autocmd VimEnter * nmap <silent> ]d <Plug>(coc-diagnostic-next)
     autocmd VimEnter * nmap <silent> gd <Plug>(coc-definition)
     autocmd VimEnter * nmap <silent> gi <Plug>(coc-implementation)
     autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
@@ -449,15 +473,10 @@ endfunction
 let g:signify_vcs_list = ['git']
 nnoremap <silent><leader>p :SignifyHunkDiff<cr>
 nnoremap <silent><leader>u :SignifyHunkUndo<cr>
-
-highlight SignifySignAdd guifg=#87ff5f ctermfg=119 guibg=#3a3a3a ctermbg=237 gui=bold cterm=bold
-highlight SignifySignDelete guifg=#df5f5f ctermfg=167 guibg=#3a3a3a ctermbg=237 gui=bold cterm=bold
-highlight SignifySignChange guifg=#ffff5f ctermfg=227 guibg=#3a3a3a ctermbg=237 gui=bold cterm=bold
 "========================================================
 
 "=========== tagbar ==========================
 nmap <F8> :TagbarToggle<CR>
-
 let g:tagbar_width     = 35
 "=============================================
 
@@ -488,6 +507,30 @@ if has('nvim')
   let $FZF_DEFAULT_OPTS .= ' --inline-info'
 endif
 
+autocmd! FileType fzf
+autocmd  FileType fzf set noshowmode noruler nonu
+
+" All files
+command! -nargs=? -complete=dir ALLFILES
+  \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+  \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+  \ })))
+
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Identifier'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Function'],
+  \ 'pointer': ['fg', 'Identifier'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Structure'] }
+
 let g:fzf_command_prefix = 'Fzf'
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 
@@ -496,9 +539,6 @@ let g:fzf_action = {
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
 
-autocmd! FileType fzf
-autocmd  FileType fzf set noshowmode noruler nonu
-
 " search
 nmap <C-p> :FzfHistory<cr>
 " imap <C-p> <esc>:<C-u>FzfHistory<cr>
@@ -506,21 +546,6 @@ nmap <C-p> :FzfHistory<cr>
 " search across files in the current directory
 nmap <C-b> :FzfFiles<cr>
 " imap <C-b> <esc>:<C-u>FzfFiles<cr>
-
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
 
 function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
@@ -537,12 +562,10 @@ command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 "=======================================================
 
 "======================== indentLine ========================
-" let g:indentLine_enabled              = 0
-" let g:indentLine_color_term           = 239 "87
 let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_first_char           = '|'
 let g:indentLine_char                 = '|'
-let g:indentLine_bufNameExclude       = ['startify']
+let g:indentLine_bufNameExclude       = ['startify', 'Tagbar']
 let g:indentLine_fileTypeExclude      = ['json']
 "===========================================================
 
@@ -568,7 +591,7 @@ noremap <Leader>f :NERDTreeFind<cr>
 let NERDTreeShowHidden                = 1
 let g:NERDTreeMouseMode               = 2
 let g:NERDTreeWinSize                 = 30
-let g:NERDTreeMinimalUI               = 1
+let g:NERDTreeMinimalUI               = 0
 let NERDTreeMapOpenSplit              = 's'
 let NERDTreeMapOpenVSplit             = 'v'
 let NERDTreeIgnore                    = ['.DS_Store', '\.pyc$', '^__pycache__$', '.git']

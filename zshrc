@@ -39,6 +39,11 @@ RG() {
   [ -n "$selected" ] && $EDITOR "$selected"
 }
 
+export FZF_DEFAULT_OPTS='--color=dark
+  --color=fg:-1,bg:234,hl:#c678dd,fg+:#ffffff,bg+:#4b5263,hl+:#d858fe
+  --color=info:#98c379,prompt:#61afef,pointer:#be5046,marker:#e5c07b,spinner:#61afef,header:#61afef'
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview' --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort' --header 'Press CTRL-Y to copy command into clipboard' --border"
+
 if command -v fd > /dev/null; then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
   export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
@@ -66,17 +71,17 @@ VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 export WORKON_HOME=$HOME/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
 
-ipython(){
+pipython(){
   source $HOME/Desktop/python/envs/bin/activate
-  ipython
+  ipython3
 }
 
-spyder(){
+pspyder(){
   source $HOME/Desktop/python/envs/bin/activate
   spyder3
 }
 
-jupyter(){
+pjupyter(){
   source $HOME/Desktop/python/envs/bin/activate
   jupyter-lab
 }
