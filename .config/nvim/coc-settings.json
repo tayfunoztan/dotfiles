@@ -22,6 +22,12 @@
     "javascriptreact": ["javascript"],
     "typescript": ["javascript"]
   },
+  "list.normalMappings": {
+    "<C-c>": "do:exit"
+  },
+  "list.insertMappings": {
+    "<C-c>": "do:exit"
+  },
   "languageserver": {
     "golang": {
       "command": "gopls",

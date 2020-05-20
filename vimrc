@@ -87,7 +87,6 @@ Plug 'alvan/vim-closetag'
   let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
 
 Plug 'itchyny/lightline.vim'
-Plug 'itchyny/vim-gitbranch'
 
 Plug 'dense-analysis/ale', {'on': 'ALEToggle'}
   let g:ale_linters = {'python': ['flake8']}
@@ -153,7 +152,7 @@ set clipboard=unnamed
 " set completeopt=menu,menuone,longest ",preview
 set completeopt=menuone,preview
 set complete-=i
-set pumheight=10
+set pumheight=15
 set lazyredraw
 set pastetoggle=<F9> " Toggle paste
 set splitright               " Split vertical windows right to the current windows
@@ -331,6 +330,13 @@ augroup vimrc
   au BufNewFile,BufRead,InsertLeave * silent! match ExtraWhitespace /\s\+$/
   au InsertEnter * silent! match ExtraWhitespace /\s\+\%#\@<!$/
 
+  " Close preview window
+  " if exists('##CompleteDone')
+  "   au CompleteDone * pclose
+  " else
+  "   au InsertLeave * if !pumvisible() && (!exists('*getcmdwintype') || empty(getcmdwintype())) | pclose | endif
+  " endif
+
   " Automatic rename of tmux window
   " if exists('$TMUX') && !exists('$NORENAME')
   "   au BufEnter * if empty(&buftype) | call system('tmux rename-window '.expand('%:t:S')) | endif
@@ -388,19 +394,19 @@ endif
 
 "====================== lightline ===========================
 let g:lightline = {
-       \ 'colorscheme': 'toztan2',
+       \ 'colorscheme': 'toztan3',
        \ 'active': {
-       \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'filename', 'coc' ] ],
+       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename', 'coc' ] ],
        \   'right': [ [ 'filetype', 'fileencoding', 'fileformat' ] ]
        \ },
        \ 'inactive': {
-       \   'left': [ [ 'gitbranch', 'filename', 'coc'] ],
+       \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'filename', 'coc'] ],
        \   'right': [ [ 'filetype', 'fileencoding', 'fileformat' ] ]
        \ },
        \ 'component': {
        \ },
        \ 'component_function': {
-       \   'gitbranch': 'gitbranch#name',
+       \   'fugitive': 'LightlineFugitive',
        \   'filename': 'LightlineFilename',
        \   'fileformat': 'LightlineFileformat',
        \   'filetype': 'LightlineFiletype',
@@ -430,12 +436,36 @@ function! LightlineReadonly()
  return &ft !~? 'help' && &readonly ? 'RO' : ''
 endfunction
 
+function! LightlineFileformat()
+  return winwidth(0) > 60 ? &fileformat : ''
+endfunction
+
+function! LightlineFiletype()
+  return winwidth(0) > 60 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
+
+function! LightlineFileencoding()
+  return winwidth(0) > 60 ? (&fenc !=# '' ? &fenc : &enc) : ''
+endfunction
+
+function! LightlineFugitive()
+  try
+    if expand('%:t') !~? 'Tagbar\|NERD' && exists('*FugitiveHead')
+      let mark = ''  " edit here for cool mark
+      let branch = FugitiveHead()
+      return branch !=# '' ? mark.branch : ''
+    endif
+  catch
+  endtry
+  return ''
+endfunction
+
 function! LightlineFilename()
  let fname = @%
- return fname == '__Tagbar__.1' ? g:lightline.fname :
-       \ fname =~ 'NERD_tree_1' ? split(b:NERDTree.root.path.str(), '/')[-1] :
-       \ fname =~ 'undotree_2' ? 'UndoTree' :
-       \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
+ return fname =~# '^__Tagbar__' ? g:lightline.fname :
+       \ fname =~# 'NERD_tree' ? split(b:NERDTree.root.path.str(), '/')[-1] :
+       \ fname =~# 'undotree' ? 'UndoTree' :
+       \ fname =~# 'diffpanel' ? 'DiffPanel' :
        \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
        \ ('' != fname ? fname : '[No Name]') .
        \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
@@ -443,23 +473,11 @@ endfunction
 
 function! LightlineMode()
  let fname = expand('%:t')
- return fname == '__Tagbar__.1' ? 'Tagbar' :
-       \ fname =~ 'NERD_tree_1' ? 'NERDTree' :
-       \ fname =~ 'undotree_2' ? 'UndoTree' :
-       \ fname =~ 'diffpanel_3' ? 'DiffPanel' :
+ return fname =~# '^__Tagbar__' ? 'Tagbar' :
+       \ fname =~# 'NERD_tree' ? 'NERDTree' :
+       \ fname =~# 'undotree' ? 'UndoTree' :
+       \ fname =~# 'diffpanel' ? 'DiffPanel' :
        \ winwidth(0) > 60 ? lightline#mode() : ''
-endfunction
-
-function! LightlineFileformat()
-  return winwidth(0) > 50 ? &fileformat : ''
-endfunction
-
-function! LightlineFiletype()
-  return winwidth(0) > 50 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
-endfunction
-
-function! LightlineFileencoding()
-  return winwidth(0) > 50 ? (&fenc !=# '' ? &fenc : &enc) : ''
 endfunction
 
 let g:tagbar_status_func = 'TagbarStatusFunc'

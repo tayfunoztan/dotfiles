@@ -14,6 +14,7 @@ let s:cuicolor = {
       \
       \ 'darkestgreen'   : 22,
       \ 'darkgreen'      : 28,
+      \ 'green71'      : 46,
       \ 'mediumgreen'    : 70,
       \ 'brightgreen'    : 148,
       \
