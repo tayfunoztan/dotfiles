@@ -6,6 +6,7 @@ augroup vimrc
   autocmd!
 augroup END
 
+let g:plug_shallow = 0
 let g:plug_window = '-tabnew'
 let g:plug_pwindow = 'vertical rightbelow new'
 
@@ -43,6 +44,7 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/goyo.vim', {'on': 'Goyo'}
 Plug 'junegunn/gv.vim', {'on': 'GV'}
 Plug 'junegunn/rainbow_parentheses.vim'
+  let g:rainbow#blacklist = [9, 13, 15, 234, 248]
 Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/vim-after-object'
@@ -90,7 +92,7 @@ Plug 'itchyny/lightline.vim'
 
 Plug 'dense-analysis/ale', {'on': 'ALEToggle'}
   let g:ale_linters = {'python': ['flake8']}
-  let g:ale_fixers = { 'python': ['autopep8'] }
+  let g:ale_fixers = {'python': ['black']}
   let g:ale_lint_delay = 1000
   nmap ]a <Plug>(ale_next_wrap)
   nmap [a <Plug>(ale_previous_wrap)
@@ -239,7 +241,7 @@ map <C-l> <C-w>l
 
 " Movement in insert mode
 " inoremap <C-h> <C-o>h
-" inoremap <C-l> <C-o>a
+" inoremap <C-l> <C-o>l
 " inoremap <C-j> <C-o>j
 " inoremap <C-k> <C-o>k
 
@@ -270,6 +272,11 @@ nnoremap H ^
 nnoremap L $
 vnoremap H ^
 vnoremap L g_
+
+nnoremap <left>   <c-w>>
+nnoremap <right>  <c-w><
+nnoremap <up>     <c-w>-
+nnoremap <down>   <c-w>+
 
 " Yank from the cursor to the end of the line, to be consistent with C and D.
 nnoremap Y y$
@@ -342,8 +349,11 @@ augroup vimrc
   "   au BufEnter * if empty(&buftype) | call system('tmux rename-window '.expand('%:t:S')) | endif
   "   au VimLeave * call system('tmux set-window automatic-rename on')
   " endif
-augroup END
 
+  " cursorline only active window
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  autocmd WinLeave * setlocal nocursorline
+augroup END
 "======================================= PLUGINS ================================
 "=================================== coc-nvim =============================
 if has_key(g:plugs, 'coc.nvim')
@@ -400,7 +410,7 @@ let g:lightline = {
        \   'right': [ [ 'filetype', 'fileencoding', 'fileformat' ] ]
        \ },
        \ 'inactive': {
-       \   'left': [ [ 'mode', 'paste' ], [ 'gitbranch', 'filename', 'coc'] ],
+       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename', 'coc'] ],
        \   'right': [ [ 'filetype', 'fileencoding', 'fileformat' ] ]
        \ },
        \ 'component': {
@@ -437,7 +447,7 @@ function! LightlineReadonly()
 endfunction
 
 function! LightlineFileformat()
-  return winwidth(0) > 60 ? &fileformat : ''
+  return winwidth(0) > 80 ? &fileformat : ''
 endfunction
 
 function! LightlineFiletype()
@@ -445,7 +455,7 @@ function! LightlineFiletype()
 endfunction
 
 function! LightlineFileencoding()
-  return winwidth(0) > 60 ? (&fenc !=# '' ? &fenc : &enc) : ''
+  return winwidth(0) > 80 ? (&fenc !=# '' ? &fenc : &enc) : ''
 endfunction
 
 function! LightlineFugitive()
@@ -557,13 +567,16 @@ let g:fzf_action = {
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
 
-" search
-nmap <C-p> :FzfHistory<cr>
+" search history
+nnoremap <silent> <C-p> :FzfHistory<CR>
 " imap <C-p> <esc>:<C-u>FzfHistory<cr>
 
 " search across files in the current directory
-nmap <C-b> :FzfFiles<cr>
+nnoremap <silent> <C-b> :FzfFiles<CR>
 " imap <C-b> <esc>:<C-u>FzfFiles<cr>
+
+nnoremap <silent> <expr> <Leader><Leader> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FzfFiles\<cr>"
+nnoremap <silent> <Leader>b :FzfBuffers<CR>
 
 function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
