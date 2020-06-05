@@ -1,29 +1,35 @@
 [user]
-	name = Tayfun Oztan
-	email = tayfn.oztan@gmail.com
+  name = Tayfun Öztan
+  email = tayfunn.oztann@gmail.com
 
 [color]
-	ui = auto
+  branch      = auto
+  diff        = auto
+  interactive = auto
+  status      = auto
+  ui          = auto
 
-[color "branch"]
-	current = yellow reverse
-	local = yellow
-	remote = green
+[push]
+  default = current
 
-[color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
+[pull]
+  rebase = true
+
+[rebase]
+  autoStash = true
+
+[commit]
+  gpgsign = false
 
 [core]
-	editor = vim
-	excludesFile = /Users/toztan/.gitignore_global
+ editor = vim
+ excludesFile = $HOME/.gitignore_global
 
 [merge]
-	tool = vimdiff
+ tool = vimdiff
 
 [filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
+ process = git-lfs filter-process
+ required = true
+ clean = git-lfs clean -- %f
+ smudge = git-lfs smudge -- %f
