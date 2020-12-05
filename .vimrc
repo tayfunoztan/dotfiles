@@ -24,7 +24,7 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'  }
 Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'jiangmiao/auto-pairs'
-Plug 'Valloric/MatchTagAlways'
+" Plug 'Valloric/MatchTagAlways'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'justinmk/vim-gtfo'
@@ -36,6 +36,7 @@ Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 
@@ -63,8 +64,10 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 
 if v:version >= 800
   Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 endif
+
+Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp']}
 
 "python
 " Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
@@ -77,10 +80,10 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'rust-lang/rust.vim', {'for': 'rust'}
 
 "go
-if v:version >= 800
-  Plug 'fatih/vim-go'
-  let g:go_code_completion_enabled = 0
-endif
+" if v:version >= 800
+"   Plug 'fatih/vim-go'
+"   let g:go_code_completion_enabled = 0
+" endif
 
 "javascript, html 
 Plug 'pangloss/vim-javascript'
@@ -105,7 +108,6 @@ Plug 'junegunn/seoul256.vim'
   let g:seoul256_background = 234
 Plug 'morhetz/gruvbox'
   let g:gruvbox_contrast_dark='hard'
-" Plug 'arzg/vim-colors-xcode'
 Plug 'tayfunoztan/vim-tomorrow-theme'
 
 call plug#end()
@@ -245,6 +247,10 @@ map <C-l> <C-w>l
 " inoremap <C-j> <C-o>j
 " inoremap <C-k> <C-o>k
 
+" Moving line in visual mode
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
+
 " East tab navigation
 nnoremap ]t :tabn<cr>
 nnoremap [t :tabp<cr>
@@ -354,6 +360,30 @@ augroup vimrc
   autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
   autocmd WinLeave * setlocal nocursorline
 augroup END
+
+" Todo
+" ----------------------------------------------------------------------------
+function! s:todo() abort
+  let entries = []
+  for cmd in ['git grep -niI -e TODO -e FIXME -e XXX 2> /dev/null',
+            \ 'grep -rniI -e TODO -e FIXME -e XXX * 2> /dev/null']
+    let lines = split(system(cmd), '\n')
+    if v:shell_error != 0 | continue | endif
+    for line in lines
+      let [fname, lno, text] = matchlist(line, '^\([^:]*\):\([^:]*\):\(.*\)')[1:3]
+      call add(entries, { 'filename': fname, 'lnum': lno, 'text': text })
+    endfor
+    break
+  endfor
+
+  if !empty(entries)
+    call setqflist(entries)
+    copen
+  endif
+endfunction
+command! Todo call s:todo()
+" ----------------------------------------------------------------------------
+
 "======================================= PLUGINS ================================
 "=================================== coc-nvim =============================
 if has_key(g:plugs, 'coc.nvim')
@@ -372,21 +402,25 @@ if has_key(g:plugs, 'coc.nvim')
 
   inoremap <silent><expr> <c-space> coc#refresh()
 
+  " Use K to show documentation in preview window.
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+
   function! s:show_documentation()
-    if (index(['vim', 'help'], &filetype) >= 0)
-      execute 'h' expand('<cword>')
+    if (index(['vim','help'], &filetype) >= 0)
+      execute 'h '.expand('<cword>')
+    elseif (coc#rpc#ready())
+      call CocActionAsync('doHover')
     else
-      call CocAction('doHover')
+      execute '!' . &keywordprg . " " . expand('<cword>')
     endif
   endfunction
-
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
 
   nmap <leader>rn <Plug>(coc-rename)
 
   let g:coc_global_extensions = ['coc-yaml',
     \ 'coc-python', 'coc-rls',  'coc-html', 'coc-json', 'coc-css', 'coc-html',
     \ 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-snippets']
+
   command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
   let g:go_doc_keywordprg_enabled = 0
@@ -396,6 +430,7 @@ if has_key(g:plugs, 'coc.nvim')
     autocmd VimEnter * nmap <silent> [d <Plug>(coc-diagnostic-prev)
     autocmd VimEnter * nmap <silent> ]d <Plug>(coc-diagnostic-next)
     autocmd VimEnter * nmap <silent> gd <Plug>(coc-definition)
+    autocmd VimEnter * nmap <silent> gy <Plug>(coc-type-definition)
     autocmd VimEnter * nmap <silent> gi <Plug>(coc-implementation)
     autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
   augroup END
@@ -460,7 +495,7 @@ endfunction
 
 function! LightlineFugitive()
   try
-    if expand('%:t') !~? 'Tagbar\|NERD' && exists('*FugitiveHead')
+    if expand('%:t') !~? 'diffpanel\|undotree\|Tagbar\|NERD' && exists('*FugitiveHead')
       let mark = ''  " edit here for cool mark
       let branch = FugitiveHead()
       return branch !=# '' ? mark.branch : ''
@@ -503,6 +538,10 @@ nnoremap <silent><leader>p :SignifyHunkDiff<cr>
 nnoremap <silent><leader>u :SignifyHunkUndo<cr>
 "========================================================
 
+"==================== vim-startify ========================
+let g:startify_custom_header = 'startify#pad(startify#fortune#boxed())'
+"========================================================
+
 "=========== tagbar ==========================
 nmap <F8> :TagbarToggle<CR>
 let g:tagbar_width     = 35
@@ -531,9 +570,7 @@ let g:undotree_ShortIndicators    = 0
 "======================================================
 
 "=========================  FZF ========================
-if has('nvim') 
-  let $FZF_DEFAULT_OPTS .= ' --inline-info'
-endif
+let $FZF_DEFAULT_OPTS .= ' --inline-info'
 
 autocmd! FileType fzf
 autocmd  FileType fzf set noshowmode noruler nonu
@@ -552,7 +589,7 @@ let g:fzf_colors =
   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
   \ 'hl+':     ['fg', 'Statement'],
   \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
+  \ 'border':  ['fg', 'Normal'],
   \ 'prompt':  ['fg', 'Function'],
   \ 'pointer': ['fg', 'Identifier'],
   \ 'marker':  ['fg', 'Keyword'],
@@ -625,7 +662,7 @@ let g:NERDTreeWinSize                 = 30
 let g:NERDTreeMinimalUI               = 0
 let NERDTreeMapOpenSplit              = 's'
 let NERDTreeMapOpenVSplit             = 'v'
-let NERDTreeIgnore                    = ['.DS_Store', '\.pyc$', '^__pycache__$', '.git']
+let NERDTreeIgnore                    = ['.DS_Store', '\.pyc$', '^__pycache__$', '.git', 'node_modules']
 let NERDTreeRespectWildIgnore         = 1
 let NERDTreeCascadeSingleChildDir     = 0
 let NERDTreeCascadeOpenSingleChildDir = 0

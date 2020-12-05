@@ -12,6 +12,24 @@ function ${1:`!p snip.rv = snip.basename`}(${2}){
 
 export default $4`!p snip.rv = snip.basename`
 endsnippet
+
+snippet rcc "react class component"
+import React, {Component} from "react"
+
+class ${1:ClassName} extends Component {
+	state = {
+
+	}
+	render() {
+		return (
+			<div>
+				$1
+			</div>
+		);
+	}
+}
+endsnippet
+
 # React Hooks
 snippet useS "useState Hook" b
 const [${1}, set`!p snip.rv=t[1].title()`] = useState(${3:"${4}"})

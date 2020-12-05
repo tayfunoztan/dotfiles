@@ -8,26 +8,35 @@
     "typescript",
     "typescriptreact",
     "json",
-    "jsonc"
+    "jsonc",
+    "htmldjango"
   ],
   "prettier.disableSuccessMessage": true,
   "prettier.eslintIntegration": true,
-  "eslint.enable": true,
+  "eslint.enable": false,
   "eslint.autoFixOnSave": true,
   "eslint.filetypes": ["javascript", "typescript", "javascriptreact"],
+
+  "clangd.semanticHighlighting": true,
+
   "python.venvFolders": ["envs", ".pyenv", ".direnv", ".virtualenvs"],
   "python.linting.enabled": false,
+
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+
   "snippets.extends": {
     "javascriptreact": ["javascript"],
     "typescript": ["javascript"]
   },
+
   "list.normalMappings": {
-    "<C-c>": "do:exit"
+    "<C-c>": "do:exit",
+    "a": "do:selectall"
   },
   "list.insertMappings": {
     "<C-c>": "do:exit"
   },
+
   "languageserver": {
     "golang": {
       "command": "gopls",
