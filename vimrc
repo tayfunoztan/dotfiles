@@ -21,7 +21,7 @@ Plug 'easymotion/vim-easymotion', {'on': '<Plug>(easymotion-overwin-f2)'}
 Plug 'mhinz/vim-startify'
 Plug 'mhinz/vim-signify'
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'  }
-Plug 'vim-scripts/ReplaceWithRegister'
+Plug 'tayfunoztan/ReplaceWithRegister'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'Valloric/MatchTagAlways'
@@ -64,7 +64,8 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 
 if v:version >= 800
   Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
-  Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+  " Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 endif
 
 Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp']}
@@ -77,13 +78,11 @@ Plug 'vim-python/python-syntax'
 Plug 'Vimjas/vim-python-pep8-indent'
 
 "rust
-Plug 'rust-lang/rust.vim', {'for': 'rust'}
+" Plug 'rust-lang/rust.vim', {'for': 'rust'}
 
 "go
-" if v:version >= 800
-"   Plug 'fatih/vim-go'
-"   let g:go_code_completion_enabled = 0
-" endif
+" Plug 'fatih/vim-go'
+" let g:go_code_completion_enabled = 0
 
 "javascript, html 
 Plug 'pangloss/vim-javascript'
@@ -125,6 +124,7 @@ set expandtab
 set smarttab
 set tabstop=2
 set shiftwidth=2
+set scrolloff=5
 
 " backup/swap/info/undo settings
 set noswapfile         " Don't use swapfile
@@ -327,6 +327,7 @@ function! s:zoom()
 endfunction
 nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 
+" Last inserted text
 nnoremap g. :normal! `[v`]<cr><left>
 
 if has('nvim')
@@ -474,7 +475,7 @@ function! LightlineModified()
 endfunction
 
 function! Coc()
- return get(b:,"coc_current_function","")
+ return winwidth(0) > 80 ? get(b:,"coc_current_function","") : ''
 endfunction
 
 function! LightlineReadonly()
@@ -620,9 +621,7 @@ function! RipgrepFzf(query, fullscreen)
   let initial_command = printf(command_fmt, shellescape(a:query))
   let reload_command = printf(command_fmt, '{q}')
   let options = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  if a:fullscreen
-    let options = fzf#vim#with_preview(options)
-  endif
+  let options = fzf#vim#with_preview(options, 'right', 'ctrl-/')
   call fzf#vim#grep(initial_command, 1, options, a:fullscreen)
 endfunction
 
@@ -662,7 +661,7 @@ let g:NERDTreeWinSize                 = 30
 let g:NERDTreeMinimalUI               = 0
 let NERDTreeMapOpenSplit              = 's'
 let NERDTreeMapOpenVSplit             = 'v'
-let NERDTreeIgnore                    = ['.DS_Store', '\.pyc$', '^__pycache__$', '.git', 'node_modules']
+let NERDTreeIgnore                    = ['.DS_Store', '\.pyc$', '^__pycache__$', '.git/', 'node_modules']
 let NERDTreeRespectWildIgnore         = 1
 let NERDTreeCascadeSingleChildDir     = 0
 let NERDTreeCascadeOpenSingleChildDir = 0
