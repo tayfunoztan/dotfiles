@@ -1,96 +1,81 @@
+" vim: set foldmethod=marker foldlevel=0 nomodeline:
 "====================================================
-" vimrc
+" vimrc tayfunoztan 
 "===================================================
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 augroup vimrc
   autocmd!
 augroup END
 
+let s:darwin = has('mac')
+
+" ============================================================================
+" VIM-PLUG {{{
+" ============================================================================
 let g:plug_shallow = 0
 let g:plug_window = '-tabnew'
 let g:plug_pwindow = 'vertical rightbelow new'
 
-let s:darwin = has('mac')
-
-"=========================== SCRIPT and PLUGIN =====================
 call plug#begin('~/.vim/plugged')
 
+" Browsing
+Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 't9md/vim-choosewin'
-Plug 'easymotion/vim-easymotion', {'on': '<Plug>(easymotion-overwin-f2)'}
-Plug 'mhinz/vim-startify'
-Plug 'mhinz/vim-signify'
+Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle'  }
-Plug 'tayfunoztan/ReplaceWithRegister'
-Plug 'AndrewRadev/splitjoin.vim'
+Plug 't9md/vim-choosewin'
 Plug 'jiangmiao/auto-pairs'
 " Plug 'Valloric/MatchTagAlways'
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
 Plug 'justinmk/vim-gtfo'
-
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'vim-scripts/ReplaceWithRegister'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'easymotion/vim-easymotion', {'on': '<Plug>(easymotion-overwin-f2)'}
+" Plug 'sgur/vim-editorconfig'
 Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
   autocmd! User indentLine doautocmd indentLine Syntax
   let g:indentLine_color_term = 239
-
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-eunuch'
-
-Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+Plug 'machakann/vim-highlightedyank'
+  let g:highlightedyank_highlight_duration = 200
+Plug 'mhinz/vim-startify'
+Plug 'mhinz/vim-signify'
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/goyo.vim', {'on': 'Goyo'}
-Plug 'junegunn/gv.vim', {'on': 'GV'}
 Plug 'junegunn/rainbow_parentheses.vim'
   let g:rainbow#blacklist = [9, 13, 15, 234, 248]
-Plug 'junegunn/fzf', { 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 " Plug 'junegunn/vim-after-object'
 "   autocmd VimEnter * silent! call after_object#enable('=', ':', '#', ' ', '|')
-
-" Plug 'sgur/vim-editorconfig'
-if exists('##TextYankPost')
-  Plug 'machakann/vim-highlightedyank'
-  let g:highlightedyank_highlight_duration = 200
-endif
-
-"tmux
+Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+Plug 'junegunn/fzf', { 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/gv.vim', {'on': 'GV'}
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-eunuch'
 Plug 'roxma/vim-tmux-clipboard'
 Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
-if v:version >= 800
-  Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
-  " Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-endif
-
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jackguo380/vim-lsp-cxx-highlight', { 'for': ['c', 'cpp']}
-
-"python
-" Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'vim-python/python-syntax'
   let g:python_highlight_all = 1
   let g:python_highlight_space_errors = 0
 Plug 'Vimjas/vim-python-pep8-indent'
-
-"rust
 " Plug 'rust-lang/rust.vim', {'for': 'rust'}
-
-"go
-" Plug 'fatih/vim-go'
-" let g:go_code_completion_enabled = 0
-
-"javascript, html 
 Plug 'pangloss/vim-javascript'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'alvan/vim-closetag'
   let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
-
-Plug 'itchyny/lightline.vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
+Plug 'fatih/vim-go'
+  " let g:go_code_completion_enabled = 0
+  let g:go_def_mapping_enabled = 0
+  let g:go_echo_go_info = 0
 
 Plug 'dense-analysis/ale', {'on': 'ALEToggle'}
   let g:ale_linters = {'python': ['flake8']}
@@ -99,7 +84,6 @@ Plug 'dense-analysis/ale', {'on': 'ALEToggle'}
   nmap ]a <Plug>(ale_next_wrap)
   nmap [a <Plug>(ale_previous_wrap)
 
-"theme
 Plug 'fatih/molokai'
   let g:molokai_original = 1
   let g:rehash256 = 1
@@ -110,25 +94,62 @@ Plug 'morhetz/gruvbox'
 Plug 'tayfunoztan/vim-tomorrow-theme'
 
 call plug#end()
-"=========================== script and plugin=====================================
-
-let g:python3_host_prog = '/usr/local/bin/python3'
-
-"=================================  SETTINGS ===================================
-
-set encoding=utf-8              " Set default encoding to UTF-8
-
-"indent settings
+" }}}
+" ============================================================================
+" SETTINGS {{{
+" ============================================================================
+set encoding=utf-8             " Set default encoding to UTF-8
+set number                     " line number on
 set autoindent
-set expandtab
-set smarttab
+set smartindent
+set lazyredraw
+set laststatus=2
+set showcmd                    " display an incomplate command in statusline
+set backspace=indent,eol,start " Makes backspace key more powerful.
+set timeoutlen=500
+set whichwrap=b,s
+set shortmess+=c               " Shut off completion messages
+set hlsearch                   " Highlight found searches
+set incsearch                  " Shows the match while typing
+set hidden
+set ignorecase                 " Search case insensitive...
+set smartcase
+set wildmenu
+set wildmode=full
+set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*,.idea
 set tabstop=2
 set shiftwidth=2
+set expandtab
+set smarttab
 set scrolloff=5
+set list
+set listchars=tab:\|\ ,
+set virtualedit=block
+set nojoinspaces
+set diffopt=filler,vertical
+set autoread                   " Automatically reread changed files without asking me anything
+set autowrite                  " Automatically save before :next, :make etc.
+set clipboard=unnamed
+" set clipboard^=unnamed
+" set clipboard^=unnamedplus
+" set completeopt=menu,menuone,longest ",preview
+set completeopt=menuone,preview
+set cursorline
+set mouse=a                    " Enable mouse mode
+set complete-=i
+set pumheight=15
+set pastetoggle=<F9>           " Toggle paste
+set splitright                 " Split vertical windows right to the current windows
+set splitbelow                 " Split horizontal windows below to the current windows
+set title
+set ttyfast
+set updatetime=300
+set showmatch                  " highlight matching [{()}]
+set noshowmode
 
 " backup/swap/info/undo settings
-set noswapfile         " Don't use swapfile
-set nobackup           " Don't create annoying backup files
+set noswapfile                 " Don't use swapfile
+set nobackup                   " Don't create annoying backup files
 if has('persistent_undo')
   set undofile
   set undodir=~/.vim/undo
@@ -137,60 +158,6 @@ endif
 " recently opened files, :FzfHistory uses it
 set viminfo='500
 
-"better navigation
-set cursorline
-set hlsearch    " Highlight found searches
-set ignorecase  " Search case insensitive...
-set incsearch   " Shows the match while typing
-set smartcase
-set mouse=a     "Enable mouse mode
-
-"misc settings
-set diffopt=filler,vertical
-set autoread                    " Automatically reread changed files without asking me anything
-set autowrite                " Automatically save before :next, :make etc.
-set backspace=indent,eol,start  " Makes backspace key more powerful.
-set clipboard=unnamed
-" set clipboard^=unnamed
-" set clipboard^=unnamedplus
-" set completeopt=menu,menuone,longest ",preview
-set completeopt=menuone,preview
-set complete-=i
-set pumheight=15
-set lazyredraw
-set pastetoggle=<F9> " Toggle paste
-set splitright               " Split vertical windows right to the current windows
-set splitbelow                 " Split horizontal windows below to the current windows
-set title
-set nojoinspaces
-set ttyfast
-set hidden
-set splitbelow
-set splitright
-
-"wild stuff
-set wildmenu
-set wildmode=full
-set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*,.idea
-
-"display 
-set laststatus=2
-set ruler
-set showcmd    "display an incomplate command in statusline
-set number     "line number on
-set showmatch "highlight matching [{()}]
-set noshowmode
-set nostartofline
-set list
-set listchars=tab:\|\ ,
-set virtualedit=block
-set shortmess=aoOTI
-" set matchpairs=<:>  
-
-set updatetime=300
-
-"breaking
-set wrap
 set formatoptions+=1
 if has('patch-7.3.541')
   set formatoptions+=j
@@ -201,26 +168,23 @@ if has('patch-7.4.338')
   set breakindentopt=sbr
 endif
 
+set modelines=2
+
+" Keep the cursor on the same column
+set nostartofline
+
 syntax enable "syntax enable
 " set t_Co=256
 set background=dark
 colorscheme Tomorrow-Night-Bright
-"=================================== settings =========================================
-
-"=============================== MAPPINGS ===================================
-
+" }}}
+" ============================================================================
+" MAPPINGS {{{
+" ============================================================================
+" ----------------------------------------------------------------------------
+" Basic mappings
+" ----------------------------------------------------------------------------
 let mapleader = ","
-
-" Some useful quickfix shortcuts for quickfix
-nnoremap ]q :cnext<cr>zz
-nnoremap [q :cprev<cr>zz
-nnoremap ]l :lnext<cr>zz
-nnoremap [l :lprev<cr>zz
-nnoremap <leader>c :cclose<bar>lclose<cr>
-
-" Buffers
-nnoremap ]b :bnext<cr>
-nnoremap [b :bprev<cr>
 
 " Exit on j
 imap jj <Esc>
@@ -250,10 +214,6 @@ map <C-l> <C-w>l
 " Moving line in visual mode
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
-
-" East tab navigation
-nnoremap ]t :tabn<cr>
-nnoremap [t :tabp<cr>
 
 " Visual linewise up and down by default (and use gj gk to go quicker)
 noremap <Up> gk
@@ -295,7 +255,7 @@ map <C-f> :echo expand("%:p")<cr>
 " Source (reload configuration)
 nnoremap <silent> <F5> :source $MYVIMRC<CR>
 
-" Visual Mode */# from Scrooloose {{{
+" Visual Mode */# from Scrooloose 
 function! s:VSetSearch()
   let temp = @@
   norm! gvy
@@ -316,6 +276,9 @@ vmap > >gv
 " Close all but the current one
 nnoremap <leader>o :only<CR>
 
+" Last inserted text
+nnoremap g. :normal! `[v`]<cr><left>
+
 " Zoom
 function! s:zoom()
   if winnr('$') > 1
@@ -327,15 +290,38 @@ function! s:zoom()
 endfunction
 nnoremap <silent> <leader>z :call <sid>zoom()<cr>
 
-" Last inserted text
-nnoremap g. :normal! `[v`]<cr><left>
+" ----------------------------------------------------------------------------
+" Quickfix
+" ----------------------------------------------------------------------------
+nnoremap ]q :cnext<cr>zz
+nnoremap [q :cprev<cr>zz
+nnoremap ]l :lnext<cr>zz
+nnoremap [l :lprev<cr>zz
+nnoremap <leader>c :cclose<bar>lclose<cr>
 
+" ----------------------------------------------------------------------------
+" Buffers
+" ----------------------------------------------------------------------------
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
+
+" ----------------------------------------------------------------------------
+" Tabs
+" ----------------------------------------------------------------------------
+nnoremap ]t :tabn<cr>
+nnoremap [t :tabp<cr>
+
+" ----------------------------------------------------------------------------
+" nvim
+" ----------------------------------------------------------------------------
 if has('nvim')
   nnoremap <leader>T :vsplit +terminal<cr>
   tnoremap jj <c-\><c-n>
 endif
-"==============================  mappings ==============================================
-
+"}}}
+" ============================================================================
+" AUTOCMD {{{
+" ============================================================================
 augroup vimrc
   let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
   autocmd FileType python,javascript,scheme RainbowParentheses
@@ -361,7 +347,10 @@ augroup vimrc
   autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
   autocmd WinLeave * setlocal nocursorline
 augroup END
-
+"}}}
+" ============================================================================
+" FUNCTIONS & COMMANDS {{{
+" ============================================================================
 " Todo
 " ----------------------------------------------------------------------------
 function! s:todo() abort
@@ -383,25 +372,27 @@ function! s:todo() abort
   endif
 endfunction
 command! Todo call s:todo()
+"}}}
+" ============================================================================
+" PLUGINS {{{
+" ============================================================================
 " ----------------------------------------------------------------------------
-
-"======================================= PLUGINS ================================
-"=================================== coc-nvim =============================
+" Coc
+" ----------------------------------------------------------------------------
 if has_key(g:plugs, 'coc.nvim')
   function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
   endfunction
 
+  inoremap <silent><expr> <c-space> coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
         \ <SID>check_back_space() ? "\<TAB>" :
         \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
   imap <C-j> <Plug>(coc-snippets-expand-jump)
-
-  inoremap <silent><expr> <c-space> coc#refresh()
 
   " Use K to show documentation in preview window.
   nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -418,9 +409,19 @@ if has_key(g:plugs, 'coc.nvim')
 
   nmap <leader>rn <Plug>(coc-rename)
 
-  let g:coc_global_extensions = ['coc-yaml',
-    \ 'coc-python', 'coc-rls',  'coc-html', 'coc-json', 'coc-css', 'coc-html',
-    \ 'coc-prettier', 'coc-eslint', 'coc-tsserver', 'coc-snippets']
+  let g:coc_global_extensions = [
+        \'coc-yaml',
+        \'coc-pyright',
+        \'coc-rls',
+        \'coc-html',
+        \'coc-json',
+        \'coc-css',
+        \'coc-html',
+        \'coc-prettier',
+        \'coc-eslint',
+        \'coc-tsserver',
+        \'coc-snippets'
+        \]
 
   command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
@@ -436,9 +437,10 @@ if has_key(g:plugs, 'coc.nvim')
     autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
   augroup END
 endif
-"============================================================================
 
-"====================== lightline ===========================
+" ----------------------------------------------------------------------------
+" Lightline
+" ----------------------------------------------------------------------------
 let g:lightline = {
        \ 'colorscheme': 'toztan3',
        \ 'active': {
@@ -531,46 +533,53 @@ function! TagbarStatusFunc(current, sort, fname, ...) abort
    let g:lightline.fname = a:fname
  return lightline#statusline(0)
 endfunction
-"=========================================================
 
-"==================== vim-signify ========================
+" ----------------------------------------------------------------------------
+" Signify
+" ----------------------------------------------------------------------------
 let g:signify_vcs_list = ['git']
 nnoremap <silent><leader>p :SignifyHunkDiff<cr>
 nnoremap <silent><leader>u :SignifyHunkUndo<cr>
-"========================================================
 
-"==================== vim-startify ========================
+" ----------------------------------------------------------------------------
+" Startify
+" ----------------------------------------------------------------------------
 let g:startify_custom_header = 'startify#pad(startify#fortune#boxed())'
-"========================================================
 
-"=========== tagbar ==========================
+" ----------------------------------------------------------------------------
+" Tagbar
+" ----------------------------------------------------------------------------
 nmap <F8> :TagbarToggle<CR>
 let g:tagbar_width     = 35
-"=============================================
 
-"=================== easy-motion ==========================
+" ----------------------------------------------------------------------------
+" EasyMotion
+" ----------------------------------------------------------------------------
 let g:EasyMotion_do_mapping = 0
 let g:EasyMotion_smartcase = 1
 nmap s <Plug>(easymotion-overwin-f2)
 " nmap s <Plug>(easymotion-overwin-w)
-"==========================================================
 
-"==================== vim-easy-align =====================
+" ----------------------------------------------------------------------------
+" vim-easy-align
+" ----------------------------------------------------------------------------
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
-"========================================================
 
-"========================= undotree ==================
+" ----------------------------------------------------------------------------
+" Undotree
+" ----------------------------------------------------------------------------
 nnoremap U :UndotreeToggle<cr>
 let g:undotree_WindowLayout       = 2
 let g:undotree_DiffpanelHeight    = 8
 let g:undotree_SetFocusWhenToggle = 1
 let g:undotree_ShortIndicators    = 0
-"======================================================
 
-"=========================  FZF ========================
+" ----------------------------------------------------------------------------
+" Fzf
+" ----------------------------------------------------------------------------
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
 
 autocmd! FileType fzf
@@ -626,33 +635,37 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-"=======================================================
 
-"======================== indentLine ========================
+" ----------------------------------------------------------------------------
+" IndentLine
+" ----------------------------------------------------------------------------
 let g:indentLine_showFirstIndentLevel = 1
 let g:indentLine_first_char           = '|'
 let g:indentLine_char                 = '|'
 let g:indentLine_bufNameExclude       = ['startify', 'Tagbar']
 let g:indentLine_fileTypeExclude      = ['json']
-"===========================================================
 
-"======================== vim-choosin =====================
+" ----------------------------------------------------------------------------
+" vim-choosewin
+" ----------------------------------------------------------------------------
 " invoke with '-'
 nmap  -  <Plug>(choosewin)
 let g:choosewin_label_padding      = 5
 let g:choosewin_blink_on_land      = 0 " don't blink at land
 let g:choosewin_statusline_replace = 1 " don't replace statusline
 let g:choosewin_tabline_replace    = 0 " don't replace tabline
-"==========================================================
 
-"=================== matchtagalway =====================
-let g:mta_use_matchparen_group = 0
-let g:mta_set_default_matchtag_color = 0
-let g:mta_filetypes = { 'html' : 1, 'xhtml' : 1, 'xml' : 1, 'jinja' : 1, 'htmldjango' : 1, 'javascript': 1}
-highlight MatchTag ctermfg=white ctermbg=93 guifg=black guibg=lightgreen
-"=======================================================
+" ----------------------------------------------------------------------------
+" MatchTagAlways
+" " ----------------------------------------------------------------------------
+" let g:mta_use_matchparen_group = 0
+" let g:mta_set_default_matchtag_color = 0
+" let g:mta_filetypes = { 'html' : 1, 'xhtml' : 1, 'xml' : 1, 'jinja' : 1, 'htmldjango' : 1, 'javascript': 1}
+" highlight MatchTag ctermfg=white ctermbg=93 guifg=black guibg=lightgreen
 
-"============================= NERDTree =================
+" ----------------------------------------------------------------------------
+" NERDTree
+" ----------------------------------------------------------------------------
 noremap <Leader>n :NERDTreeToggle<cr>
 noremap <Leader>f :NERDTreeFind<cr>
 let NERDTreeShowHidden                = 1
@@ -685,5 +698,4 @@ call NERDTreeHighlightFile('css', 'cyan', 'none', 'cyan', '#151515')
 call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', '#151515')
 call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', '#151515')
 call NERDTreeHighlightFile('md', 'Magenta', 'none', '#ff00ff', '#151515')
-"========================================================
-"=============================== plugins ==============================================
+"}}}
