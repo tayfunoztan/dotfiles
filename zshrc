@@ -32,8 +32,8 @@ alias rg='rg --smart-case'
 alias vimrc='vim $HOME/.vimrc'
 alias zshrc='vim $HOME/.zshrc'
 
-alias ipython='source $HOME/.local/share/virtualenvs/dev/bin/activate && ipython'
-alias jupyter='source $HOME/.local/share/virtualenvs/dev/bin/activate && jupyter lab'
+alias ipython='source $HOME/.local/share/virtualenvs/py-dev/bin/activate && ipython'
+alias jupyter='source $HOME/.local/share/virtualenvs/py-dev/bin/activate && jupyter lab'
 # ----------------------------------------------------------------------------
 
 # functions
