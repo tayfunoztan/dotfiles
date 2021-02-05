@@ -1,6 +1,7 @@
 {
   "coc.preferences.formatOnType": true,
   "coc.preferences.formatOnSaveFiletypes": [
+    "python",
     "go",
     "markdown",
     "javascript",
@@ -13,21 +14,20 @@
   ],
   "prettier.disableSuccessMessage": true,
   "prettier.eslintIntegration": true,
-  "eslint.enable": false,
   "eslint.autoFixOnSave": true,
-  "eslint.filetypes": ["javascript", "typescript", "javascriptreact"],
 
-  "clangd.semanticHighlighting": true,
-
-  "python.venvFolders": ["envs", ".pyenv", ".direnv", ".virtualenvs"],
+  "python.formatting.provider": "black",
   "python.linting.enabled": false,
+  "python.formatting.blackPath": "/usr/local/bin/black",
 
-  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
-
+  "snippets.ultisnips.enable": false,
+  "snippets.ultisnips.usePythonx": false,
   "snippets.extends": {
     "javascriptreact": ["javascript"],
     "typescript": ["javascript"]
   },
+
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
 
   "list.normalMappings": {
     "<C-c>": "do:exit",
