@@ -29,7 +29,7 @@ Plug 'jiangmiao/auto-pairs'
 " Plug 'Valloric/MatchTagAlways'
 Plug 'justinmk/vim-gtfo'
 Plug 'AndrewRadev/splitjoin.vim'
-Plug 'vim-scripts/ReplaceWithRegister'
+Plug 'tayfunoztan/ReplaceWithRegister'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'easymotion/vim-easymotion', {'on': '<Plug>(easymotion-overwin-f2)'}
 " Plug 'sgur/vim-editorconfig'
