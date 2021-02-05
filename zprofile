@@ -18,10 +18,10 @@ if [[ -z "$LANG" ]]; then
 fi
 
 export PATH="/usr/local/opt/llvm/bin:$PATH"
-# export GOPATH="$(go env GOPATH)"
-# export GOBIN=$GOPATH/bin
-# export PATH="$GOBIN:$PATH"
-export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/2.7.0/bin:$PATH"
+export GOPATH="$(go env GOPATH)"
+export GOBIN=$GOPATH/bin
+export PATH="$GOBIN:$PATH"
+export PATH="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.0.0/bin:$PATH"
 # export ANDROID_HOME=$HOME/Library/Android/sdk
 # export PATH=$PATH:$ANDROID_HOME/emulator
 # export PATH=$PATH:$ANDROID_HOME/tools
