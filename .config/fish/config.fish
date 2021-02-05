@@ -1,3 +1,6 @@
+# No greeting.
+set fish_greeting
+set fish_emoji_width 2
 
 # git prompt settings
 set -g __fish_git_prompt_show_informative_status 1
@@ -12,9 +15,6 @@ set -g __fish_git_prompt_color_dirtystate yellow
 set -g __fish_git_prompt_color_cleanstate green --bold
 set -g __fish_git_prompt_color_invalidstate red
 set -g __fish_git_prompt_color_branch cyan --dim --italics
-
-# No greeting.
-set fish_greeting
 
 # don't describe the command for darwin
 # https://github.com/fish-shell/fish-shell/issues/6270
