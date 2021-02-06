@@ -19,3 +19,29 @@ set -g __fish_git_prompt_color_branch cyan --dim --italics
 # don't describe the command for darwin
 # https://github.com/fish-shell/fish-shell/issues/6270
 function __fish_describe_command; end
+
+# Aliases
+# --------------------------------------------------------------------
+
+# Better ls.
+alias ll="ls -lha"
+
+alias vim="nvim"
+
+# Exports
+# --------------------------------------------------------------------
+
+# Set default editor to Vim.
+set -x EDITOR nvim
+set -x VISUAL nvim
+
+# PATH
+set PATH /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin $PATH
+
+# Fzf
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND='fd --type f --type d --hidden --follow --exclude .git'
+command -v bat  > /dev/null && export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
+command -v tree > /dev/null && export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+
