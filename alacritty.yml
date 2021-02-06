@@ -366,14 +366,21 @@ live_config_reload: true
 #    - -c
 #    - "tmux new"
 
+# shell:
+#   program: /usr/local/bin/tmux
+#   args:
+#     - new-session
+#     - -A
+#     - -D
+#     - -s
+#     - main
+
 shell:
-  program: /usr/local/bin/tmux
+  program: /usr/local/bin/fish
   args:
-    - new-session
-    - -A
-    - -D
-    - -s
-    - main
+    - --login
+    - -c
+    - "tmux new"
 
 # Startup directory
 #
