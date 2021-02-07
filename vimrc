@@ -88,7 +88,7 @@ Plug 'fatih/molokai'
   let g:rehash256 = 1
 Plug 'junegunn/seoul256.vim'
   let g:seoul256_background = 234
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
   let g:gruvbox_contrast_dark='hard'
 Plug 'tayfunoztan/vim-tomorrow-theme'
 
@@ -172,10 +172,17 @@ set modelines=2
 " Keep the cursor on the same column
 set nostartofline
 
+if has('termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
 syntax enable "syntax enable
 " set t_Co=256
 set background=dark
-colorscheme Tomorrow-Night-Bright
+" colorscheme Tomorrow-Night-Bright
+colorscheme gruvbox
 " }}}
 " ============================================================================
 " MAPPINGS {{{
