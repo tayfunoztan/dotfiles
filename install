@@ -4,8 +4,8 @@ DOTFILES=$(pwd)
 echo "=> dotfiles dir: $DOTFILES"
 
 mkdir -p ~/.config/fish
-mkdir -p ~/.vim/autoload
 mkdir -p ~/.config/nvim
+mkdir -p ~/.config/bat
 
 ln -sfv "$DOTFILES/.config/fish/config.fish" ~/.config/fish/config.fish
 ln -sfv "$DOTFILES/.config/fish/functions/" ~/.config/fish
@@ -16,6 +16,7 @@ ln -sfv "$DOTFILES/vimrc" ~/.vimrc
 ln -sfv "$DOTFILES/tmux.conf" ~/.tmux.conf
 ln -sfv "$DOTFILES/.config/nvim/init.vim" ~/.config/nvim
 ln -sfv "$DOTFILES/.config/nvim/coc-settings.json" ~/.config/nvim
+ln -sfv "$DOTFILES/.config/bat/config" ~/.config/bat
 
 if [ "$(uname -s)" = 'Darwin' ]; then
 
