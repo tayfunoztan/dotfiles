@@ -2,6 +2,7 @@
   "coc.preferences.formatOnType": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "python",
+    "cpp",
     "go",
     "markdown",
     "javascript",
@@ -15,6 +16,8 @@
   "prettier.disableSuccessMessage": true,
   "prettier.eslintIntegration": true,
   "eslint.autoFixOnSave": true,
+
+  "clangd.semanticHighlighting": true,
 
   "python.formatting.provider": "black",
   "python.linting.enabled": false,

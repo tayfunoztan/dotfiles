@@ -38,6 +38,9 @@ set -x VISUAL nvim
 # PATH
 set PATH /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin $PATH
 
+# llvm PATH
+set PATH /usr/local/opt/llvm/bin $PATH
+
 # Fzf
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
