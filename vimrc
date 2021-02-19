@@ -401,6 +401,8 @@ if has_key(g:plugs, 'coc.nvim')
 
   imap <C-j> <Plug>(coc-snippets-expand-jump)
 
+  nmap <leader>l  <Plug>(coc-codelens-action)
+
   " Use K to show documentation in preview window.
   nnoremap <silent> K :call <SID>show_documentation()<CR>
 
