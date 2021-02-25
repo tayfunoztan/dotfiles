@@ -591,9 +591,6 @@ let g:undotree_ShortIndicators    = 0
 " ----------------------------------------------------------------------------
 let $FZF_DEFAULT_OPTS .= ' --inline-info'
 
-autocmd! FileType fzf
-autocmd  FileType fzf set noshowmode noruler nonu
-
 " All files
 command! -nargs=? -complete=dir ALLFILES
   \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
