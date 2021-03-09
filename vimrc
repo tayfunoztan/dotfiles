@@ -246,10 +246,10 @@ nnoremap L $
 vnoremap H ^
 vnoremap L g_
 
-nnoremap <left>   <c-w>>
-nnoremap <right>  <c-w><
-nnoremap <up>     <c-w>-
-nnoremap <down>   <c-w>+
+" nnoremap <left>   <c-w>>
+" nnoremap <right>  <c-w><
+" nnoremap <up>     <c-w>-
+" nnoremap <down>   <c-w>+
 
 " Yank from the cursor to the end of the line, to be consistent with C and D.
 nnoremap Y y$
@@ -421,7 +421,6 @@ if has_key(g:plugs, 'coc.nvim')
   let g:coc_global_extensions = [
         \'coc-yaml',
         \'coc-pyright',
-        \'coc-rls',
         \'coc-html',
         \'coc-json',
         \'coc-css',
@@ -429,7 +428,7 @@ if has_key(g:plugs, 'coc.nvim')
         \'coc-prettier',
         \'coc-eslint',
         \'coc-tsserver',
-        \'coc-snippets'
+        \'coc-snippets',
         \]
 
   command! -nargs=0 Prettier :CocCommand prettier.formatFile
