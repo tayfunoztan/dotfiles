@@ -16,6 +16,7 @@
   "prettier.disableSuccessMessage": true,
   "prettier.eslintIntegration": true,
   "eslint.autoFixOnSave": true,
+  "eslint.packageManager": "yarn",
 
   "clangd.semanticHighlighting": true,
 
