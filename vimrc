@@ -70,7 +70,7 @@ Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'pangloss/vim-javascript'
 Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'alvan/vim-closetag'
-  let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
+  let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.vue'
 Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
 Plug 'fatih/vim-go'
   " let g:go_code_completion_enabled = 0
@@ -333,9 +333,13 @@ augroup vimrc
   let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
   autocmd FileType python,javascript,scheme RainbowParentheses
 
+  autocmd FileType vue setlocal commentstring=<!--\ %s\ -->
+
   " http://vim.wikia.com/wiki/Highlight_unwanted_spaces
   au BufNewFile,BufRead,InsertLeave * silent! match ExtraWhitespace /\s\+$/
   au InsertEnter * silent! match ExtraWhitespace /\s\+\%#\@<!$/
+
+  autocmd FileType go setlocal noexpandtab tabstop=4 shiftwidth=4
 
   " Close preview window
   " if exists('##CompleteDone')
@@ -388,6 +392,7 @@ command! Todo call s:todo()
 " ----------------------------------------------------------------------------
 if has_key(g:plugs, 'coc.nvim')
 
+  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
         \ <SID>check_back_space() ? "\<TAB>" :
