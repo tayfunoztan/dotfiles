@@ -73,9 +73,6 @@ Plug 'alvan/vim-closetag'
   let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.vue'
 Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
 Plug 'fatih/vim-go'
-  " let g:go_code_completion_enabled = 0
-  let g:go_def_mapping_enabled = 0
-  let g:go_echo_go_info = 0
 
 Plug 'dense-analysis/ale', {'on': 'ALEToggle'}
   let g:ale_linters = {'python': ['flake8']}
@@ -340,6 +337,8 @@ augroup vimrc
   au InsertEnter * silent! match ExtraWhitespace /\s\+\%#\@<!$/
 
   autocmd FileType go setlocal noexpandtab tabstop=4 shiftwidth=4
+  autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
+  autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
 
   " Close preview window
   " if exists('##CompleteDone')
@@ -450,6 +449,17 @@ if has_key(g:plugs, 'coc.nvim')
     autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
   augroup END
 endif
+
+
+" ----------------------------------------------------------------------------
+" vim-go
+" ----------------------------------------------------------------------------
+" let g:go_code_completion_enabled = 0
+let g:go_def_mapping_enabled = 0
+let g:go_echo_go_info = 0
+
+let g:go_test_show_name = 1
+let g:go_list_type = "quickfix"
 
 " ----------------------------------------------------------------------------
 " Lightline
