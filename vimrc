@@ -437,8 +437,6 @@ if has_key(g:plugs, 'coc.nvim')
 
   command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
-  let g:go_doc_keywordprg_enabled = 0
-
   augroup coc-config
     autocmd!
     autocmd VimEnter * nmap <silent> [d <Plug>(coc-diagnostic-prev)
@@ -454,11 +452,13 @@ endif
 " ----------------------------------------------------------------------------
 " vim-go
 " ----------------------------------------------------------------------------
-" let g:go_code_completion_enabled = 0
+let g:go_code_completion_enabled = 0
 let g:go_def_mapping_enabled = 0
 let g:go_echo_go_info = 0
 
-let g:go_test_show_name = 1
+let g:go_doc_keywordprg_enabled = 0
+
+let g:go_test_show_name = 0
 let g:go_list_type = "quickfix"
 
 " ----------------------------------------------------------------------------
