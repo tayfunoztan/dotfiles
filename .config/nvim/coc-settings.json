@@ -11,7 +11,8 @@
     "typescriptreact",
     "json",
     "jsonc",
-    "htmldjango"
+    "htmldjango",
+    "vue"
   ],
   "prettier.disableSuccessMessage": true,
   "prettier.eslintIntegration": true,
