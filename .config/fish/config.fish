@@ -30,16 +30,33 @@ alias vim="nvim"
 
 # Exports
 # --------------------------------------------------------------------
+# US English (UTF-8)
+set -x LC_COLLATE en_US.UTF-8
+set -x LC_CTYPE en_US.UTF-8
+set -x LC_MESSAGES en_US.UTF-8
+set -x LC_MONETARY en_US.UTF-8
+set -x LC_NUMERIC en_US.UTF-8
+set -x LC_TIME en_US.UTF-8
+set -x LC_ALL en_US.UTF-8
+set -x LANG en_US.UTF-8
+set -x LANGUAGE en_US.UTF-8
+set -x LESSCHARSET utf-8
 
 # Set default editor to Vim.
 set -x EDITOR nvim
 set -x VISUAL nvim
 
 # PATH
-set PATH /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin $PATH
+set -gxp PATH /usr/local/sbin $HOME/go/bin
 
 # llvm PATH
-set PATH /usr/local/opt/llvm/bin $PATH
+set -gxp PATH /usr/local/opt/llvm/bin
+
+# GO
+set -gx GOBIN $HOME/go/bin
+
+# Java
+# set JAVA_HOME /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
 
 # Fzf
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
