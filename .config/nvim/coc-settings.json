@@ -1,5 +1,5 @@
 {
-  "codeLens.enable": true,
+  "codeLens.enable": false,
   "coc.preferences.formatOnType": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "python",
@@ -25,12 +25,16 @@
   "python.linting.enabled": false,
   "python.formatting.blackPath": "/usr/local/bin/black",
 
-  "snippets.ultisnips.enable": false,
-  "snippets.ultisnips.usePythonx": false,
+  "snippets.ultisnips.enable": true,
+  "snippets.ultisnips.usePythonx": true,
   "snippets.extends": {
     "javascriptreact": ["javascript"],
     "typescript": ["javascript"]
   },
+  "snippets.ultisnips.directories": [
+    "/Users/tayfunoztan/.config/coc/ultisnips",
+    "/Users/tayfunoztan/.vim/plugged/vim-go/gosnippets/UltiSnips"
+  ],
 
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
 

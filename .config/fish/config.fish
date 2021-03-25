@@ -50,7 +50,7 @@ set -x VISUAL nvim
 set -gxp PATH /usr/local/sbin $HOME/go/bin
 
 # llvm PATH
-set -gxp PATH /usr/local/opt/llvm/bin
+# set -gxp PATH /usr/local/opt/llvm/bin
 
 # GO
 set -gx GOBIN $HOME/go/bin

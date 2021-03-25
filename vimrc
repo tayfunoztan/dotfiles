@@ -446,6 +446,8 @@ if has_key(g:plugs, 'coc.nvim')
     autocmd VimEnter * nmap <silent> gy <Plug>(coc-type-definition)
     autocmd VimEnter * nmap <silent> gi <Plug>(coc-implementation)
     autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
+
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   augroup END
 endif
 
