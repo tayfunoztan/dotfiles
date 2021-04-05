@@ -143,6 +143,7 @@ set ttyfast
 set updatetime=300
 set showmatch                  " highlight matching [{()}]
 set noshowmode
+set signcolumn=yes
 
 " backup/swap/info/undo settings
 set noswapfile                 " Don't use swapfile
