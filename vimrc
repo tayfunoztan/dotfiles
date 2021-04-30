@@ -135,7 +135,7 @@ set cursorline
 set mouse=a                    " Enable mouse mode
 set complete-=i
 set pumheight=15
-set pastetoggle=<F9>           " Toggle paste
+" set pastetoggle=<F9>           " Toggle paste
 set splitright                 " Split vertical windows right to the current windows
 set splitbelow                 " Split horizontal windows below to the current windows
 set title
@@ -631,7 +631,12 @@ let g:fzf_colors =
   \ 'header':  ['fg', 'Structure'] }
 
 let g:fzf_command_prefix = 'Fzf'
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+if exists('$TMUX')
+  let g:fzf_layout = { 'tmux': '-p90%,60%' }
+else
+  let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+endif
 
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
