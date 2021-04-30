@@ -55,6 +55,9 @@ set -gxp PATH /usr/local/sbin $HOME/go/bin
 # GO
 set -gx GOBIN $HOME/go/bin
 
+# llvm PATH
+set -gxp PATH ~/dev/flutter/bin
+
 # Java
 # set JAVA_HOME /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
 
