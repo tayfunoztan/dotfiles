@@ -9,6 +9,7 @@ mkdir -p ~/.config/bat
 
 ln -sfv "$DOTFILES/.config/fish/config.fish" ~/.config/fish/config.fish
 ln -sfv "$DOTFILES/.config/fish/functions/" ~/.config/fish
+ln -sfv "$DOTFILES/.config/fish/completions/" ~/.config/fish
 ln -sfv "$DOTFILES/alacritty.yml" ~/.alacritty.yml
 ln -sfv "$DOTFILES/gitconfig" ~/.gitconfig
 ln -sfv "$DOTFILES/gitignore_global" ~/.gitignore_global
