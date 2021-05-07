@@ -47,7 +47,7 @@ set -x EDITOR nvim
 set -x VISUAL nvim
 
 # PATH
-set -gxp PATH /usr/local/sbin $HOME/go/bin
+set -gxp PATH /usr/local/sbin $HOME/go/bin /usr/local/opt/openjdk@11/bin
 
 # llvm PATH
 # set -gxp PATH /usr/local/opt/llvm/bin
@@ -59,7 +59,7 @@ set -gx GOBIN $HOME/go/bin
 set -gxp PATH ~/dev/flutter/bin
 
 # Java
-# set JAVA_HOME /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+set JAVA_HOME /usr/local/Cellar/openjdk@11/11.0.10/libexec/openjdk.jdk/Contents/Home
 
 # Fzf
 export FZF_TMUX_OPTS='-p80%,60%'
