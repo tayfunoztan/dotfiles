@@ -49,6 +49,8 @@ set -x VISUAL nvim
 # PATH
 set -gxp PATH /usr/local/sbin $HOME/go/bin /usr/local/opt/openjdk@11/bin
 
+set -gxp PATH $HOME/Library/Python/3.9/bin
+
 # llvm PATH
 # set -gxp PATH /usr/local/opt/llvm/bin
 

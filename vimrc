@@ -73,6 +73,7 @@ Plug 'alvan/vim-closetag'
   let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*.vue'
 Plug 'iamcco/markdown-preview.nvim', { 'do': ':call mkdp#util#install()', 'for': 'markdown', 'on': 'MarkdownPreview' }
 Plug 'fatih/vim-go'
+Plug 'dart-lang/dart-vim-plugin'
 
 Plug 'dense-analysis/ale', {'on': 'ALEToggle'}
   let g:ale_linters = {'python': ['flake8']}
@@ -442,6 +443,10 @@ if has_key(g:plugs, 'coc.nvim')
   endfunction
 
   nmap <leader>rn <Plug>(coc-rename)
+  xmap <leader>a  <Plug>(coc-codeaction-selected)
+  nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+  nnoremap <silent><nowait> <leader>d  :<C-u>CocList --normal diagnostics<cr>
 
   let g:coc_global_extensions = [
         \'coc-yaml',
