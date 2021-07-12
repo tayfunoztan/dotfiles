@@ -26,8 +26,6 @@ function __fish_describe_command; end
 # Better ls.
 alias ll="ls -lha"
 
-alias vim="nvim"
-
 # Exports
 # --------------------------------------------------------------------
 # US English (UTF-8)
