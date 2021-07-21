@@ -12,6 +12,15 @@ vim.api.nvim_exec(
 )
 
 -- ----------------------------------------------------------------------------
+-- nvim-autopairs
+-- ----------------------------------------------------------------------------
+-- require('nvim-autopairs').setup()
+-- require("nvim-autopairs.completion.compe").setup({
+--   map_cr = true, --  map <CR> on insert mode
+--   map_complete = true -- it will auto insert `(` after select function or method item
+-- })
+
+-- ----------------------------------------------------------------------------
 -- gitsigns
 -- ----------------------------------------------------------------------------
 require('gitsigns').setup()
@@ -19,45 +28,45 @@ require('gitsigns').setup()
 -- ----------------------------------------------------------------------------
 -- lualine
 -- ----------------------------------------------------------------------------
--- require('lualine').setup {
---   options = {
---     icons_enabled = false,
---     theme = 'powerline',
---     component_separators = {'', ''},
---     section_separators = {'', ''},
---     disabled_filetypes = {}
---   },
---   sections = {
---     lualine_a = {'mode'},
---     lualine_b = {'branch'},
---     lualine_c = {
---       {
---         'filename',
---         file_status = true, -- displays file status (readonly status, modified status)
---         path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
---       }
---     },
---     lualine_x = {'encoding', 'fileformat', 'filetype'},
---     lualine_y = {'progress'},
---     lualine_z = {'location'}
---   },
---   inactive_sections = {
---     lualine_a = {'mode'},
---     lualine_b = {'branch'},
---     lualine_c = {
---       {
---         'filename',
---         file_status = true, -- displays file status (readonly status, modified status)
---         path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
---       }
---     },
---     lualine_x = {'encoding', 'fileformat', 'filetype'},
---     lualine_y = {'progress'},
---     lualine_z = {'location'}
---   },
---   tabline = {},
---   extensions = {'nvim-tree', 'fugitive', 'quickfix'}
--- }
+require('lualine').setup {
+  options = {
+    icons_enabled = false,
+    theme = 'powerline',
+    component_separators = {'', ''},
+    section_separators = {'', ''},
+    disabled_filetypes = {}
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch'},
+    lualine_c = {
+      {
+        'filename',
+        file_status = true, -- displays file status (readonly status, modified status)
+        path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
+      }
+    },
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch'},
+    lualine_c = {
+      {
+        'filename',
+        file_status = true, -- displays file status (readonly status, modified status)
+        path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
+      }
+    },
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  tabline = {},
+  extensions = {'nvim-tree', 'fugitive', 'quickfix'}
+}
 
 -- ----------------------------------------------------------------------------
 -- telescope
@@ -84,7 +93,7 @@ require('telescope').setup {
 
 require('telescope').load_extension('fzf')
 
-vim.api.nvim_set_keymap('n', '<leader>f', [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]], { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>fb', [[<cmd>lua require('telescope.builtin').buffers()<CR>]], { noremap = true, silent = true })
 
 -- ----------------------------------------------------------------------------
@@ -110,7 +119,7 @@ local on_attach = function(_client, bufnr)
  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+ vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gK', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
@@ -147,8 +156,8 @@ end
 -- ----------------------------------------------------------------------------
 -- lspsaga
 -- ----------------------------------------------------------------------------
--- local saga = require 'lspsaga'
--- saga.init_lsp_saga()
+local saga = require 'lspsaga'
+saga.init_lsp_saga()
 
 -- ----------------------------------------------------------------------------
 -- nvim-compe
@@ -183,41 +192,48 @@ require'compe'.setup {
     nvim_lua = true;
     vsnip = false;
     ultisnips = false;
-    luasnip = false;
+    luasnip = true;
   };
 }
 
+-- Utility functions for compe and luasnip
 local t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
 local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
+  local col = vim.fn.col '.' - 1
+  if col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' then
+    return true
+  else
+    return false
+  end
 end
 
 -- Use (s-)tab to:
---- move to prev/next item in completion menuone
+--- move to prev/next item in completion menu
 --- jump to prev/next snippet's placeholder
+local luasnip = require 'luasnip'
+
 _G.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
-    return t "<C-n>"
-  elseif vim.fn['vsnip#available'](1) == 1 then
-    return t "<Plug>(vsnip-expand-or-jump)"
+    return t '<C-n>'
+  elseif luasnip.expand_or_jumpable() then
+    return t '<Plug>luasnip-expand-or-jump'
   elseif check_back_space() then
-    return t "<Tab>"
+    return t '<Tab>'
   else
     return vim.fn['compe#complete']()
   end
 end
+
 _G.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
-    return t "<C-p>"
-  elseif vim.fn['vsnip#jumpable'](-1) == 1 then
-    return t "<Plug>(vsnip-jump-prev)"
+    return t '<C-p>'
+  elseif luasnip.jumpable(-1) then
+    return t '<Plug>luasnip-jump-prev'
   else
-    -- If <S-Tab> is not working in your terminal, change it to <C-h>
-    return t "<S-Tab>"
+    return t '<S-Tab>'
   end
 end
 
@@ -228,3 +244,63 @@ vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
 vim.api.nvim_set_keymap('i', '<cr>', 'compe#confirm("<cr>")', { expr = true })
 vim.api.nvim_set_keymap('i', '<c-space>', 'compe#complete()', { expr = true })
+
+
+-- ----------------------------------------------------------------------------
+-- nvim-treesitter
+-- ----------------------------------------------------------------------------
+require('nvim-treesitter.configs').setup {
+  highlight = {
+    enable = true, -- false will disable the whole extension
+  },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = 'gnn',
+      node_incremental = 'grn',
+      scope_incremental = 'grc',
+      node_decremental = 'grm',
+    },
+  },
+  indent = {
+    enable = true,
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@class.outer',
+        ['ic'] = '@class.inner',
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        [']m'] = '@function.outer',
+        [']]'] = '@class.outer',
+      },
+      goto_next_end = {
+        [']M'] = '@function.outer',
+        [']['] = '@class.outer',
+      },
+      goto_previous_start = {
+        ['[m'] = '@function.outer',
+        ['[['] = '@class.outer',
+      },
+      goto_previous_end = {
+        ['[M'] = '@function.outer',
+        ['[]'] = '@class.outer',
+      },
+    },
+  },
+}
+
+-- ----------------------------------------------------------------------------
+-- flutter-tools.nvim
+-- ----------------------------------------------------------------------------
+require("flutter-tools").setup{} -- use defaults

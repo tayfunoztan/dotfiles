@@ -23,6 +23,8 @@ function __fish_describe_command; end
 # Aliases
 # --------------------------------------------------------------------
 
+alias vim=nvim
+
 # Better ls.
 alias ll="ls -lha"
 

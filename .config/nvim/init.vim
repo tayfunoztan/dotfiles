@@ -10,27 +10,34 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'tayfunoztan/ReplaceWithRegister'
+" Plug 'windwp/nvim-autopairs'
+Plug 'AndrewRadev/splitjoin.vim'
 
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'neovim/nvim-lspconfig'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'hrsh7th/nvim-compe'
+Plug 'L3MON4D3/LuaSnip' 
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-
 Plug 'kyazdani42/nvim-tree.lua'
-
 Plug 'lewis6991/gitsigns.nvim'
+Plug 't9md/vim-choosewin'
 
 Plug 'tmux-plugins/vim-tmux', {'for': 'tmux'}
 Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
-" Plug 'hoob3rt/lualine.nvim'
-Plug 'itchyny/lightline.vim'
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'akinsho/flutter-tools.nvim'
+
+Plug 'hoob3rt/lualine.nvim'
+" Plug 'itchyny/lightline.vim'
 Plug 'gruvbox-community/gruvbox'
   let g:gruvbox_contrast_dark='hard'
 
@@ -262,8 +269,6 @@ tnoremap jj <c-\><c-n>
 " AUTOCMD {{{
 " ============================================================================
 augroup vimrc
-  let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-  autocmd FileType python,javascript,scheme RainbowParentheses
 
   autocmd FileType vue setlocal commentstring=<!--\ %s\ -->
 
@@ -437,7 +442,7 @@ lua <<EOF
       { key = "gy",                           cb = tree_cb("copy_absolute_path") },
       { key = "[c",                           cb = tree_cb("prev_git_item") },
       { key = "]c",                           cb = tree_cb("next_git_item") },
-      { key = "-",                            cb = tree_cb("dir_up") },
+      { key = "=",                            cb = tree_cb("dir_up") },
       { key = "q",                            cb = tree_cb("close") },
       { key = "g?",                           cb = tree_cb("toggle_help") },
     }
@@ -445,5 +450,14 @@ EOF
 
 nnoremap <leader>n :NvimTreeToggle<CR>
 nnoremap <leader>m :NvimTreeFindFile<CR>
+
+" ----------------------------------------------------------------------------
+" vim-choosewin
+" ----------------------------------------------------------------------------
+nmap  -  <Plug>(choosewin)
+let g:choosewin_label_padding      = 5
+let g:choosewin_blink_on_land      = 0 " don't blink at land
+let g:choosewin_statusline_replace = 1 " don't replace statusline
+let g:choosewin_tabline_replace    = 0 " don't replace tabline
 
 "}}}
