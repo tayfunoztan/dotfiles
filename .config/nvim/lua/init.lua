@@ -94,7 +94,10 @@ require('telescope').setup {
 require('telescope').load_extension('fzf')
 
 vim.api.nvim_set_keymap('n', '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]], { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>fb', [[<cmd>lua require('telescope.builtin').buffers()<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>fg', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>fb', [[<cmd>lua require('telescope.builtin').buffers({sort_lastused = true})<CR>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>fo', [[<cmd>lua require('telescope.builtin').oldfiles()<cr>]], { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>fl', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>]], { noremap = true, silent = true })
 
 -- ----------------------------------------------------------------------------
 -- nvim-lspconfig
@@ -143,7 +146,6 @@ end
 
 local servers = {
   'clangd',
-  'gopls',
   'pyright',
 }
 for _, lsp in ipairs(servers) do
@@ -152,6 +154,15 @@ for _, lsp in ipairs(servers) do
     on_attach = on_attach,
   }
 end
+
+nvim_lsp.gopls.setup {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    init_options = {
+      usePlaceholders=true,
+      completeUnimported=true,
+    }
+}
 
 -- ----------------------------------------------------------------------------
 -- lspsaga
@@ -186,10 +197,10 @@ require'compe'.setup {
 
   source = {
     path = true;
-    buffer = true;
-    calc = true;
+    buffer = false;
+    calc = false;
     nvim_lsp = true;
-    nvim_lua = true;
+    nvim_lua = false;
     vsnip = false;
     ultisnips = false;
     luasnip = true;
