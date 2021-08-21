@@ -10,15 +10,19 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'tayfunoztan/ReplaceWithRegister'
-" Plug 'windwp/nvim-autopairs'
+Plug 'windwp/nvim-autopairs'
 Plug 'AndrewRadev/splitjoin.vim'
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 Plug 'neovim/nvim-lspconfig'
 Plug 'glepnir/lspsaga.nvim'
 Plug 'hrsh7th/nvim-compe'
-Plug 'L3MON4D3/LuaSnip' 
+" Plug 'L3MON4D3/LuaSnip' 
+Plug 'hrsh7th/vim-vsnip'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
@@ -34,7 +38,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 Plug 'dart-lang/dart-vim-plugin'
-Plug 'akinsho/flutter-tools.nvim'
+Plug 'akinsho/flutter-tools.nvim', {'for': ['flutter', 'dart']}
 
 Plug 'hoob3rt/lualine.nvim'
 " Plug 'itchyny/lightline.vim'
@@ -126,7 +130,6 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 syntax enable
 set background=dark
 colorscheme gruvbox
-let g:gruvbox_contrast_dark='hard'
 
 " }}}
 " ============================================================================
@@ -364,6 +367,16 @@ let g:go_list_type = "quickfix"
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_operators = 1
 
+let g:go_debug_windows = {
+      \ 'vars':  'leftabove 35vnew',
+      \ 'stack': 'botright 10new',
+\ }
+
+" ----------------------------------------------------------------------------
+" fzf - fzf.vim
+" ----------------------------------------------------------------------------
+let g:fzf_command_prefix = 'Fzf'
+
 " ----------------------------------------------------------------------------
 " nvim-tree
 " ----------------------------------------------------------------------------
@@ -405,7 +418,7 @@ let g:nvim_tree_icons = {
     \     'hint': "",
     \     'info': "",
     \     'warning': "",
-    \     'error': "",
+    \     'error': "-",
     \   }
     \ }
 

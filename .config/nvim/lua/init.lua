@@ -110,7 +110,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local on_attach = function(_client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
   vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
+    virtual_text = false,
     signs = true,
     update_in_insert = false,
   })
@@ -135,13 +135,14 @@ local on_attach = function(_client, bufnr)
  vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+ vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
 
 end
 
--- vim.fn.sign_define("LspDiagnosticsSignError", {text = "•"})
--- vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "•"})
--- vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "•"})
--- vim.fn.sign_define("LspDiagnosticsSignHint", {text = "•"})
+vim.fn.sign_define("LspDiagnosticsSignError", {text = "•"})
+vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "•"})
+vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "•"})
+vim.fn.sign_define("LspDiagnosticsSignHint", {text = "•"})
 
 
 local servers = {
@@ -167,8 +168,8 @@ nvim_lsp.gopls.setup {
 -- ----------------------------------------------------------------------------
 -- lspsaga
 -- ----------------------------------------------------------------------------
-local saga = require 'lspsaga'
-saga.init_lsp_saga()
+-- local saga = require 'lspsaga'
+-- saga.init_lsp_saga()
 
 -- ----------------------------------------------------------------------------
 -- nvim-compe
@@ -178,7 +179,7 @@ require'compe'.setup {
   autocomplete = true;
   debug = false;
   min_length = 1;
-  preselect = 'disable';
+  preselect = 'enable';
   throttle_time = 80;
   source_timeout = 200;
   resolve_timeout = 800;
@@ -224,13 +225,13 @@ end
 -- Use (s-)tab to:
 --- move to prev/next item in completion menu
 --- jump to prev/next snippet's placeholder
-local luasnip = require 'luasnip'
+-- local luasnip = require 'luasnip'
 
 _G.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t '<C-n>'
-  elseif luasnip.expand_or_jumpable() then
-    return t '<Plug>luasnip-expand-or-jump'
+  elseif vim.fn.call("vsnip#available", { 1 }) == 1 then
+    return t "<Plug>(vsnip-expand-or-jump)"
   elseif check_back_space() then
     return t '<Tab>'
   else
@@ -241,8 +242,8 @@ end
 _G.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t '<C-p>'
-  elseif luasnip.jumpable(-1) then
-    return t '<Plug>luasnip-jump-prev'
+  elseif vim.fn.call("vsnip#jumpable", { -1 }) == 1 then
+    return t "<Plug>(vsnip-jump-prev)"
   else
     return t '<S-Tab>'
   end
@@ -276,6 +277,9 @@ require('nvim-treesitter.configs').setup {
   indent = {
     enable = true,
   },
+  -- autopairs = {
+  --   enable = true,
+  -- },
   textobjects = {
     select = {
       enable = true,
