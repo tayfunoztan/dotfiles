@@ -1,15 +1,30 @@
 ------------------------------------------------------------------------------
 -- nvim-lspconfig
 ------------------------------------------------------------------------------
+
+-- Mappings.
+local opts = { noremap=true, silent=true }
+
+-- Diagnostic settings
+vim.diagnostic.config {
+  underline = true,
+  virtual_text = true,
+  signs = true,
+  update_in_insert = false,
+}
+
+vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>Q', '<cmd>lua vim.diagnostic.setqflist()<CR>', opts)
+
 local nvim_lsp = require('lspconfig')
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(_client, bufnr)
+local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -25,13 +40,34 @@ local on_attach = function(_client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', [[<cmd>lua require('telescope.builtin').lsp_references()<cr>]], opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>Q', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
+  -- vim.cmd [[
+  --   command! Format execute 'lua vim.lsp.buf.formatting()'
+  -- ]]
+  --
+
+  -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+  -- vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})]]
+
+  if client.resolved_capabilities.document_highlight then
+    vim.cmd [[
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]]
+  end
 end
+
+local handlers = {
+  ['textDocument/hover'] = function(...)
+    local buf = vim.lsp.handlers.hover(...)
+    if buf then
+      vim.api.nvim_buf_set_keymap(buf, 'n', 'K', '<Cmd>wincmd p<CR>', { noremap = true, silent = true })
+    end
+  end
+}
 
 -- nvim-cmp supports additional completion capabilities
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -43,6 +79,7 @@ local servers = { 'pyright', 'rust_analyzer', 'tsserver' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
+    handlers = handlers,
     capabilities = capabilities,
     flags = {
       debounce_text_changes = 150,
@@ -53,6 +90,7 @@ end
 nvim_lsp.gopls.setup {
     capabilities = capabilities,
     on_attach = on_attach,
+    handlers = handlers,
     init_options = {
       usePlaceholders=true,
       completeUnimported=true,
@@ -62,10 +100,11 @@ nvim_lsp.gopls.setup {
 
 
 ------------------------------------------------------------------------------
--- telescope.nvim
+-- nvim-cmp | luasnip
 -- ----------------------------------------------------------------------------
 vim.o.completeopt = 'menuone,noselect'
 local luasnip = require('luasnip')
+require("luasnip/loaders/from_vscode").load({ include = { "go" } }) -- Load only go snippets
 
 local cmp = require('cmp')
 cmp.setup {
@@ -114,13 +153,20 @@ cmp.setup {
 ------------------------------------------------------------------------------
 -- telescope.nvim
 -- ----------------------------------------------------------------------------
+local actions = require "telescope.actions"
 require('telescope').setup {
   defaults = {
     mappings = {
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
+	["<C-x>"] = false,
+        ["<C-s>"] = actions.select_horizontal,
       },
+      n = {
+	["<C-x>"] = false,
+        ["<C-s>"] = actions.select_horizontal,
+      }
     },
   },
   extensions = {
@@ -143,7 +189,6 @@ vim.api.nvim_set_keymap('n', '<leader>fg', [[<cmd>lua require('telescope.builtin
 ------------------------------------------------------------------------------
 -- nvim-tree.lua
 ------------------------------------------------------------------------------
-vim.g.nvim_tree_ignore = { '.git', 'node_modules', 'dist' }
 vim.g.nvim_tree_gitignore = 1
 vim.g.nvim_tree_show_icons = {
 	git = 0,
@@ -151,7 +196,8 @@ vim.g.nvim_tree_show_icons = {
 	files = 0,
         folder_arrows = 0
 }
-vim.g.nvim_tree_group_empty = 1
+vim.g.nvim_tree_group_empty = 0
+vim.g.nvim_tree_indent_markers = 1
 vim.g.nvim_tree_window_picker_exclude = {
   filetype = {
     "packer",
@@ -185,6 +231,7 @@ vim.api.nvim_set_keymap('n', '<leader>m', ':NvimTreeFindFile<CR>', {
 	silent = true
 })
 
+local tree_cb = require'nvim-tree.config'.nvim_tree_callback
 -- following options are the default
 require'nvim-tree'.setup {
   -- disables netrw completely
@@ -253,9 +300,42 @@ require'nvim-tree'.setup {
     mappings = {
       -- custom only false will merge the list with the default mappings
       -- if true, it will only use your list to set the mappings
-      custom_only = false,
+      custom_only = true,
       -- list of mappings to set on the tree manually
-      list = {}
+      list = {
+	  { key = {"<CR>", "o", "<2-LeftMouse>"}, cb = tree_cb("edit") },
+	  { key = {"<2-RightMouse>", "<C-]>"},    cb = tree_cb("cd") },
+	  { key = "<C-v>",                        cb = tree_cb("vsplit") },
+	  { key = "<C-s>",                        cb = tree_cb("split") },
+	  { key = "<C-t>",                        cb = tree_cb("tabnew") },
+	  { key = "<",                            cb = tree_cb("prev_sibling") },
+	  { key = ">",                            cb = tree_cb("next_sibling") },
+	  { key = "P",                            cb = tree_cb("parent_node") },
+	  { key = "<BS>",                         cb = tree_cb("close_node") },
+	  { key = "<S-CR>",                       cb = tree_cb("close_node") },
+	  { key = "<Tab>",                        cb = tree_cb("preview") },
+	  { key = "K",                            cb = tree_cb("first_sibling") },
+	  { key = "J",                            cb = tree_cb("last_sibling") },
+	  { key = "I",                            cb = tree_cb("toggle_ignored") },
+	  { key = "H",                            cb = tree_cb("toggle_dotfiles") },
+	  { key = "R",                            cb = tree_cb("refresh") },
+	  { key = "a",                            cb = tree_cb("create") },
+	  { key = "d",                            cb = tree_cb("remove") },
+	  { key = "r",                            cb = tree_cb("rename") },
+	  { key = "<C-r>",                        cb = tree_cb("full_rename") },
+	  { key = "x",                            cb = tree_cb("cut") },
+	  { key = "c",                            cb = tree_cb("copy") },
+	  { key = "p",                            cb = tree_cb("paste") },
+	  { key = "y",                            cb = tree_cb("copy_name") },
+	  { key = "Y",                            cb = tree_cb("copy_path") },
+	  { key = "gy",                           cb = tree_cb("copy_absolute_path") },
+	  { key = "[c",                           cb = tree_cb("prev_git_item") },
+	  { key = "]c",                           cb = tree_cb("next_git_item") },
+	  { key = "_",                            cb = tree_cb("dir_up") },
+	  { key = "S",                            cb = tree_cb("system_open") },
+	  { key = "q",                            cb = tree_cb("close") },
+	  { key = "g?",                           cb = tree_cb("toggle_help") },
+      }
     }
   }
 }
@@ -264,71 +344,7 @@ require'nvim-tree'.setup {
 ------------------------------------------------------------------------------
 -- gitsigns.nvim
 ------------------------------------------------------------------------------
-require('gitsigns').setup {
-  signs = {
-    add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-    change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-    delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-  },
-  signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
-  numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
-  linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-  word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
-  keymaps = {
-    -- Default keymap options
-    noremap = true,
-
-    ['n ]c'] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns.actions\".next_hunk()<CR>'"},
-    ['n [c'] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns.actions\".prev_hunk()<CR>'"},
-
-    ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
-    ['v <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-    ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
-    ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-    ['v <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-    ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
-    ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
-    ['n <leader>hS'] = '<cmd>lua require"gitsigns".stage_buffer()<CR>',
-    ['n <leader>hU'] = '<cmd>lua require"gitsigns".reset_buffer_index()<CR>',
-
-    -- Text objects
-    ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-    ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
-  },
-  watch_gitdir = {
-    interval = 1000,
-    follow_files = true
-  },
-  attach_to_untracked = true,
-  current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
-  current_line_blame_opts = {
-    virt_text = true,
-    virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
-    delay = 1000,
-  },
-  current_line_blame_formatter_opts = {
-    relative_time = false
-  },
-  sign_priority = 6,
-  update_debounce = 100,
-  status_formatter = nil, -- Use default
-  max_file_length = 40000,
-  preview_config = {
-    -- Options passed to nvim_open_win
-    border = 'single',
-    style = 'minimal',
-    relative = 'cursor',
-    row = 0,
-    col = 1
-  },
-  yadm = {
-    enable = false
-  },
-}
-
+require('gitsigns').setup()
 
 ------------------------------------------------------------------------------
 -- lualine.nvim
@@ -337,28 +353,33 @@ require'lualine'.setup {
   options = {
     icons_enabled = false,
     theme = 'powerline',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
+    component_separators = { left = '|', right = '|'},
+    section_separators = { left = '', right = ''},
     disabled_filetypes = {},
     always_divide_middle = true,
   },
   sections = {
     lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff',
-                  {'diagnostics', sources={'nvim_lsp', 'coc'}}},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_b = {'branch', 'diff'},
+    lualine_c = {'filename', 'lsp_progress'},
+    lualine_x = {'filetype'},
     lualine_y = {'progress'},
     lualine_z = {'location'}
   },
   inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff'},
     lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
+    lualine_x = {'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
   },
   tabline = {},
-  extensions = {}
+  extensions = {"quickfix", "nvim-tree"}
 }
+
+------------------------------------------------------------------------------
+-- rust-tools.nvim
+------------------------------------------------------------------------------
+require('rust-tools').setup({})
+

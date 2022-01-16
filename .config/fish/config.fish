@@ -47,7 +47,7 @@ set -x EDITOR nvim
 set -x VISUAL nvim
 
 # PATH
-set -gxp PATH /usr/local/sbin $HOME/go/bin /usr/local/opt/openjdk@11/bin /usr/local/opt/node@16/bin
+set -gxp PATH /usr/local/sbin $HOME/go/bin $HOME/.cargo/bin /usr/local/opt/openjdk@11/bin /usr/local/opt/node@16/bin
 
 set -gxp PATH $HOME/Library/Python/3.9/bin
 

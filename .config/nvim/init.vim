@@ -19,6 +19,7 @@ Plug 'tpope/vim-commentary'
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-peekaboo'
 
 Plug 'nvim-lua/plenary.nvim'
 
@@ -31,15 +32,24 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'tayfunoztan/ReplaceWithRegister'
+Plug 'Raimondi/delimitMate'
+Plug 'AndrewRadev/splitjoin.vim'
 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'simrat39/rust-tools.nvim'
+Plug 'othree/yajs.vim'
+Plug 'MaxMEllon/vim-jsx-pretty'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 
 Plug 't9md/vim-choosewin'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'arkav/lualine-lsp-progress'
 Plug 'gruvbox-community/gruvbox'
   let g:gruvbox_contrast_dark='hard'
 
@@ -66,7 +76,9 @@ set hidden
 set mouse=a
 
 " Enable break indent
+let &showbreak = '↳ '
 set breakindent
+set breakindentopt=sbr
 
 " Save undo history
 set undofile
@@ -82,6 +94,23 @@ set signcolumn=yes
 
 " Set completeopt
 set completeopt=menuone,noinsert
+
+set pumheight=15
+
+set autoread
+
+set clipboard=unnamed
+
+" Split vertical windows right to the current windows
+set splitright
+
+" Split horizontal windows below to the current windows
+set splitbelow
+
+set scrolloff=5
+
+" Makes backspace key more powerful.
+set backspace=indent,eol,start
 
 set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -108,6 +137,25 @@ noremap <Down> gj
 noremap j gj
 noremap k gk
 
+" Remap H and L (top, bottom of screen to left and right end of line)
+nnoremap H ^
+nnoremap L $
+vnoremap H ^
+vnoremap L g_
+
+" Same when moving up and down
+noremap <C-d> <C-d>zz
+noremap <C-u> <C-u>zz
+
+" Yank from the cursor to the end of the line, to be consistent with C and D.
+nnoremap Y y$
+
+" qq to record, Q to replay
+nnoremap Q @q
+
+" Do not show stupid q: window
+map q: :q
+
 " ----------------------------------------------------------------------------
 " Quickfix
 " ----------------------------------------------------------------------------
@@ -115,6 +163,7 @@ nnoremap ]q :cnext<cr>zz
 nnoremap [q :cprev<cr>zz
 nnoremap ]l :lnext<cr>zz
 nnoremap [l :lprev<cr>zz
+nnoremap <leader>c :cclose<bar>lclose<cr>
 
 " ----------------------------------------------------------------------------
 " Buffers
@@ -160,6 +209,38 @@ command! Todo call s:todo()
 " ============================================================================
 " AUTOCMD {{{
 " ============================================================================
+augroup vimrc
+  autocmd!
+augroup END
+
+augroup YankHighlight
+  autocmd!
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank()
+augroup end
+
+augroup Terminal
+  autocmd!
+  au TermOpen * set nonu
+augroup end
+
+
+augroup vimrc
+
+  autocmd FileType go setlocal noexpandtab tabstop=4 shiftwidth=4
+  autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
+  autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
+  autocmd FileType go nmap <silent> <Leader>v <Plug>(go-def-vertical)
+  autocmd FileType go nmap <silent> <Leader>s <Plug>(go-def-split)
+  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+
+  " cursorline only active window
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  autocmd WinLeave * setlocal nocursorline
+
+augroup END
 
 " }}}
 " ============================================================================
@@ -168,11 +249,18 @@ command! Todo call s:todo()
 lua require('init')
 
 " ----------------------------------------------------------------------------
+" fzf - fzf.vim
+" ----------------------------------------------------------------------------
+let g:fzf_command_prefix = 'Fzf'
+
+" ----------------------------------------------------------------------------
 " vim-go
 " ----------------------------------------------------------------------------
 let g:go_code_completion_enabled = 0
 let g:go_def_mapping_enabled = 0
 let g:go_echo_go_info = 0
+let go_gopls_enabled = 0
+let go_doc_keywordprg_enabled = 0
 
 let g:go_imports_mode="gopls"
 let g:go_imports_autosave=1
@@ -185,12 +273,29 @@ let g:go_list_type = "quickfix"
 
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 0
+let g:go_highlight_functions = 1
+let g:go_highlight_function_parameters = 0
+let g:go_highlight_function_calls = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+
 
 let g:go_debug_windows = {
       \ 'vars':  'leftabove 35vnew',
       \ 'stack': 'botright 10new',
 \ }
- 
+
+" ----------------------------------------------------------------------------
+" delimitMate 
+" ----------------------------------------------------------------------------
+let g:delimitMate_expand_cr = 1   
+let g:delimitMate_expand_space = 1    
+let g:delimitMate_smart_quotes = 1    
+let g:delimitMate_expand_inside_quotes = 1    
+" let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'   
+" let g:delimitMate_quotes = "\" '"
+
 " ----------------------------------------------------------------------------
 " vim-choosewin
 " ----------------------------------------------------------------------------
