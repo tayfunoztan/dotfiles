@@ -8,7 +8,7 @@ local opts = { noremap=true, silent=true }
 -- Diagnostic settings
 vim.diagnostic.config {
   underline = true,
-  virtual_text = true,
+  virtual_text = false,
   signs = true,
   update_in_insert = false,
 }
@@ -211,7 +211,7 @@ vim.g.nvim_tree_icons = {
 	git = {
 		unstaged = "✗",
 		staged = "✓",
-		unmerged = "",
+		unmerged = " ",
 		renamed = "➜",
 		untracked = "★"
 	},
@@ -261,9 +261,9 @@ require'nvim-tree'.setup {
   diagnostics = {
     enable = true,
     icons = {
-      hint = "",
-      info = "",
-      warning = "",
+      hint = " ",
+      info = " ",
+      warning = " ",
       error = "E",
     }
   },
@@ -344,7 +344,40 @@ require'nvim-tree'.setup {
 ------------------------------------------------------------------------------
 -- gitsigns.nvim
 ------------------------------------------------------------------------------
-require('gitsigns').setup()
+require('gitsigns').setup {
+  keymaps = {
+     -- Default keymap options
+     noremap = true,
+     buffer = true,
+
+     ['n ]c'] = { expr = true, "&diff ? ']g' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'"},
+     ['n [c'] = { expr = true, "&diff ? '[g' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'"},
+
+     ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+     ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+     ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+     ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line()<CR>',
+
+     -- Text objects
+     ['o ih'] = ':<C-U>lua require"gitsigns".text_object()<CR>',
+     ['x ih'] = ':<C-U>lua require"gitsigns".text_object()<CR>'
+   },
+}
+
+------------------------------------------------------------------------------
+-- diffview.nvim
+------------------------------------------------------------------------------
+require'diffview'.setup {
+  use_icons = false,         -- Requires nvim-web-devicons
+    icons = {                 -- Only applies when use_icons is true.
+    folder_closed = "▶",
+    folder_open = "▼",
+  },
+  signs = {
+    fold_closed = "▶",
+    fold_open = "▼",
+  },
+}
 
 ------------------------------------------------------------------------------
 -- lualine.nvim

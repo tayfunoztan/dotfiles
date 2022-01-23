@@ -48,6 +48,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
 Plug 't9md/vim-choosewin'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'sindrets/diffview.nvim'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'arkav/lualine-lsp-progress'
 Plug 'gruvbox-community/gruvbox'
@@ -265,6 +266,8 @@ let go_doc_keywordprg_enabled = 0
 let g:go_imports_mode="gopls"
 let g:go_imports_autosave=1
 let g:go_gopls_complete_unimported=1
+let g:go_fmt_command='goimports'
+
 
 let g:go_doc_keywordprg_enabled = 0
 
