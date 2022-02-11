@@ -17,6 +17,7 @@ ln -sfv "$DOTFILES/vimrc" ~/.vimrc
 ln -sfv "$DOTFILES/tmux.conf" ~/.tmux.conf
 ln -sfv "$DOTFILES/.config/nvim/init.vim" ~/.config/nvim
 ln -sfv "$DOTFILES/.config/nvim/lua/init.lua" ~/.config/nvim/lua
+ln -sfv "$DOTFILES/.config/nvim/lua/plugins.lua" ~/.config/nvim/lua
 ln -sfv "$DOTFILES/.config/nvim/coc-settings.json" ~/.config/nvim
 ln -sfv "$DOTFILES/.config/bat/config" ~/.config/bat
 
@@ -59,8 +60,8 @@ echo "=> Install tmux tpm"
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 tmux source-file ~/.tmux.conf
 
-echo "=> Install vim"
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-vim +PlugInstall +qall
+# echo "=> Install vim"
+# sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+#        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+# vim +PlugInstall +qall
 

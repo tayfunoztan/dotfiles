@@ -429,4 +429,3 @@ require'lualine'.setup {
 -- rust-tools.nvim
 ------------------------------------------------------------------------------
 require('rust-tools').setup({})
-

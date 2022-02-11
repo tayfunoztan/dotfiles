@@ -1,62 +1,12 @@
 " vim: set foldmethod=marker foldlevel=0 nomodeline:
 
+let mapleader= ','
+
+lua require('plugings')
+lua require('init')
+
 let g:python3_host_prog = '/usr/local/bin/python3'
 
-" ============================================================================
-" VIM-PLUG {{{
-" ============================================================================
-let g:plug_shallow = 0
-let g:plug_window = '-tabnew'
-let g:plug_pwindow = 'vertical rightbelow new'
-
-call plug#begin(stdpath('data') . '/plugged')
-
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-commentary'
-
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-peekaboo'
-
-Plug 'nvim-lua/plenary.nvim'
-
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'tayfunoztan/ReplaceWithRegister'
-Plug 'Raimondi/delimitMate'
-Plug 'AndrewRadev/splitjoin.vim'
-
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'simrat39/rust-tools.nvim'
-Plug 'othree/yajs.vim'
-Plug 'MaxMEllon/vim-jsx-pretty'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
-
-Plug 't9md/vim-choosewin'
-Plug 'kyazdani42/nvim-tree.lua'
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'sindrets/diffview.nvim'
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'arkav/lualine-lsp-progress'
-Plug 'gruvbox-community/gruvbox'
-  let g:gruvbox_contrast_dark='hard'
-
-call plug#end()
-
-" }}}
 " ============================================================================
 " OPTIONS {{{
 " ============================================================================
@@ -117,6 +67,7 @@ set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
+let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 
 " }}}
@@ -247,7 +198,6 @@ augroup END
 " ============================================================================
 " PLUGINS {{{{{{
 " ============================================================================
-lua require('init')
 
 " ----------------------------------------------------------------------------
 " fzf - fzf.vim
@@ -285,7 +235,7 @@ let g:go_highlight_fields = 1
 
 
 let g:go_debug_windows = {
-      \ 'vars':  'leftabove 35vnew',
+      \ 'vars': 'leftabove 35vnew',
       \ 'stack': 'botright 10new',
 \ }
 
