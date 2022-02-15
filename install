@@ -49,7 +49,6 @@ if [ "$(uname -s)" = 'Darwin' ]; then
 
   brew install --cask alacritty
   brew install --cask visual-studio-code
-  brew install --cask telegram
   brew install --cask rectangle
 
 else

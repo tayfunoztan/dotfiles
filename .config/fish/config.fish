@@ -23,7 +23,8 @@ function __fish_describe_command; end
 # Aliases
 # --------------------------------------------------------------------
 
-alias vim=nvim
+abbr vim nvim
+abbr vi nvim
 
 # Better ls.
 alias ll="ls -lha"
@@ -43,25 +44,22 @@ set -x LANGUAGE en_US.UTF-8
 set -x LESSCHARSET utf-8
 
 # Set default editor to Vim.
-set -x EDITOR nvim
-set -x VISUAL nvim
+set -gx EDITOR nvim
+set -gx VISUAL nvim
 
 # PATH
-set -gxp PATH /usr/local/sbin $HOME/go/bin $HOME/.cargo/bin /usr/local/opt/openjdk@11/bin /usr/local/opt/node@16/bin
-
-set -gxp PATH $HOME/Library/Python/3.9/bin
-
-# llvm PATH
-# set -gxp PATH /usr/local/opt/llvm/bin
+fish_add_path /usr/local/opt/node@16/bin
+# fish_add_path /usr/local/opt/llvm/bin
+fish_add_path ~/Library/Python/3.9/bin
+fish_add_path ~/dev/flutter/bin
+fish_add_path  ~/Library/Android/sdk/tools/bin
 
 # GO
-set -gx GOBIN $HOME/go/bin
-
-# llvm PATH
-set -gxp PATH ~/dev/flutter/bin
+fish_add_path ~/go/bin
+set -gx GOBIN ~/go/bin
 
 # Java
-set JAVA_HOME /usr/local/Cellar/openjdk@11/11.0.10/libexec/openjdk.jdk/Contents/Home
+set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 
 # Fzf
 export FZF_TMUX_OPTS='-p80%,60%'
@@ -70,4 +68,3 @@ export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND='fd --type f --type d --hidden --follow --exclude .git'
 command -v bat  > /dev/null && export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
 command -v tree > /dev/null && export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-
