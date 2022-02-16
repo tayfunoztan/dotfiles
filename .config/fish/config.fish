@@ -53,6 +53,7 @@ fish_add_path /usr/local/opt/node@16/bin
 fish_add_path ~/Library/Python/3.9/bin
 fish_add_path ~/dev/flutter/bin
 fish_add_path  ~/Library/Android/sdk/tools/bin
+fish_add_path  ~/dev/pact/bin
 
 # GO
 fish_add_path ~/go/bin
