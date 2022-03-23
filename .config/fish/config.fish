@@ -24,7 +24,10 @@ function __fish_describe_command; end
 # --------------------------------------------------------------------
 
 abbr vim nvim
+abbr vimm nvim
 abbr vi nvim
+abbr nvimm nvim
+abbr nnvim nvim
 
 # Better ls.
 alias ll="ls -lha"
@@ -48,19 +51,24 @@ set -gx EDITOR nvim
 set -gx VISUAL nvim
 
 # PATH
-fish_add_path /usr/local/opt/node@16/bin
-# fish_add_path /usr/local/opt/llvm/bin
-fish_add_path ~/Library/Python/3.9/bin
-fish_add_path ~/dev/flutter/bin
-fish_add_path  ~/Library/Android/sdk/tools/bin
-fish_add_path  ~/dev/pact/bin
+set -gxp PATH /usr/local/opt/node@16/bin
+# set -gxp PATH /usr/local/opt/llvm/bin
+set -gxp PATH ~/Library/Python/3.9/bin
+set -gxp PATH ~/dev/flutter/bin
+set -gxp PATH  ~/Library/Android/sdk/tools/bin
+set -gxp PATH  ~/dev/pact/bin
+set -gxp PATH ~/.local/share/nvim/site/pack/packer/start/fzf/bin
 
 # GO
-fish_add_path ~/go/bin
+set -gxp PATH ~/go/bin
 set -gx GOBIN ~/go/bin
 
 # Java
 set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+
+set -gx ANDROID_HOME ~/Library/Android/sdk
+
+set -Ux HOMEBREW_NO_AUTO_UPDATE 1
 
 # Fzf
 export FZF_TMUX_OPTS='-p80%,60%'
