@@ -50,7 +50,7 @@ set pumheight=15
 
 set autoread
 
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " Split vertical windows right to the current windows
 set splitright
@@ -69,7 +69,10 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_contrast_light='hard'
-colorscheme gruvbox
+
+let g:tokyonight_sidebars = [ "qf", "terminal", "packer", "NeogitStatus" ]
+
+colorscheme tokyonight
 set background=dark
 
 " }}}

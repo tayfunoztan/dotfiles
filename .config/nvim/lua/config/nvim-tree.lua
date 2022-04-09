@@ -20,6 +20,13 @@ vim.api.nvim_set_keymap('n', '<leader>m', ':NvimTreeFindFile<CR>', { noremap = t
 
 require'nvim-tree'.setup {
   disable_netrw = true,
+  diagnostics = {
+    enable = true,
+  },
+  update_focused_file = {
+    enable = true,
+    update_cwd = true,
+  },
   view = {
     auto_resize = true,
     mappings = {
