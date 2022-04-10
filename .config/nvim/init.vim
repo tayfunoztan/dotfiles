@@ -3,7 +3,7 @@
 let mapleader= ','
 
 lua require('plugings')
-lua require('init')
+" lua require('init')
 
 let g:python3_host_prog = '/usr/local/bin/python3'
 

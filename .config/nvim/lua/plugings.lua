@@ -90,16 +90,19 @@ return require("packer").startup {
     use {
 	    "neovim/nvim-lspconfig",
 	    config = function()
-                require("config.lsp")
-	    end
+                require("config.lspconfig")
+	    end,
+	    requires = {
+		"williamboman/nvim-lsp-installer",
+		"jose-elias-alvarez/null-ls.nvim",
+	    }
     }
-    use "williamboman/nvim-lsp-installer"
     use {
            "hrsh7th/nvim-cmp",
 	   config = function()
                 require("config.nvim-cmp")
 	   end,
-           event = "InsertEnter",
+           -- event = "InsertEnter",
 	   requires = {
 		-- { "hrsh7th/cmp-nvim-lsp", after = "nvim-lspconfig" },
 		{ "hrsh7th/cmp-nvim-lsp" },
@@ -158,7 +161,6 @@ return require("packer").startup {
             end
         }
 
-	use "jose-elias-alvarez/null-ls.nvim"
 	use "folke/lua-dev.nvim"
 
         use {
