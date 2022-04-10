@@ -84,43 +84,42 @@ return require("packer").startup {
             end
         }
 
-    -----------------------------------------------------------------------------//
-    -- LSP,Completion & Debugger {{{1
-    -----------------------------------------------------------------------------//
-    use {
-	    "neovim/nvim-lspconfig",
-	    config = function()
+        -----------------------------------------------------------------------------//
+        -- LSP,Completion & Debugger {{{1
+        -----------------------------------------------------------------------------//
+        use {
+            "neovim/nvim-lspconfig",
+            config = function()
                 require("config.lspconfig")
-	    end,
-	    requires = {
-		"williamboman/nvim-lsp-installer",
-		"jose-elias-alvarez/null-ls.nvim",
-	    }
-    }
-    use {
-           "hrsh7th/nvim-cmp",
-	   config = function()
+            end,
+            requires = {
+                "williamboman/nvim-lsp-installer",
+                "jose-elias-alvarez/null-ls.nvim"
+            }
+        }
+        use {
+            "hrsh7th/nvim-cmp",
+            config = function()
                 require("config.nvim-cmp")
-	   end,
-           -- event = "InsertEnter",
-	   requires = {
-		-- { "hrsh7th/cmp-nvim-lsp", after = "nvim-lspconfig" },
-		{ "hrsh7th/cmp-nvim-lsp" },
-		{ "hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp" },
-		{ "hrsh7th/cmp-path", after = "nvim-cmp" },
-		{ "hrsh7th/cmp-buffer", after = "nvim-cmp" },
-		{ "hrsh7th/cmp-vsnip", after = "nvim-cmp" },
-		{ "hrsh7th/vim-vsnip", after = "nvim-cmp" },
-	        {
-		"L3MON4D3/LuaSnip",
-		wants = "friendly-snippets",
-		config = function()
-		  require("config.luasnip")
-		end,
-	      }
-	   }
-
-    }
+            end,
+            -- event = "InsertEnter",
+            requires = {
+                -- { "hrsh7th/cmp-nvim-lsp", after = "nvim-lspconfig" },
+                {"hrsh7th/cmp-nvim-lsp"},
+                {"hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp"},
+                {"hrsh7th/cmp-path", after = "nvim-cmp"},
+                {"hrsh7th/cmp-buffer", after = "nvim-cmp"},
+                {"hrsh7th/cmp-vsnip", after = "nvim-cmp"},
+                {"hrsh7th/vim-vsnip", after = "nvim-cmp"},
+                {
+                    "L3MON4D3/LuaSnip",
+                    wants = "friendly-snippets",
+                    config = function()
+                        require("config.luasnip")
+                    end
+                }
+            }
+        }
 
         use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
 
@@ -161,7 +160,7 @@ return require("packer").startup {
             end
         }
 
-	use "folke/lua-dev.nvim"
+        use "folke/lua-dev.nvim"
 
         use {
             "simrat39/rust-tools.nvim",
