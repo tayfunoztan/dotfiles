@@ -1,5 +1,5 @@
-require'diffview'.setup {
-  use_icons = true,         -- Requires nvim-web-devicons
+require("diffview").setup({
+  use_icons = true, -- Requires nvim-web-devicons
   -- icons = {                 -- Only applies when use_icons is true.
   --   folder_closed = "▶",
   --   folder_open = "▼",
@@ -8,5 +8,4 @@ require'diffview'.setup {
   --   fold_closed = "▶",
   --   fold_open = "▼",
   -- },
-}
-
+})

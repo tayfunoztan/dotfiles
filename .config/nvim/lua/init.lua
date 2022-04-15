@@ -134,8 +134,6 @@
 --  },
 --}
 
-
-
 --------------------------------------------------------------------------------
 ---- nvim-cmp | vim-vsnip
 --------------------------------------------------------------------------------
@@ -169,7 +167,7 @@
 --    }),
 --    ['<CR>'] = cmp.mapping.confirm({
 --	    select = true,
---    }), 
+--    }),
 --    ["<Tab>"] = cmp.mapping(function(fallback)
 --      if cmp.visible() then
 --        cmp.select_next_item()
@@ -196,7 +194,6 @@
 --    { name = 'path' },
 --  }),
 --}
-
 
 --------------------------------------------------------------------------------
 ---- telescope.nvim
@@ -233,7 +230,6 @@
 ---- vim.api.nvim_set_keymap('n', '<leader>fo', [[<cmd>lua require('telescope.builtin').oldfiles()<cr>]], { noremap = true, silent = true })
 ---- vim.api.nvim_set_keymap('n', '<leader>fg', [[<cmd>lua require('telescope.builtin').live_grep()<cr>]], { noremap = true, silent = true })
 ---- vim.api.nvim_set_keymap('n', '<leader>fc', [[<cmd>lua require('telescope.builtin').command_history({sort_lastused = true})<cr>]], { noremap = true, silent = true })
-
 
 --------------------------------------------------------------------------------
 ---- nvim-tree.lua
@@ -340,7 +336,7 @@
 ----     width = 30,
 ----     -- height of the window, can be either a number (columns) or a string in `%`, for top or bottom side placement
 ----     height = 30,
-----     -- Hide the root path of the current folder on top of the tree 
+----     -- Hide the root path of the current folder on top of the tree
 ----     hide_root_folder = false,
 ----     -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
 ----     side = 'left',
@@ -388,7 +384,6 @@
 ----     }
 ----   }
 ---- }
-
 
 --------------------------------------------------------------------------------
 ---- gitsigns.nvim
