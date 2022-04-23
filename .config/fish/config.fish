@@ -58,6 +58,7 @@ set -gxp PATH ~/dev/flutter/bin
 set -gxp PATH  ~/Library/Android/sdk/tools/bin
 set -gxp PATH  ~/dev/pact/bin
 set -gxp PATH ~/.local/share/nvim/site/pack/packer/start/fzf/bin
+set -gxp PATH ~/.cargo/bin
 
 # GO
 set -gxp PATH ~/go/bin

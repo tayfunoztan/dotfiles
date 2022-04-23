@@ -2,6 +2,8 @@
 
 let mapleader= ','
 
+lua require('options')
+lua require('styles')
 lua require('plugings')
 " lua require('util')
 " lua require('init')
@@ -15,54 +17,54 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 " Make line numbers default
 " set number
 
-" Incremental live completion (note: this is now a default on master)
-set inccommand=nosplit
+" " Incremental live completion (note: this is now a default on master)
+" set inccommand=nosplit
 
-" Set highlight on search
-set hlsearch
+" " Set highlight on search
+" set hlsearch
 
-" Do not save when switching buffers
-set hidden
+" " Do not save when switching buffers
+" set hidden
 
-" Enable mouse mode
-set mouse=a
+" " Enable mouse mode
+" set mouse=a
 
-" Enable break indent
-let &showbreak = '↳ '
-set breakindent
-set breakindentopt=sbr
+" " Enable break indent
+" let &showbreak = '↳ '
+" set breakindent
+" set breakindentopt=sbr
 
-" Save undo history
-set undofile
+" " Save undo history
+" set undofile
 
-" Case insensitive searching UNLESS /C or capital in search
-set ignorecase
-set smartcase
+" " Case insensitive searching UNLESS /C or capital in search
+" set ignorecase
+" set smartcase
 
-" Decrease update time
-set updatetime=300
+" " Decrease update time
+" set updatetime=300
 
-set signcolumn=yes
+" set signcolumn=yes
 
-" set completeopt
-set completeopt=menuone,noinsert
+" " set completeopt
+" set completeopt=menuone,noinsert
 
-set pumheight=15
+" set pumheight=15
 
-set autoread
+" set autoread
 
-set clipboard=unnamedplus
+" set clipboard=unnamedplus
 
-" Split vertical windows right to the current windows
-set splitright
+" " Split vertical windows right to the current windows
+" set splitright
 
-" Split horizontal windows below to the current windows
-set splitbelow
+" " Split horizontal windows below to the current windows
+" set splitbelow
 
-set scrolloff=5
+" set scrolloff=5
 
-" Makes backspace key more powerful.
-set backspace=indent,eol,start
+" " Makes backspace key more powerful.
+" set backspace=indent,eol,start
 
 set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -73,7 +75,7 @@ let g:gruvbox_contrast_light='hard'
 
 let g:tokyonight_sidebars = [ "qf", "terminal", "packer", "NeogitStatus" ]
 
-colorscheme tokyonight
+colorscheme gruvbox
 set background=dark
 
 " }}}

@@ -3,7 +3,7 @@
 -----------------------------------------------------------------------------//
 
 local opts = { noremap = true, silent = true }
-local signs = { Error = "✗ ", Warn = " ", Hint = " ", Info = " " }
+local signs = _G.style.icons.lsp
 
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
@@ -107,6 +107,7 @@ local function setup_mapping(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
   -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
+  vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})
 end
 
 -----------------------------------------------------------------------------//
@@ -126,9 +127,36 @@ local function on_attach(client, bufnr)
 end
 
 local servers = {
-  gopls = {},
+  gopls = {
+    init_options = {
+      usePlaceholders = true,
+      completeUnimported = true,
+    },
+  },
+  rust_analyzer = {},
   bashls = {},
-  sumneko_lua = {},
+  sumneko_lua = function()
+    return require("lua-dev").setup({
+      lspconfig = vim.tbl_deep_extend("force", opts, {
+        settings = {
+          Lua = {
+            diagnostics = {
+              globals = {
+                "vim",
+                "describe",
+                "it",
+                "before_each",
+                "after_each",
+                "pending",
+                "teardown",
+                "packer_plugins",
+              },
+            },
+          },
+        },
+      }),
+    })
+  end,
 }
 
 -- require("lua-dev").setup()

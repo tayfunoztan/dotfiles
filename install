@@ -15,10 +15,7 @@ ln -sfv "$DOTFILES/gitconfig" ~/.gitconfig
 ln -sfv "$DOTFILES/gitignore_global" ~/.gitignore_global
 ln -sfv "$DOTFILES/vimrc" ~/.vimrc
 ln -sfv "$DOTFILES/tmux.conf" ~/.tmux.conf
-ln -sfv "$DOTFILES/.config/nvim/init.vim" ~/.config/nvim
-ln -sfv "$DOTFILES/.config/nvim/lua/init.lua" ~/.config/nvim/lua
-ln -sfv "$DOTFILES/.config/nvim/lua/plugins.lua" ~/.config/nvim/lua
-ln -sfv "$DOTFILES/.config/nvim/coc-settings.json" ~/.config/nvim
+ln -sfv "$DOTFILES/.config/nvim" ~/.config/nvim
 ln -sfv "$DOTFILES/.config/bat/config" ~/.config/bat
 
 if [ "$(uname -s)" = 'Darwin' ]; then

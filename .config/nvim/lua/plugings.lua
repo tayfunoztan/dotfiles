@@ -158,12 +158,7 @@ return require("packer").startup({
 
     use("folke/lua-dev.nvim")
 
-    use({
-      "simrat39/rust-tools.nvim",
-      config = function()
-        require("rust-tools").setup({})
-      end,
-    })
+    use("simrat39/rust-tools.nvim")
     use("othree/yajs.vim")
     use("MaxMEllon/vim-jsx-pretty")
     use({ "iamcco/markdown-preview.nvim", ft = "markdown", run = "cd app && yarn install" })
@@ -188,7 +183,7 @@ return require("packer").startup({
       config = function()
         require("neoscroll").setup({
           mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-e>", "<C-y>", "zt", "zz", "zb" },
-          stop_eof = false,
+          stop_eof = true,
           hide_cursor = true,
         })
       end,
