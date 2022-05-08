@@ -32,7 +32,7 @@
 --     --   end,
 --     offsets = {
 --       {
---         filetype = "nvimtree",
+--         filetype = "neo-tree",
 --         text = "file explorer",
 --         highlight = "directory",
 --         padding = 1,

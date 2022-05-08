@@ -171,7 +171,7 @@ vim.opt.completeopt = { "menuone", "noselect" }
 vim.opt.hlsearch = true
 vim.opt.autowriteall = true -- automatically :write before running commands and changing files
 vim.opt.clipboard = { "unnamedplus" }
-vim.opt.laststatus = 3
+vim.opt.laststatus = 2
 vim.opt.termguicolors = true
 -- vim.opt.guifont = 'Fira Code Regular Nerd Font Complete Mono:h14'
 -----------------------------------------------------------------------------//
@@ -199,9 +199,9 @@ vim.opt.cursorlineopt = "screenline,number"
 --   return vim.bo.modified and as.style.icons.misc.circle or ""
 -- end
 -- vim.opt.titlestring = ' ❐ %{fnamemodify(getcwd(), ":t")} %{v:lua.as.modified_icon()}'
-vim.opt.titleold = fn.fnamemodify(vim.loop.os_getenv("SHELL"), ":t")
-vim.opt.title = true
-vim.opt.titlelen = 70
+-- vim.opt.titleold = fn.fnamemodify(vim.loop.os_getenv("SHELL"), ":t")
+-- vim.opt.title = true
+-- vim.opt.titlelen = 70
 -----------------------------------------------------------------------------//
 -- Utilities {{{1
 -----------------------------------------------------------------------------//

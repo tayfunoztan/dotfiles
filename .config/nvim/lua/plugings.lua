@@ -227,7 +227,7 @@ return require("packer").startup({
       end,
     })
 
-    use("t9md/vim-choosewin")
+    -- use("t9md/vim-choosewin")
     -- use {
     --     "kyazdani42/nvim-tree.lua",
     --     config = function()

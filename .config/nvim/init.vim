@@ -263,10 +263,10 @@ let g:delimitMate_expand_inside_quotes = 1
 " ----------------------------------------------------------------------------
 " vim-choosewin
 " ----------------------------------------------------------------------------
-nmap  -  <Plug>(choosewin)
-let g:choosewin_label_padding      = 5
-let g:choosewin_blink_on_land      = 0 " don't blink at land
-let g:choosewin_statusline_replace = 1 " don't replace statusline
-let g:choosewin_tabline_replace    = 0 " don't replace tabline
+" nmap  -  <Plug>(choosewin)
+" let g:choosewin_label_padding      = 5
+" let g:choosewin_blink_on_land      = 0 " don't blink at land
+" let g:choosewin_statusline_replace = 1 " don't replace statusline
+" let g:choosewin_tabline_replace    = 0 " don't replace tabline
 
 " }}}}}}
