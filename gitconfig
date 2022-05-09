@@ -22,8 +22,17 @@
   gpgsign = false
 
 [core]
-	editor = vim
-	excludesFile = /Users/tayfunoztan/.gitignore_global
+	editor = nvim
+	excludesfile = /Users/tayfunoztan/.gitignore_global
+	pager = delta
+
+[alias]
+	logg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --decorate --date=short
+
+[delta]
+	line-numbers = true
+        syntax-theme = gruvbox-dark
+        side-by-side = false
 
 [diff]
 	tool = vimdiff

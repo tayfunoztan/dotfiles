@@ -31,6 +31,13 @@ return require("packer").startup({
     use("nvim-lua/popup.nvim")
 
     use({
+      "folke/which-key.nvim",
+      config = function()
+        require("which-key").setup({})
+      end,
+    })
+
+    use({
       "tpope/vim-fugitive",
       cmd = { "Git", "Gvsplit", "Gdiffsplit", "Gvdiffsplit" },
     })
@@ -38,10 +45,6 @@ return require("packer").startup({
     use("tpope/vim-surround")
     use("tpope/vim-repeat")
     use("tpope/vim-commentary")
-
-    use({ "junegunn/fzf", run = "./install --all" })
-    use({ "junegunn/fzf.vim" })
-    -- use 'junegunn/vim-peekaboo'
 
     use({
       "TimUntersberger/neogit",
@@ -68,6 +71,9 @@ return require("packer").startup({
         require("config.gitsigns")
       end,
     })
+
+    use({ "junegunn/fzf", run = "./install --all" })
+    use({ "junegunn/fzf.vim" })
 
     use({
       "nvim-telescope/telescope.nvim",
@@ -99,9 +105,7 @@ return require("packer").startup({
       config = function()
         require("config.nvim-cmp")
       end,
-      -- event = "InsertEnter",
       requires = {
-        -- { "hrsh7th/cmp-nvim-lsp", after = "nvim-lspconfig" },
         { "hrsh7th/cmp-nvim-lsp" },
         { "hrsh7th/cmp-nvim-lsp-document-symbol", after = "nvim-cmp" },
         { "hrsh7th/cmp-path", after = "nvim-cmp" },
@@ -115,6 +119,14 @@ return require("packer").startup({
           end,
         },
       },
+    })
+
+    use({
+      "folke/trouble.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("trouble").setup({})
+      end,
     })
 
     use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
@@ -159,16 +171,28 @@ return require("packer").startup({
     use("folke/lua-dev.nvim")
 
     use("simrat39/rust-tools.nvim")
-    use("othree/yajs.vim")
-    use("MaxMEllon/vim-jsx-pretty")
     use({ "iamcco/markdown-preview.nvim", ft = "markdown", run = "cd app && yarn install" })
-    use("dag/vim-fish")
 
     use({
-      "folke/which-key.nvim",
+      "kyazdani42/nvim-web-devicons",
       config = function()
-        require("which-key").setup({})
+        require("nvim-web-devicons").setup({ default = true })
       end,
+    })
+
+    use({
+      "nvim-neo-tree/neo-tree.nvim",
+      branch = "v2.x",
+      keys = "<leader>n",
+      cmd = "NeoTree",
+      config = function()
+        require("config.neo-tree")
+      end,
+      requires = {
+        "nvim-lua/plenary.nvim",
+        "MunifTanjim/nui.nvim",
+        "kyazdani42/nvim-web-devicons",
+      },
     })
 
     use({
@@ -189,77 +213,13 @@ return require("packer").startup({
       end,
     })
 
-    -- use {
-    --   'petertriho/nvim-scrollbar',
-    --   config = function()
-    --     require('scrollbar').setup {
-    --       -- handle = {
-    --       --   color = require('as.highlights').get_hl('PmenuSbar', 'bg'),
-    --       -- },
-    --       -- NOTE: If telescope is not explicitly excluded this garbles input into its prompt buffer
-    --       excluded_buftypes = { 'nofile', 'terminal', 'prompt' },
-    --       excluded_filetypes = { 'packer', 'TelescopePrompt', 'NvimTree' },
-    --     }
-    --   end,
-    -- }
-
-    -- use {
-    --   'akinsho/nvim-bufferline.lua',
-    --   requires = 'kyazdani42/nvim-web-devicons',
-    --   event = "BufReadPre",
-    --   config = function()
-    --     require('config.bufferline')
-    --   end,
-    -- }
-
-    use({
-      "folke/trouble.nvim",
-      requires = "kyazdani42/nvim-web-devicons",
-      config = function()
-        require("trouble").setup({})
-      end,
-    })
-
-    use({
-      "kyazdani42/nvim-web-devicons",
-      config = function()
-        require("nvim-web-devicons").setup({ default = true })
-      end,
-    })
-
-    -- use("t9md/vim-choosewin")
-    -- use {
-    --     "kyazdani42/nvim-tree.lua",
-    --     config = function()
-    --         require("config.nvim-tree")
-    --     end
-    -- }
-    use({
-      "nvim-neo-tree/neo-tree.nvim",
-      branch = "v2.x",
-      keys = "<leader>n",
-      cmd = "NeoTree",
-      config = function()
-        require("config.neo-tree")
-      end,
-      requires = {
-        "nvim-lua/plenary.nvim",
-        "MunifTanjim/nui.nvim",
-        "kyazdani42/nvim-web-devicons",
-      },
-    })
     use({
       "j-hui/fidget.nvim",
       config = function()
         require("fidget").setup()
       end,
     })
-    -- use 'arkav/lualine-lsp-progress'
 
     use("gruvbox-community/gruvbox")
-    use("folke/tokyonight.nvim")
-    use("~/dev/seoul256.nvim")
   end,
 })
-
--- vim:foldmethod=marker
