@@ -1,1 +1,1 @@
-/Users/tayfunoztan/.vim/plugged/fzf/shell/key-bindings.fish
+/Users/tayfun.oztan/.local/share/nvim/site/pack/packer/start/fzf/shell/key-bindings.fish

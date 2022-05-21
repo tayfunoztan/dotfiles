@@ -51,23 +51,24 @@ set -gx EDITOR nvim
 set -gx VISUAL nvim
 
 # PATH
-set -gxp PATH /usr/local/opt/node@16/bin
+set -gxp PATH /opt/homebrew/bin
+set -gxp PATH /opt/homebrew/opt/node@16/bin
 # set -gxp PATH /usr/local/opt/llvm/bin
-set -gxp PATH ~/Library/Python/3.9/bin
-set -gxp PATH ~/dev/flutter/bin
-set -gxp PATH  ~/Library/Android/sdk/tools/bin
-set -gxp PATH  ~/dev/pact/bin
+# set -gxp PATH ~/Library/Python/3.9/bin
+# set -gxp PATH ~/dev/flutter/bin
+# set -gxp PATH  ~/Library/Android/sdk/tools/bin
+# set -gxp PATH  ~/dev/pact/bin
 set -gxp PATH ~/.local/share/nvim/site/pack/packer/start/fzf/bin
-set -gxp PATH ~/.cargo/bin
+# set -gxp PATH ~/.cargo/bin
 
 # GO
 set -gxp PATH ~/go/bin
 set -gx GOBIN ~/go/bin
 
 # Java
-set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+# set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 
-set -gx ANDROID_HOME ~/Library/Android/sdk
+# set -gx ANDROID_HOME ~/Library/Android/sdk
 
 set -Ux HOMEBREW_NO_AUTO_UPDATE 1
 
