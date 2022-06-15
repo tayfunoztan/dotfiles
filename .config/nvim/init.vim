@@ -197,8 +197,8 @@ augroup go
 
   autocmd FileType go setlocal noexpandtab tabstop=4 shiftwidth=4
   autocmd FileType go nmap <silent> <leader>t <Plug>(go-test)
-  " autocmd FileType go nmap <silent> <leader>r <Plug>(go-run)
-  autocmd FileType go nmap <silent> <leader>r :GoRun . <CR>
+  autocmd FileType go nmap <silent> <leader>r <Plug>(go-run)
+  " autocmd FileType go nmap <silent> <leader>r :GoRun . <CR>
   autocmd FileType go nmap <silent> <Leader>v <Plug>(go-def-vertical)
   autocmd FileType go nmap <silent> <Leader>s <Plug>(go-def-split)
   autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')

@@ -1,3 +1,11 @@
+#------------------------------------------------------------------------------
+# ALIASES
+#------------------------------------------------------------------------------
+alias ls="ls -la --color=auto"
+alias grep='grep --color'
+alias vi='nvim'
+alias vim='nvim'
+
 
 zmodload zsh/datetime
 
@@ -22,7 +30,7 @@ autoload -U colors && colors # Enable colors in prompt
 #-------------------------------------------------------------------------------
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $ZDOTDIR/plugins/zsh-z/zsh-z.plugin.zsh
+source $ZDOTDIR/plugins/zsh-completions/zsh-completions.plugin.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 #-------------------------------------------------------------------------------
@@ -222,6 +230,41 @@ function parse_git_dirty() {
     echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
   fi
 }
+
+
+#-------------------------------------------------------------------------------
+#  Functions
+#-------------------------------------------------------------------------------
+function usego() {
+  version=$1
+  if [ -z $version ]; then
+    echo "Usage: usego [version]"
+    return
+  fi
+
+  go_bin_path=$(command -v "go$version")
+
+  if ! command -v "go$version" > /dev/null 2>&1; then
+    echo "go ${version} does not exist, installing with commands: "
+    echo "  go install golang.org/dl/go${version}@latest"
+    echo "  go${version} download"
+    echo ""
+
+    go install "golang.org/dl/go${version}@latest"
+    go${version} download
+    go_bin_path=$(command -v "go${version}")
+  fi
+
+  echo "Switched to ${go_bin_path}"
+  ln -sf "$go_bin_path" "$GOBIN/go"
+}
+
+#-------------------------------------------------------------------------------
+#  PLUGINS
+#-------------------------------------------------------------------------------
+if exists zoxide; then
+  eval "$(zoxide init zsh)"
+fi
 
 #-------------------------------------------------------------------------------
 #               MAPPINGS
