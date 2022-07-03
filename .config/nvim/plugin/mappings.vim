@@ -1,4 +1,4 @@
-imap jj <Esc>
+" imap jj <Esc>
 
 map <C-h> <C-w>h
 map <C-j> <C-w>j
