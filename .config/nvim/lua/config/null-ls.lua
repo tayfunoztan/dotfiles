@@ -1,23 +1,30 @@
-local M = {}
+-- local null_ls = require("null-ls")
+-- null_ls.setup({
+--   debounce = 150,
+--   save_after_format = false,
+--   sources = {
+--     -- null_ls.builtins.code_actions.gitsigns
+--     null_ls.builtins.formatting.stylua,
+--   },
+-- })
 
-function M.setup(options)
-  local null_ls = require("null-ls")
-  null_ls.setup({
-    debounce = 150,
-    on_attach = options.on_attach,
-    save_after_format = false,
-    sources = {
-      -- null_ls.builtins.code_actions.gitsigns
-      null_ls.builtins.formatting.stylua,
-    },
-    root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".nvim.settings.json", ".git"),
-  })
-end
-
-function M.has_formatter(ft)
-  local sources = require("null-ls.sources")
-  local available = sources.get_available(ft, "NULL_LS_FORMATTING")
-  return #available > 0
-end
-
-return M
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+require("null-ls").setup({
+  sources = {
+    require("null-ls").builtins.formatting.stylua,
+  },
+  -- you can reuse a shared lspconfig on_attach callback here
+  on_attach = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = augroup,
+        buffer = bufnr,
+        callback = function()
+          -- on 0.8, you should use vim.lsp.buf.format({ bufnr = bufnr }) instead
+          vim.lsp.buf.formatting_sync()
+        end,
+      })
+    end
+  end,
+})

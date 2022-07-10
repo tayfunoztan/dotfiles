@@ -24,6 +24,15 @@ pcall(require, "impatient")
 return require("packer").startup(function(use)
   use("wbthomason/packer.nvim")
 
+  -- TODO: this fixes a bug in neovim core that prevents "CursorHold" from working
+  -- hopefully one day when this issue is fixed this can be removed
+  -- @see: https://github.com/neovim/neovim/issues/12587
+  use("antoinemadec/FixCursorHold.nvim")
+
+  --------------------------------------------------------------------------------
+  -- Profiling & Startup
+  --------------------------------------------------------------------------------
+  -- TODO: this plugin will be redundant once https://github.com/neovim/neovim/pull/15436 is merged
   use("lewis6991/impatient.nvim")
   use({
     "dstein64/vim-startuptime",
@@ -103,15 +112,49 @@ return require("packer").startup(function(use)
   })
 
   use({
+    "williamboman/mason.nvim",
+    -- event = 'BufRead',
+    branch = "alpha",
+    config = function()
+      require("mason").setup({})
+      require("mason-lspconfig").setup({
+        automatic_installation = true,
+      })
+    end,
+  })
+
+  use({
     "neovim/nvim-lspconfig",
+    after = "mason.nvim",
     config = function()
       require("config.lspconfig")
     end,
-    requires = {
-      "williamboman/nvim-lsp-installer",
-      "jose-elias-alvarez/null-ls.nvim",
-    },
   })
+
+  -- use({
+  --   "williamboman/nvim-lsp-installer",
+  --   config = function()
+  --     require("nvim-lsp-installer").setup({
+  --       automatic_installation = true,
+  --     })
+  --   end,
+  -- })
+
+  -- use({
+  --   "neovim/nvim-lspconfig",
+  --   config = function()
+  --     require("config.lspconfig")
+  --   end,
+  -- })
+
+  use({
+    "jose-elias-alvarez/null-ls.nvim",
+    config = function()
+      require("config.null-ls")
+    end,
+    requires = { "nvim-lua/plenary.nvim" },
+  })
+
   use({
     "hrsh7th/nvim-cmp",
     config = function()

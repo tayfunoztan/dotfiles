@@ -18,7 +18,7 @@ vim.diagnostic.config({
   update_in_insert = false,
   severity_sort = true,
   float = {
-    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+    border = style.border,
   },
 })
 
@@ -28,103 +28,31 @@ vim.api.nvim_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", op
 vim.api.nvim_set_keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 vim.api.nvim_set_keymap("n", "<leader>Q", "<cmd>lua vim.diagnostic.setqflist()<CR>", opts)
 
-local lsp = vim.lsp
-local api = vim.api
-local buffer_client_ids = {}
-local preferred_formatting_clients = { "denols", "eslint" }
-local fallback_formatting_client = "null-ls"
-
-_G.formatting = function(bufnr)
-  bufnr = tonumber(bufnr) or api.nvim_get_current_buf()
-
-  local selected_client
-  if buffer_client_ids[bufnr] then
-    selected_client = lsp.get_client_by_id(buffer_client_ids[bufnr])
-  else
-    for _, client in pairs(lsp.buf_get_clients(bufnr)) do
-      if vim.tbl_contains(preferred_formatting_clients, client.name) then
-        selected_client = client
-        break
-      end
-
-      if client.name == fallback_formatting_client then
-        selected_client = client
-      end
-    end
-  end
-
-  if not selected_client then
-    return
-  end
-
-  buffer_client_ids[bufnr] = selected_client.id
-
-  local params = lsp.util.make_formatting_params()
-  selected_client.request("textDocument/formatting", params, function(err, res)
-    if err then
-      local err_msg = type(err) == "string" and err or err.message
-      vim.notify("global.lsp.formatting: " .. err_msg, vim.log.levels.WARN)
-      return
-    end
-
-    if not api.nvim_buf_is_loaded(bufnr) or api.nvim_buf_get_option(bufnr, "modified") then
-      return
-    end
-
-    if res then
-      lsp.util.apply_text_edits(res, bufnr, selected_client.offset_encoding or "utf-16")
-      api.nvim_buf_call(bufnr, function()
-        vim.cmd("silent noautocmd update")
-      end)
-    end
-  end, bufnr)
-end
-
------------------------------------------------------------------------------//
--- Mappings
------------------------------------------------------------------------------//
-local function setup_mapping(client, bufnr)
-  local opts = { noremap = true, silent = true }
-
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gdv", "<cmd>vsplit | lua vim.lsp.buf.definition()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gds", "<cmd>split | lua vim.lsp.buf.definition()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(
-    bufnr,
-    "n",
-    "<leader>wl",
-    "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
-    opts
-  )
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, "n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
-  vim.api.nvim_create_user_command("Format", vim.lsp.buf.formatting, {})
-end
-
 -----------------------------------------------------------------------------//
 -- Language servers
 -----------------------------------------------------------------------------//
 
 local function on_attach(client, bufnr)
-  setup_mapping(client, bufnr)
-  if client.supports_method("textDocument/formatting") then
-    vim.cmd([[
-        augroup LspFormatting
-            autocmd! * <buffer>
-            autocmd BufWritePost <buffer> lua formatting(vim.fn.expand("<abuf>"))
-        augroup END
-        ]])
+  -- setup_autocommands(client, bufnr)
+  -- setup_mappings(client)
+  -- setup_plugins(client, bufnr)
+  if client.server_capabilities.definitionProvider then
+    vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
+  end
+
+  if client.server_capabilities.documentFormattingProvider then
+    vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr()"
   end
 end
+
+local enhance_attach = function(client, bufnr)
+  if client.server_capabilities.document_formatting then
+    format.lsp_before_save()
+  end
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+end
+
+local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local servers = {
   gopls = {
@@ -133,8 +61,7 @@ local servers = {
       completeUnimported = true,
     },
   },
-  rust_analyzer = {},
-  bashls = {},
+  jsonls = true,
   sumneko_lua = function()
     return require("lua-dev").setup({
       lspconfig = vim.tbl_deep_extend("force", opts, {
@@ -159,19 +86,21 @@ local servers = {
   end,
 }
 
--- require("lua-dev").setup()
-
--- Add additional capabilities supported by nvim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
-
-local options = {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  flags = {
-    debounce_text_changes = 150,
-  },
-}
-
-require("config.null-ls").setup(options)
-require("config.nvim-lsp-installer").setup(servers, options)
+for name, config in pairs(servers) do
+  if config and type(config) == "boolean" then
+    config = {}
+  elseif config and type(config) == "function" then
+    config = config()
+  end
+  if config then
+    -- config.on_init = as.lsp.on_init
+    config.capabilities = capabilities
+    config.on_attach = on_attach
+    -- config.on_attach = enhance_attach
+    -- config.capabilities.textDocument.foldingRange = {
+    --   dynamicRegistration = false,
+    --   lineFoldingOnly = true,
+    -- }
+    require("lspconfig")[name].setup(config)
+  end
+end
