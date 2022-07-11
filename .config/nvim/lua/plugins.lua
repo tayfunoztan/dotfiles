@@ -131,22 +131,6 @@ return require("packer").startup(function(use)
     end,
   })
 
-  -- use({
-  --   "williamboman/nvim-lsp-installer",
-  --   config = function()
-  --     require("nvim-lsp-installer").setup({
-  --       automatic_installation = true,
-  --     })
-  --   end,
-  -- })
-
-  -- use({
-  --   "neovim/nvim-lspconfig",
-  --   config = function()
-  --     require("config.lspconfig")
-  --   end,
-  -- })
-
   use({
     "jose-elias-alvarez/null-ls.nvim",
     config = function()
@@ -279,6 +263,15 @@ return require("packer").startup(function(use)
       require("config.incline")
     end,
   })
+
+  -- use({
+  --   "phaazon/hop.nvim",
+  --   branch = "v2", -- optional but strongly recommended
+  --   config = function()
+  --     -- you can configure Hop the way you like here; see :h hop-config
+  --     require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
+  --   end,
+  -- })
 
   -- use({
   --   "karb94/neoscroll.nvim",
