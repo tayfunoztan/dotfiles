@@ -22,7 +22,7 @@ vim.g.loaded_netrwFileHandlers = 1
 vim.g.do_filetype_lua = 1
 
 vim.g.mapleader = "," -- Remap leader key
--- vim.g.maplocalleader = ' ' -- Local leader is <Space>
+vim.g.maplocalleader = " " -- Local leader is <Space>
 
 require("options")
 require("styles")

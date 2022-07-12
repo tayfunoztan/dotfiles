@@ -1,7 +1,8 @@
 local api = vim.api
 local cmd = vim.cmd
-local autocmd = vim.api.nvim_create_autocmd
-local my_group = vim.api.nvim_create_augroup("ToztanGroup", {})
+
+local autocmd = api.nvim_create_autocmd
+local my_group = api.nvim_create_augroup("ToztanGroup", {})
 
 autocmd("TextYankPost", {
   group = my_group,

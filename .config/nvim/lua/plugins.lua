@@ -65,8 +65,12 @@ return require("packer").startup(function(use)
   use({
     "TimUntersberger/neogit",
     cmd = "Neogit",
+    keys = { "<localleader>gs", "<localleader>gp", "<localleader>gP" },
     config = function()
-      require("config.neogit")
+      require("config.neogit").config()
+    end,
+    setup = function()
+      require("config.neogit").setup()
     end,
   })
 
@@ -249,13 +253,13 @@ return require("packer").startup(function(use)
     end,
   })
 
-  use({
-    "akinsho/nvim-bufferline.lua",
-    config = function()
-      require("config.bufferline")
-    end,
-    requires = "kyazdani42/nvim-web-devicons",
-  })
+  -- use({
+  --   "akinsho/nvim-bufferline.lua",
+  --   config = function()
+  --     require("config.bufferline")
+  --   end,
+  --   requires = "kyazdani42/nvim-web-devicons",
+  -- })
 
   use({
     "b0o/incline.nvim",

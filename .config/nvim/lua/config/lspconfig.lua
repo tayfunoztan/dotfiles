@@ -1,5 +1,8 @@
 local icons = style.icons
 local fn = vim.fn
+local api = vim.api
+
+local AUGROUP = api.nvim_create_augroup("LspCommands", { clear = true })
 
 -----------------------------------------------------------------------------//
 -- Signs
@@ -35,6 +38,55 @@ vim.diagnostic.config({
 })
 
 -----------------------------------------------------------------------------//
+-- Autocommands
+-----------------------------------------------------------------------------//
+
+--- Add lsp autocommands
+---@param client table<string, any>
+---@param bufnr number
+local function setup_autocommands(client, bufnr)
+  if client.server_capabilities.documentFormattingProvider then
+    api.nvim_create_autocmd("BufWritePre", {
+      group = AUGROUP,
+      buffer = bufnr,
+      desc = "Format the current buffer on save",
+      callback = function()
+        vim.lsp.buf.formatting_sync(nil, 1000)
+      end,
+    })
+  end
+
+  if client.server_capabilities.documentHighlightProvider then
+    api.nvim_create_autocmd("CursorHold", {
+      group = AUGROUP,
+      buffer = bufnr,
+      desc = "Show diagnostics",
+      callback = function()
+        local opts = {
+          focusable = false,
+          close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+          scope = "cursor",
+        }
+        vim.diagnostic.open_float(nil, opts)
+      end,
+    })
+
+    api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      group = AUGROUP,
+      buffer = bufnr,
+      desc = "LSP: Document Highlight",
+      callback = vim.lsp.buf.document_highlight,
+    })
+    api.nvim_create_autocmd("CursorMoved", {
+      group = AUGROUP,
+      buffer = bufnr,
+      desc = "LSP: Document Highlight (Clear)",
+      callback = vim.lsp.buf.clear_references,
+    })
+  end
+end
+
+-----------------------------------------------------------------------------//
 -- Mappings
 -----------------------------------------------------------------------------//
 
@@ -45,7 +97,7 @@ local function setup_mappings(_)
     return { buffer = 0, desc = desc }
   end
 
-  -- vim.api.nvim_set_keymap("n", "<leader>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+  map.nnoremap("<leader>e", vim.diagnostic.open_float, with_desc("lsp: open diagnostic float"))
   -- vim.api.nvim_set_keymap("n", "<leader>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
   -- vim.api.nvim_set_keymap("n", "<leader>Q", "<cmd>lua vim.diagnostic.setqflist()<CR>", opts)
 
@@ -70,24 +122,11 @@ end
 -----------------------------------------------------------------------------//
 
 local function on_attach(client, bufnr)
-  -- setup_autocommands(client, bufnr)
+  setup_autocommands(client, bufnr)
   setup_mappings(client)
-  -- setup_plugins(client, bufnr)
-  if client.server_capabilities.definitionProvider then
-    vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
-  end
 
-  if client.server_capabilities.documentFormattingProvider then
-    vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr()"
-  end
+  -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 end
-
--- local enhance_attach = function(client, bufnr)
---   if client.server_capabilities.document_formatting then
---     format.lsp_before_save()
---   end
---   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
--- end
 
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
@@ -133,7 +172,6 @@ for name, config in pairs(servers) do
     -- config.on_init = as.lsp.on_init
     config.capabilities = capabilities
     config.on_attach = on_attach
-    -- config.on_attach = enhance_attach
     -- config.capabilities.textDocument.foldingRange = {
     --   dynamicRegistration = false,
     --   lineFoldingOnly = true,
