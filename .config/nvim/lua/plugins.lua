@@ -76,10 +76,13 @@ return require("packer").startup(function(use)
 
   use({
     "sindrets/diffview.nvim",
-    cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     module = "diffview",
     config = function()
-      require("config.diffview")
+      require("config.diffview").config()
+    end,
+    setup = function()
+      require("config.diffview").setup()
     end,
   })
 

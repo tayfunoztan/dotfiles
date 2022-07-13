@@ -3,7 +3,7 @@ local M = {}
 function M.setup()
   require("which-key").register({
     ["<localleader>g"] = {
-      name = "neogit",
+      name = "git",
       s = "neogit: open status buffer",
       p = "neogit: open pull popup",
       P = "neogit: open push popup",
