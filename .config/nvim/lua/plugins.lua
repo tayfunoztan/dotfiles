@@ -256,13 +256,21 @@ return require("packer").startup(function(use)
     end,
   })
 
-  -- use({
-  --   "akinsho/nvim-bufferline.lua",
-  --   config = function()
-  --     require("config.bufferline")
-  --   end,
-  --   requires = "kyazdani42/nvim-web-devicons",
-  -- })
+  use({
+    "akinsho/nvim-bufferline.lua",
+    config = function()
+      require("config.bufferline")
+    end,
+    requires = "kyazdani42/nvim-web-devicons",
+  })
+
+  use({
+    "akinsho/toggleterm.nvim",
+    tag = "v2.*",
+    config = function()
+      require("toggleterm").setup()
+    end,
+  })
 
   use({
     "b0o/incline.nvim",

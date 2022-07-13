@@ -14,3 +14,8 @@ require("bufferline").setup({
     },
   },
 })
+
+require("which-key").register({
+  ["]b"] = { "<Cmd>BufferLineCycleNext<CR>", "bufferline: next" },
+  ["[b"] = { "<Cmd>BufferLineCyclePrev<CR>", "bufferline: prev" },
+})
