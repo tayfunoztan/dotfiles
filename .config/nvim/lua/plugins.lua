@@ -121,9 +121,9 @@ return require("packer").startup(function(use)
   use({
     "williamboman/mason.nvim",
     -- event = 'BufRead',
-    branch = "alpha",
+    requires = { "williamboman/mason-lspconfig.nvim" },
     config = function()
-      require("mason").setup({})
+      require("mason").setup()
       require("mason-lspconfig").setup({
         automatic_installation = true,
       })

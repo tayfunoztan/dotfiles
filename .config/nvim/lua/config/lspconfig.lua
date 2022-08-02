@@ -137,6 +137,7 @@ local servers = {
       completeUnimported = true,
     },
   },
+  pyright = true,
   jsonls = true,
   sumneko_lua = function()
     return require("lua-dev").setup({
