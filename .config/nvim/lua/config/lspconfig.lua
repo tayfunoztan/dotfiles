@@ -131,6 +131,7 @@ end
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local servers = {
+  bashls = true,
   gopls = {
     init_options = {
       usePlaceholders = true,
@@ -138,6 +139,7 @@ local servers = {
     },
   },
   pyright = true,
+  rust_analyzer = true,
   jsonls = true,
   sumneko_lua = function()
     return require("lua-dev").setup({
@@ -161,6 +163,15 @@ local servers = {
       }),
     })
   end,
+  yamlls = {
+    settings = {
+      yaml = {
+        customTags = {
+          "!reference sequence", -- necessary for gitlab-ci.yaml files
+        },
+      },
+    },
+  },
 }
 
 for name, config in pairs(servers) do

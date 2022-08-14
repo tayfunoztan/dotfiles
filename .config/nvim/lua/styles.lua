@@ -12,7 +12,7 @@ _G.style = {
   icons = {
     lsp = {
       Error = "",
-      Warn = "",
+      Warn = "", -- ""
       Info = "",
       Hint = "",
     },

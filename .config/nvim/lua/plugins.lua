@@ -250,11 +250,18 @@ return require("packer").startup(function(use)
   })
 
   use({
-    "nvim-lualine/lualine.nvim",
+    "feline-nvim/feline.nvim",
     config = function()
-      require("config.lualine")
+      require("config.feline")
     end,
   })
+
+  -- use({
+  --   "nvim-lualine/lualine.nvim",
+  --   config = function()
+  --     require("config.lualine")
+  --   end,
+  -- })
 
   use({
     "akinsho/nvim-bufferline.lua",
@@ -303,6 +310,18 @@ return require("packer").startup(function(use)
     "j-hui/fidget.nvim",
     config = function()
       require("fidget").setup()
+    end,
+  })
+
+  use({
+    "rcarriga/nvim-notify",
+    config = function()
+      local notify = require("notify")
+      notify.setup({
+        timeout = 3000,
+        -- stages = "static",
+      })
+      vim.notify = notify
     end,
   })
 

@@ -172,7 +172,7 @@ vim.opt.completeopt = { "menuone", "noselect" }
 vim.opt.hlsearch = true
 vim.opt.autowriteall = true -- automatically :write before running commands and changing files
 vim.opt.clipboard = { "unnamedplus" }
-vim.opt.laststatus = 2
+vim.opt.laststatus = 3
 vim.opt.termguicolors = true
 -- vim.opt.guifont = 'Fira Code Regular Nerd Font Complete Mono:h14'
 -----------------------------------------------------------------------------//
