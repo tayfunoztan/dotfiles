@@ -344,6 +344,13 @@ return require("packer").startup(function(use)
   --   end,
   -- })
 
+  use({
+    "folke/tokyonight.nvim",
+    config = function()
+      -- vim.g.tokyonight_style = "night"
+    end,
+  })
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if packer_bootstrap then

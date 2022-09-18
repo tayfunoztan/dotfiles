@@ -30,7 +30,7 @@ autoload -U colors && colors # Enable colors in prompt
 #-------------------------------------------------------------------------------
 source $ZDOTDIR/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZDOTDIR/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $ZDOTDIR/plugins/zsh-completions/zsh-completions.plugin.zsh
+# source $ZDOTDIR/plugins/zsh-completions/zsh-completions.plugin.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 #-------------------------------------------------------------------------------
@@ -257,6 +257,63 @@ function usego() {
 
   echo "Switched to ${go_bin_path}"
   ln -sf "$go_bin_path" "$GOBIN/go"
+}
+
+function alacritty-theme() {
+  theme=$1
+  if [ -z $theme ]; then
+    echo "alacritty-theme gruvbox_light"
+    return
+  fi
+
+  if [ ! -f ~/.config/alacritty/color.yml ]; then
+    echo "file: ~/.config/alacritty/color.yml not doesn't exists"
+    return
+  fi
+  config_path=$(command realpath ~/.config/alacritty/color.yml)
+
+  sed -i "" -e "s#^colors: \*.*#colors: *$theme#g" $config_path
+  echo "alacritty theme switched to $theme"
+}
+
+function tmux-theme() {
+  theme=$1
+  if [ -z $theme ]; then
+    echo "tmux-theme dark"
+    return
+  fi
+
+  if [ ! -f ~/.tmux/tmux-${theme}.conf ]; then
+    echo "file: ~/.tmux/tmux-${theme}.conf not doesn't exists"
+    return
+  fi
+  config_path=$(command realpath ~/.tmux.conf)
+
+  sed -i "" -e "s#^source-file .*#source-file ~/.tmux/tmux-${theme}.conf#g" $config_path
+  echo "tmux theme switched to $theme"
+}
+
+
+function change-background() {
+  mode=$1
+
+  # change alacritty
+  case "$mode" in
+    "dark") alacritty-theme gruvbox_dark
+    ;;
+    "light") alacritty-theme gruvbox_light
+    ;;
+  esac
+
+  # change tmux
+  case "$mode" in
+    "dark") tmux-theme dark
+      tmux source-file ~/.tmux.conf
+    ;;
+    "light") tmux-theme light
+      tmux source-file ~/.tmux.conf
+    ;;
+  esac
 }
 
 #-------------------------------------------------------------------------------

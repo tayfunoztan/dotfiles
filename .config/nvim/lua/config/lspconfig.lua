@@ -140,6 +140,7 @@ local servers = {
   },
   pyright = true,
   rust_analyzer = true,
+  tsserver = true,
   jsonls = true,
   sumneko_lua = function()
     return require("lua-dev").setup({
