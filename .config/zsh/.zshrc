@@ -276,6 +276,41 @@ function alacritty-theme() {
   echo "alacritty theme switched to $theme"
 }
 
+function vim-theme() {
+  theme=$1
+  if [ -z $theme ]; then
+    echo "vim-theme dark"
+    return
+  fi
+
+  if [ ! -f ~/.config/nvim/lua/options.lua ]; then
+    echo "file: ~/.config/nvim/lua/options.lua not doesn't exists"
+    return
+  fi
+  config_path=$(command realpath ~/.config/nvim/lua/options.lua)
+
+  sed -i "" -e "s#^o.background = .*#o.background = \"$theme\"#g" $config_path
+  echo "vim theme switched to $theme"
+}
+
+function bat-theme() {
+  theme=$1
+  if [ -z $theme ]; then
+    echo "bat-theme dark"
+    return
+  fi
+
+  if [ ! -f ~/.config/bat/config ]; then
+    echo "file: ~/.config/bat/config not doesn't exists"
+    return
+  fi
+  config_path=$(command realpath ~/.config/bat/config)
+
+  sed -i "" -e "s#^--theme.*#--theme=\"gruvbox-$theme\"#g" $config_path
+  echo "bat theme switched to $theme"
+}
+
+
 function tmux-theme() {
   theme=$1
   if [ -z $theme ]; then
@@ -302,6 +337,22 @@ function change-background() {
     "dark") alacritty-theme gruvbox_dark
     ;;
     "light") alacritty-theme gruvbox_light
+    ;;
+  esac
+
+  # change vim
+  case "$mode" in
+    "dark") vim-theme dark
+    ;;
+    "light") vim-theme light
+    ;;
+  esac
+
+  # change bat
+  case "$mode" in
+    "dark") bat-theme dark
+    ;;
+    "light") bat-theme light
     ;;
   esac
 

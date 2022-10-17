@@ -67,4 +67,4 @@ schemes:
       text: '#f1c1c1'
       cursor: '#ff2600'
 
-colors: *gruvbox_light
+colors: *gruvbox_dark

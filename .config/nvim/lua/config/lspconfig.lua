@@ -128,7 +128,7 @@ local function on_attach(client, bufnr)
   -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 end
 
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local servers = {
   bashls = true,
@@ -142,28 +142,15 @@ local servers = {
   rust_analyzer = true,
   tsserver = true,
   jsonls = true,
-  sumneko_lua = function()
-    return require("lua-dev").setup({
-      lspconfig = vim.tbl_deep_extend("force", opts, {
-        settings = {
-          Lua = {
-            diagnostics = {
-              globals = {
-                "vim",
-                "describe",
-                "it",
-                "before_each",
-                "after_each",
-                "pending",
-                "teardown",
-                "packer_plugins",
-              },
-            },
-          },
+  sumneko_lua = {
+    settings = {
+      Lua = {
+        completion = {
+          callSnippet = "Replace",
         },
-      }),
-    })
-  end,
+      },
+    },
+  },
   yamlls = {
     settings = {
       yaml = {

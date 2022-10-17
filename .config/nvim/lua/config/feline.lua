@@ -62,3 +62,5 @@ require("feline").setup({
   theme = gruvbox,
   components = components,
 })
+
+require("feline").winbar.setup()

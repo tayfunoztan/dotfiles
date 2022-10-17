@@ -19,49 +19,72 @@ vim.cmd([[
   augroup end
 ]])
 
-pcall(require, "impatient")
-
 return require("packer").startup(function(use)
   use("wbthomason/packer.nvim")
 
-  -- TODO: this fixes a bug in neovim core that prevents "CursorHold" from working
-  -- hopefully one day when this issue is fixed this can be removed
-  -- @see: https://github.com/neovim/neovim/issues/12587
-  use("antoinemadec/FixCursorHold.nvim")
+  -----------------------------------------------------------------------------//
+  -- Core {{{1
+  -----------------------------------------------------------------------------//
+  use("nvim-lua/plenary.nvim")
 
-  --------------------------------------------------------------------------------
-  -- Profiling & Startup
-  --------------------------------------------------------------------------------
-  -- TODO: this plugin will be redundant once https://github.com/neovim/neovim/pull/15436 is merged
-  use("lewis6991/impatient.nvim")
+  use({ "folke/which-key.nvim" })
+
+  use({
+    "nvim-telescope/telescope.nvim",
+    cmd = { "Telescope" },
+    keys = { "<leader>ff", "<leader>fo", "<leader>fg", "<leader>fb" },
+    requires = {
+      "nvim-lua/popup.nvim",
+      "nvim-lua/plenary.nvim",
+      { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+      { "nvim-telescope/telescope-file-browser.nvim" },
+    },
+    config = function()
+      require("config.telescope")
+    end,
+  })
+
   use({
     "dstein64/vim-startuptime",
     cmd = "StartupTime",
     config = function()
       vim.g.startuptime_tries = 15
-      vim.g.startuptime_exe_args = { "+let g:auto_session_enabled = 0" }
     end,
   })
 
-  use("nvim-lua/plenary.nvim")
-  use("nvim-lua/popup.nvim")
+  use({ "kyazdani42/nvim-web-devicons" })
 
   use({
-    "folke/which-key.nvim",
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    keys = "<leader>n",
+    cmd = "NeoTree",
     config = function()
-      require("which-key").setup({})
+      require("config.neo-tree")
     end,
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "kyazdani42/nvim-web-devicons",
+    },
   })
 
+  -- }}}
+  --------------------------------------------------------------------------------
+  -- TPOPE {{{1
+  --------------------------------------------------------------------------------
   use({
     "tpope/vim-fugitive",
     cmd = { "Git", "Gvsplit", "Gdiffsplit", "Gvdiffsplit" },
   })
   use("tpope/vim-rhubarb")
-  use("tpope/vim-surround")
   use("tpope/vim-repeat")
-  use("tpope/vim-commentary")
-
+  -- use("tpope/vim-surround")
+  -- use("tpope/vim-commentary")
+  -- }}}
+  --------------------------------------------------------------------------------
+  -- Git {{{1
+  --------------------------------------------------------------------------------
   use({
     "TimUntersberger/neogit",
     cmd = "Neogit",
@@ -94,30 +117,10 @@ return require("packer").startup(function(use)
       require("config.gitsigns")
     end,
   })
-
-  use({ "junegunn/fzf", run = "./install --all" })
-  use({
-    "junegunn/fzf.vim",
-    config = function()
-      vim.g.fzf_command_prefix = "Fzf"
-    end,
-  })
-
-  use({
-    "nvim-telescope/telescope.nvim",
-    cmd = { "Telescope" },
-    keys = { "<leader>ff", "<leader>fo", "<leader>fg", "<leader>fb" },
-    requires = {
-      "nvim-lua/popup.nvim",
-      "nvim-lua/plenary.nvim",
-      { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-      { "nvim-telescope/telescope-file-browser.nvim" },
-    },
-    config = function()
-      require("config.telescope")
-    end,
-  })
-
+  ---}}}
+  -----------------------------------------------------------------------------//
+  -- LSP,Completion & Debugger {{{1
+  -----------------------------------------------------------------------------//
   use({
     "williamboman/mason.nvim",
     -- event = 'BufRead',
@@ -175,24 +178,19 @@ return require("packer").startup(function(use)
     end,
   })
 
-  use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
-
-  use("christoomey/vim-tmux-navigator")
-  use("tayfunoztan/ReplaceWithRegister")
   use({
-    "Raimondi/delimitMate",
+    "j-hui/fidget.nvim",
     config = function()
-      vim.g.delimitMate_expand_cr = 1
-      vim.g.delimitMate_expand_space = 1
-      vim.g.delimitMate_smart_quotes = 1
-      vim.g.delimitMate_expand_inside_quotes = 1
+      require("fidget").setup()
+      -- HACK: prevent error when exiting Neovim
+      vim.api.nvim_create_autocmd("VimLeavePre", { command = [[silent! FidgetClose]] })
     end,
   })
-  use({
-    "AndrewRadev/splitjoin.vim",
-    keys = { "gJ", "gS" },
-  })
 
+  -- }}}
+  -----------------------------------------------------------------------------//
+  -- Filetype Plugins {{{1
+  -----------------------------------------------------------------------------//
   use({
     "fatih/vim-go",
     run = ":GoUpdateBinaries",
@@ -222,31 +220,32 @@ return require("packer").startup(function(use)
     end,
   })
 
-  use("folke/lua-dev.nvim")
-
-  use("simrat39/rust-tools.nvim")
-  use({ "iamcco/markdown-preview.nvim", ft = "markdown", run = "cd app && yarn install" })
-
   use({
-    "kyazdani42/nvim-web-devicons",
+    "folke/neodev.nvim",
+    after = "nvim-lspconfig",
     config = function()
-      require("nvim-web-devicons").setup({ default = true })
+      require("neodev").setup()
     end,
   })
 
+  use("simrat39/rust-tools.nvim")
+
+  use({ "iamcco/markdown-preview.nvim", ft = "markdown", run = "cd app && yarn install" })
+
+  ---}}}
+  -----------------------------------------------------------------------------//
+  -- UI {{{1
+  -----------------------------------------------------------------------------//
   use({
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v2.x",
-    keys = "<leader>n",
-    cmd = "NeoTree",
+    "rcarriga/nvim-notify",
     config = function()
-      require("config.neo-tree")
+      local notify = require("notify")
+      notify.setup({
+        timeout = 3000,
+        stages = "static",
+      })
+      vim.notify = notify
     end,
-    requires = {
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      "kyazdani42/nvim-web-devicons",
-    },
   })
 
   use({
@@ -255,13 +254,6 @@ return require("packer").startup(function(use)
       require("config.feline")
     end,
   })
-
-  -- use({
-  --   "nvim-lualine/lualine.nvim",
-  --   config = function()
-  --     require("config.lualine")
-  --   end,
-  -- })
 
   use({
     "akinsho/nvim-bufferline.lua",
@@ -272,6 +264,32 @@ return require("packer").startup(function(use)
   })
 
   use({
+    "b0o/incline.nvim",
+    config = function()
+      require("config.incline")
+    end,
+  })
+
+  ---}}}
+  --------------------------------------------------------------------------------
+  -- Syntax {{{1
+  --------------------------------------------------------------------------------
+  use({
+    "nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate",
+    config = function()
+      require("config.treesitter")
+    end,
+  })
+  ---}}}
+  --------------------------------------------------------------------------------
+  -- Utilities {{{1
+  --------------------------------------------------------------------------------
+  use("christoomey/vim-tmux-navigator")
+
+  use("tayfunoztan/ReplaceWithRegister")
+
+  use({
     "akinsho/toggleterm.nvim",
     tag = "v2.*",
     config = function()
@@ -280,51 +298,23 @@ return require("packer").startup(function(use)
   })
 
   use({
-    "b0o/incline.nvim",
+    "numToStr/Comment.nvim",
     config = function()
-      require("config.incline")
-    end,
-  })
-
-  -- use({
-  --   "phaazon/hop.nvim",
-  --   branch = "v2", -- optional but strongly recommended
-  --   config = function()
-  --     -- you can configure Hop the way you like here; see :h hop-config
-  --     require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
-  --   end,
-  -- })
-
-  -- use({
-  --   "karb94/neoscroll.nvim",
-  --   config = function()
-  --     require("neoscroll").setup({
-  --       mappings = { "<C-u>", "<C-d>", "<C-b>", "<C-f>", "<C-e>", "<C-y>", "zt", "zz", "zb" },
-  --       stop_eof = true,
-  --       hide_cursor = true,
-  --     })
-  --   end,
-  -- })
-
-  use({
-    "j-hui/fidget.nvim",
-    config = function()
-      require("fidget").setup()
+      require("Comment").setup()
     end,
   })
 
   use({
-    "rcarriga/nvim-notify",
+    "kylechui/nvim-surround",
+    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
     config = function()
-      local notify = require("notify")
-      notify.setup({
-        timeout = 3000,
-        -- stages = "static",
-      })
-      vim.notify = notify
+      require("nvim-surround").setup({})
     end,
   })
-
+  ---}}}
+  --------------------------------------------------------------------------------
+  -- Themes  {{{1
+  --------------------------------------------------------------------------------
   use({
     "tayfunoztan/gruvbox.nvim",
     config = function()
@@ -335,21 +325,11 @@ return require("packer").startup(function(use)
     end,
   })
 
-  -- use({
-  --   "gruvbox-community/gruvbox",
-  --   config = function()
-  --     vim.g.gruvbox_contrast_dark = "hard"
-  --     vim.g.gruvbox_contrast_light = "hard"
-  --     vim.cmd([[colorscheme gruvbox]])
-  --   end,
-  -- })
+  use({ "LunarVim/horizon.nvim" })
+  use("navarasu/onedark.nvim")
+  use("folke/tokyonight.nvim")
 
-  use({
-    "folke/tokyonight.nvim",
-    config = function()
-      -- vim.g.tokyonight_style = "night"
-    end,
-  })
+  ---}}}
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
@@ -357,3 +337,5 @@ return require("packer").startup(function(use)
     require("packer").sync()
   end
 end)
+
+-- vim:foldmethod=marker nospell
