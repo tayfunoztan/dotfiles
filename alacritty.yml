@@ -8,9 +8,6 @@
 #
 # All imports must either be absolute paths starting with `/`, or paths relative
 # to the user's home directory starting with `~/`.
-#import:
-#  - /path/to/alacritty.yml
-
 import:
   - "/Users/tayfun.oztan/.config/alacritty/color.yml"
 
@@ -29,9 +26,10 @@ env:
 window:
   # Window dimensions (changes require restart)
   #
-  # Number of lines/columns (not pixels) in the terminal. The number of columns
-  # must be at least `2`, while using a value of `0` for columns and lines will
-  # fall back to the window manager's recommended size.
+  # Number of lines/columns (not pixels) in the terminal. Both lines and columns
+  # must be non-zero for this to take effect. The number of columns must be at
+  # least `2`, while using a value of `0` for columns and lines will fall back
+  # to the window manager's recommended size
   dimensions:
    columns: 80
    lines: 24
@@ -49,8 +47,8 @@ window:
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
   padding:
-    x: 2
-    y: 2
+   x: 2
+   y: 2
 
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: false
@@ -64,7 +62,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background and no title bar buttons
-  decorations: buttonless
+  decorations: full
 
   # Background opacity
   #
@@ -96,11 +94,12 @@ window:
     # General application class
     #general: Alacritty
 
-  # GTK theme variant (Linux/BSD only)
+  # Decorations theme variant (Linux/BSD only)
   #
-  # Override the variant of the GTK theme. Commonly supported values are `dark`
-  # and `light`. Set this to `None` to use the default theme variant.
-  #gtk_theme_variant: None
+  # Override the variant of the GTK theme/Wayland client side decorations.
+  # Commonly supported values are `dark` and `light`. Set this to `None` to use
+  # the default theme variant.
+  #decorations_theme_variant: None
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.
@@ -120,8 +119,7 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    # family: JetBrains Mono
-    # family: JetBrainsMono Nerd Font Mono
+    #family: monospace
     family: JetBrainsMono Nerd Font
 
     # The `style` can be specified to pick a specific face.
@@ -133,8 +131,7 @@ font:
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    # family: JetBrains Mono
-    # family: JetBrainsMono Nerd Font Mono
+    #family: monospace
     family: JetBrainsMono Nerd Font
 
     # The `style` can be specified to pick a specific face.
@@ -146,8 +143,7 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    # family: JetBrains Mono
-    # family: JetBrainsMono Nerd Font Mono
+    #family: monospace
     family: JetBrainsMono Nerd Font
 
     # The `style` can be specified to pick a specific face.
@@ -159,35 +155,28 @@ font:
     #
     # If the bold italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    # family: JetBrains Mono
-    # family: JetBrainsMono Nerd Font Mono
+    #family: monospace
     family: JetBrainsMono Nerd Font
 
     # The `style` can be specified to pick a specific face.
     style: Bold Italic
 
   # Point size
-  size: 13.0
+  size: 14.0
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
   # spacing.
   offset:
-    x: 0
-    y: 0
+   x: 0
+   y: 0
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the
   # right, increasing `y` moves the glyph upward.
   glyph_offset:
-    x: 0
-    y: 0
-
-  # Thin stroke font rendering (macOS only)
-  #
-  # Thin strokes are suitable for retina displays, but for non-retina screens
-  # it is recommended to set `use_thin_strokes` to `false`.
-  use_thin_strokes: true
+   x: 0
+   y: 0
 
   # Use built-in font for box drawing characters.
   #
@@ -197,14 +186,14 @@ font:
   #builtin_box_drawing: true
 
 # If `true`, bold text is drawn using the bright color variants.
-draw_bold_text_with_bright_colors: true
+draw_bold_text_with_bright_colors: false
 
 # Colors (Tomorrow Night)
 colors:
   # Default colors
-  # primary:
-  #   background: '0x1d2021' # hard contrast
-  #   foreground: '0xebdbb2'
+  #primary:
+  #  background: '#1d1f21'
+  #  foreground: '#c5c8c6'
 
     # Bright and dim foreground colors
     #
@@ -221,9 +210,9 @@ colors:
   #
   # Allowed values are CellForeground/CellBackground, which reference the
   # affected cell, or hexadecimal colors like #ff00ff.
-  # cursor:
-  #   text: '#f1c1c1'
-  #   cursor: '#ff2600'
+  #cursor:
+  #  text: CellBackground
+  #  cursor: CellForeground
 
   # Vi mode cursor colors
   #
@@ -248,11 +237,7 @@ colors:
     #  foreground: '#ffffff'
     #  background: '#000000'
 
-    #bar:
-    #  background: '#c5c8c6'
-    #  foreground: '#1d1f21'
-
-  # Keyboard regex hints
+  # Keyboard hints
   #hints:
     # First character in the hint label
     #
@@ -280,6 +265,15 @@ colors:
   #  foreground: None
   #  background: None
 
+  # Footer bar
+  #
+  # Color used for the footer bar on the bottom, used by search regex input,
+  # hyperlink URI preview, etc.
+  #
+  #footer_bar:
+  #  background: '#c5c8c6'
+  #  foreground: '#1d1f21'
+
   # Selection colors
   #
   # Colors which should be used to draw the selection area.
@@ -291,26 +285,26 @@ colors:
   #  background: CellForeground
 
   # Normal colors
-  # normal:
-  #   black:   '0x282828'
-  #   red:     '0xcc241d'
-  #   green:   '0x98971a'
-  #   yellow:  '0xd79921'
-  #   blue:    '0x458588'
-  #   magenta: '0xb16286'
-  #   cyan:    '0x689d6a'
-  #   white:   '0xa89984'
+  #normal:
+  #  black:   '#1d1f21'
+  #  red:     '#cc6666'
+  #  green:   '#b5bd68'
+  #  yellow:  '#f0c674'
+  #  blue:    '#81a2be'
+  #  magenta: '#b294bb'
+  #  cyan:    '#8abeb7'
+  #  white:   '#c5c8c6'
 
   # Bright colors
-  # bright:
-  #   black:   '0x928374'
-  #   red:     '0xfb4934'
-  #   green:   '0xb8bb26'
-  #   yellow:  '0xfabd2f'
-  #   blue:    '0x83a598'
-  #   magenta: '0xd3869b'
-  #   cyan:    '0x8ec07c'
-  #   white:   '0xebdbb2'
+  #bright:
+  #  black:   '#666666'
+  #  red:     '#d54e53'
+  #  green:   '#b9ca4a'
+  #  yellow:  '#e7c547'
+  #  blue:    '#7aa6da'
+  #  magenta: '#c397d8'
+  #  cyan:    '#70c0b1'
+  #  white:   '#eaeaea'
 
   # Dim colors
   #
@@ -423,6 +417,11 @@ cursor:
   # Cursor blinking interval in milliseconds.
   #blink_interval: 750
 
+  # Time after which cursor stops blinking, in seconds.
+  #
+  # Specifying '0' will disable timeout for blinking.
+  #blink_timeout: 5
+
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.
   #unfocused_hollow: true
@@ -441,33 +440,14 @@ live_config_reload: true
 # shell.
 #
 # Default:
-#   - (macOS) /bin/bash --login
-#   - (Linux/BSD) user login shell
+#   - (Linux/BSD/macOS) `$SHELL` or the user's login shell, if `$SHELL` is unset
 #   - (Windows) powershell
-#shell:
-#  program: /bin/bash
-#  args:
-#    - --login
-# shell:
-#   program: /opt/homebrew/bin/fish
-#   args:
-#     - --login
-#     - -c
-#     - "tmux new"
 shell:
-  program: /opt/homebrew/bin/zsh
+  program: /opt/homebrew/bin/tmux
   args:
-    - -l
-    - -c
-    - "tmux new"
-# shell:
-#   program: /opt/homebrew/bin/tmux
-#   args:
-#     - new-session
-#     - -A
-#     - -D
-#     - -s
-#     - main
+    - new-session
+    - -A
+    - -D
 
 # Startup directory
 #
@@ -475,7 +455,7 @@ shell:
 # directory of the parent process will be used.
 working_directory: None
 
-# Send ESC () before characters when alt is pressed.
+# Send ESC (\x1b) before characters when alt is pressed.
 alt_send_esc: true
 
 # Offer IPC using `alacritty msg` (unix only)
@@ -493,18 +473,22 @@ mouse:
   # If this is `true`, the cursor is temporarily hidden when typing.
   hide_when_typing: true
 
-# Regex hints
+# Hints
 #
-# Terminal hints can be used to find text in the visible part of the terminal
-# and pipe it to other applications.
+# Terminal hints can be used to find text or hyperlink in the visible part of
+# the terminal and pipe it to other applications.
 #hints:
   # Keys used for the hint labels.
   #alphabet: "jfkdls;ahgurieowpq"
 
   # List with all available hints
   #
-  # Each hint must have a `regex` and either an `action` or a `command` field.
-  # The fields `mouse`, `binding` and `post_processing` are optional.
+  # Each hint must have any of `regex` or `hyperlinks` field and either an
+  # `action` or a `command` field. The fields `mouse`, `binding` and
+  # `post_processing` are optional.
+  #
+  # The `hyperlinks` option will cause OSC 8 escape sequence hyperlinks to be
+  # highlighted.
   #
   # The fields `command`, `binding.key`, `binding.mods`, `binding.mode` and
   # `mouse.mods` accept the same values as they do in the `key_bindings` section.
@@ -514,7 +498,8 @@ mouse:
   #
   # If the `post_processing` field is set to `true`, heuristics will be used to
   # shorten the match if there are characters likely not to be part of the hint
-  # (e.g. a trailing `.`). This is most useful for URIs.
+  # (e.g. a trailing `.`). This is most useful for URIs and applies only to
+  # `regex` matches.
   #
   # Values for `action`:
   #   - Copy
@@ -528,6 +513,7 @@ mouse:
   #enabled:
   # - regex: "(ipfs:|ipns:|magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)\
   #           [^\u0000-\u001F\u007F-\u009F<>\"\\s{-}\\^⟨⟩`]+"
+  #   hyperlinks: true
   #   command: xdg-open
   #   post_processing: true
   #   mouse:
@@ -566,9 +552,9 @@ mouse:
 #
 # - `mods` (see key bindings)
 mouse_bindings:
-  - { mouse: Right,                 action: ExpandSelection }
-  - { mouse: Right,  mods: Control, action: ExpandSelection }
-  - { mouse: Middle, mode: ~Vi,     action: PasteSelection  }
+ - { mouse: Right,                 action: ExpandSelection }
+ - { mouse: Right,  mods: Control, action: ExpandSelection }
+ - { mouse: Middle, mode: ~Vi,     action: PasteSelection  }
 
 # Key bindings
 #
@@ -656,6 +642,8 @@ mouse_bindings:
 #   - ToggleBlockSelection
 #   - ToggleSemanticSelection
 #       Toggle semantic selection based on `selection.semantic_escape_chars`.
+#   - CenterAroundViCursor
+#       Center view around vi mode cursor
 #
 # - Vi mode exclusive cursor motion actions:
 #
@@ -781,9 +769,9 @@ key_bindings:
   #- { key: Copy,                                        action: Copy           }
   #- { key: L,         mods: Control,                    action: ClearLogNotice }
   #- { key: L,         mods: Control, mode: ~Vi|~Search, chars: "\x0c"          }
-  #- { key: PageUp,    mods: Shift,   mode: ~Alt,        action: ScrollPageUp,  }
+  #- { key: PageUp,    mods: Shift,   mode: ~Alt,        action: ScrollPageUp   }
   #- { key: PageDown,  mods: Shift,   mode: ~Alt,        action: ScrollPageDown }
-  #- { key: Home,      mods: Shift,   mode: ~Alt,        action: ScrollToTop,   }
+  #- { key: Home,      mods: Shift,   mode: ~Alt,        action: ScrollToTop    }
   #- { key: End,       mods: Shift,   mode: ~Alt,        action: ScrollToBottom }
 
   # Vi Mode
@@ -809,6 +797,7 @@ key_bindings:
   #- { key: V,      mods: Control,       mode: Vi|~Search, action: ToggleBlockSelection    }
   #- { key: V,      mods: Alt,           mode: Vi|~Search, action: ToggleSemanticSelection }
   #- { key: Return,                      mode: Vi|~Search, action: Open                    }
+  #- { key: Z,                           mode: Vi|~Search, action: CenterAroundViCursor    }
   #- { key: K,                           mode: Vi|~Search, action: Up                      }
   #- { key: J,                           mode: Vi|~Search, action: Down                    }
   #- { key: H,                           mode: Vi|~Search, action: Left                    }
@@ -849,7 +838,7 @@ key_bindings:
   #- { key: Return, mods: Shift,   mode: Search|~Vi, action: SearchFocusPrevious   }
 
   # (Windows, Linux, and BSD only)
-  # - { key: V,              mods: Control|Shift, mode: ~Vi,        action: Paste            }
+  #- { key: V,              mods: Control|Shift, mode: ~Vi,        action: Paste            }
   #- { key: C,              mods: Control|Shift,                   action: Copy             }
   #- { key: F,              mods: Control|Shift, mode: ~Search,    action: SearchForward    }
   #- { key: B,              mods: Control|Shift, mode: ~Search,    action: SearchBackward   }
@@ -916,3 +905,6 @@ debug:
 
   # Print all received window events.
   print_events: false
+
+  # Highlight window damage information.
+  #highlight_damage: false
