@@ -132,6 +132,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protoc
 
 local servers = {
   bashls = true,
+  clangd = true,
   gopls = {
     init_options = {
       usePlaceholders = true,

@@ -34,9 +34,9 @@ telescope.setup({
       height = 0.80,
       preview_cutoff = 120,
     },
-    file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-    grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-    qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+    file_previewer = require("telescope.previewers").cat.new,
+    grep_previewer = require("telescope.previewers").vimgrep.new,
+    qflist_previewer = require("telescope.previewers").qflist.new,
   },
   extensions = {
     fzf = {
