@@ -1,7 +1,7 @@
 # alacritty color scheme
 
 schemes:
-  gruvbox_light: &gruvbox_light
+  gruvbox-light: &gruvbox-light
     # Default colors
     primary:
       background: '0xf9f5d7' # hard contrast
@@ -34,7 +34,7 @@ schemes:
       text: '#f1c1c1'
       cursor: '#ff2600'
 
-  gruvbox_dark: &gruvbox_dark
+  gruvbox-dark: &gruvbox-dark
     # Default colors
     primary:
       background: '0x1d2021' # hard contrast
@@ -67,4 +67,133 @@ schemes:
       text: '#f1c1c1'
       cursor: '#ff2600'
 
-colors: *gruvbox_light
+  tokyonight-dark: &tokyonight-dark
+    # Default colors
+    primary:
+      background: '0x222436'
+      foreground: '0xc8d3f5'
+
+    # Normal colors
+    normal:
+      black:   '0x1b1d2b'
+      red:     '0xff757f'
+      green:   '0xc3e88d'
+      yellow:  '0xffc777'
+      blue:    '0x82aaff'
+      magenta: '0xc099ff'
+      cyan:    '0x86e1fc'
+      white:   '0x828bb8'
+
+    # Bright colors
+    bright:
+      black:   '0x444a73'
+      red:     '0xff757f'
+      green:   '0xc3e88d'
+      yellow:  '0xffc777'
+      blue:    '0x82aaff'
+      magenta: '0xc099ff'
+      cyan:    '0x86e1fc'
+      white:   '0xc8d3f5'
+
+    indexed_colors:
+      - { index: 16, color: '0xff966c' }
+      - { index: 17, color: '0xc53b53' }
+
+
+  tokyonight-light: &tokyonight-light
+    # Default colors
+    primary:
+      background: '0xe1e2e7'
+      foreground: '0x3760bf'
+
+    # Normal colors
+    normal:
+      black:   '0xe9e9ed'
+      red:     '0xf52a65'
+      green:   '0x587539'
+      yellow:  '0x8c6c3e'
+      blue:    '0x2e7de9'
+      magenta: '0x9854f1'
+      cyan:    '0x007197'
+      white:   '0x6172b0'
+
+    # Bright colors
+    bright:
+      black:   '0xa1a6c5'
+      red:     '0xf52a65'
+      green:   '0x587539'
+      yellow:  '0x8c6c3e'
+      blue:    '0x2e7de9'
+      magenta: '0x9854f1'
+      cyan:    '0x007197'
+      white:   '0x3760bf'
+
+    indexed_colors:
+      - { index: 16, color: '0xb15c00' }
+      - { index: 17, color: '0xc64343' }
+
+  github-dark: &github-dark
+    # Default colors
+    primary:
+      background: '0x24292e'
+      foreground: '0xd1d5da'
+
+    # Normal colors
+    normal:
+      black:   '0x586069'
+      red:     '0xea4a5a'
+      green:   '0x34d058'
+      yellow:  '0xffea7f'
+      blue:    '0x2188ff'
+      magenta: '0xb392f0'
+      cyan:    '0x39c5cf'
+      white:   '0xd1d5da'
+
+    # Bright colors
+    bright:
+      black:   '0x959da5'
+      red:     '0xf97583'
+      green:   '0x85e89d'
+      yellow:  '0xffea7f'
+      blue:    '0x79b8ff'
+      magenta: '0xb392f0'
+      cyan:    '0x56d4dd'
+      white:   '0xfafbfc'
+
+    indexed_colors:
+      - { index: 16, color: '0xd18616' }
+      - { index: 17, color: '0xf97583' }
+
+  github-light: &github-light
+    # Default colors
+    primary:
+      background: '0xffffff'
+      foreground: '0x24292f'
+
+    # Normal colors
+    normal:
+      black:   '0x24292e'
+      red:     '0xd73a49'
+      green:   '0x28a745'
+      yellow:  '0xdbab09'
+      blue:    '0x0366d6'
+      magenta: '0x5a32a3'
+      cyan:    '0x0598bc'
+      white:   '0x6a737d'
+
+    # Bright colors
+    bright:
+      black:   '0x959da5'
+      red:     '0xcb2431'
+      green:   '0x22863a'
+      yellow:  '0xb08800'
+      blue:    '0x005cc5'
+      magenta: '0x5a32a3'
+      cyan:    '0x3192aa'
+      white:   '0xd1d5da'
+
+    indexed_colors:
+      - { index: 16, color: '0xd18616' }
+      - { index: 17, color: '0xcb2431' }
+
+colors: *github-dark
