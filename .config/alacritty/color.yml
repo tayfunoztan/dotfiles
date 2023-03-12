@@ -196,4 +196,4 @@ schemes:
       - { index: 16, color: '0xd18616' }
       - { index: 17, color: '0xcb2431' }
 
-colors: *github-dark
+colors: *tokyonight-dark

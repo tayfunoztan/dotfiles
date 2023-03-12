@@ -193,43 +193,43 @@ SAVEHIST=2048
 #-------------------------------------------------------------------------------
 #               Prompt
 #-------------------------------------------------------------------------------
-setopt PROMPT_SUBST
-
-# PROMPT="%(?:%{$fg_bold[green]%}➜:%{$fg_bold[red]%}➜)"
-PROMPT="%(?:%{$fg_bold[green]%}$:%{$fg_bold[red]%}$)"
-PROMPT+=' %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
-
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}git:(%{$fg[red]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}✗"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"
-
-function git_prompt_info() {
-  local ref
-  if [[ "$(command git config --get customzsh.hide-status 2>/dev/null)" != "1" ]]; then
-    ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
-    ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
-    echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
-  fi
-}
-
-# Checks if working tree is dirty
-function parse_git_dirty() {
-  local STATUS=''
-  local FLAGS
-  FLAGS=('--porcelain')
-
-  if [[ "$(command git config --get customzsh.hide-dirty)" != "1" ]]; then
-    FLAGS+='--ignore-submodules=dirty'
-    STATUS=$(command git status ${FLAGS} 2> /dev/null | tail -n1)
-  fi
-
-  if [[ -n $STATUS ]]; then
-    echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
-  else
-    echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
-  fi
-}
+# setopt PROMPT_SUBST
+#
+# # PROMPT="%(?:%{$fg_bold[green]%}➜:%{$fg_bold[red]%}➜)"
+# PROMPT="%(?:%{$fg_bold[green]%}$:%{$fg_bold[red]%}$)"
+# PROMPT+=' %{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)'
+#
+# ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}git:(%{$fg[red]%}"
+# ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
+# ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%}) %{$fg[yellow]%}✗"
+# ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%})"
+#
+# function git_prompt_info() {
+#   local ref
+#   if [[ "$(command git config --get customzsh.hide-status 2>/dev/null)" != "1" ]]; then
+#     ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
+#     ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
+#     echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_SUFFIX"
+#   fi
+# }
+#
+# # Checks if working tree is dirty
+# function parse_git_dirty() {
+#   local STATUS=''
+#   local FLAGS
+#   FLAGS=('--porcelain')
+#
+#   if [[ "$(command git config --get customzsh.hide-dirty)" != "1" ]]; then
+#     FLAGS+='--ignore-submodules=dirty'
+#     STATUS=$(command git status ${FLAGS} 2> /dev/null | tail -n1)
+#   fi
+#
+#   if [[ -n $STATUS ]]; then
+#     echo "$ZSH_THEME_GIT_PROMPT_DIRTY"
+#   else
+#     echo "$ZSH_THEME_GIT_PROMPT_CLEAN"
+#   fi
+# }
 
 
 #-------------------------------------------------------------------------------
@@ -262,7 +262,7 @@ function usego() {
 function alacritty-theme() {
   theme=$1
   if [ -z $theme ]; then
-    echo "alacritty-theme gruvbox_light"
+    echo "alacritty-theme gruvbox-light"
     return
   fi
 
@@ -283,13 +283,22 @@ function vim-theme() {
     return
   fi
 
-  if [ ! -f ~/.config/nvim/lua/options.lua ]; then
-    echo "file: ~/.config/nvim/lua/options.lua not doesn't exists"
+  # if [ ! -f ~/.config/nvim/lua/config/options.lua ]; then
+  #   echo "file: ~/.config/nvim/lua/config/options.lua not doesn't exists"
+  #   return
+  # fi
+  # config_path=$(command realpath ~/.config/nvim/lua/config/options.lua)
+  #
+  # sed -i "" -e "s#^vim.o.background = .*#vim.o.background = \"$theme\"#g" $config_path
+
+  if [ ! -f ~/.config/nvim/lua/plugins/colorscheme.lua ]; then
+    echo "file: ~/.config/nvim/lua/plugins/colorscheme.lua not doesn't exists"
     return
   fi
-  config_path=$(command realpath ~/.config/nvim/lua/options.lua)
+  config_path=$(command realpath ~/.config/nvim/lua/plugins/colorscheme.lua)
 
-  sed -i "" -e "s#^o.background = .*#o.background = \"$theme\"#g" $config_path
+  sed -i "" -e "s#^theme_style = .*#theme_style = \"$theme\"#g" $config_path
+
   echo "vim theme switched to $theme"
 }
 
@@ -318,13 +327,13 @@ function tmux-theme() {
     return
   fi
 
-  if [ ! -f ~/.tmux/tmux-${theme}.conf ]; then
-    echo "file: ~/.tmux/tmux-${theme}.conf not doesn't exists"
+  if [ ! -f ~/.tmux/${theme}.conf ]; then
+    echo "file: ~/.tmux/${theme}.conf not doesn't exists"
     return
   fi
   config_path=$(command realpath ~/.tmux.conf)
 
-  sed -i "" -e "s#^source-file .*#source-file ~/.tmux/tmux-${theme}.conf#g" $config_path
+  sed -i "" -e "s#^source-file .*#source-file ~/.tmux/${theme}.conf#g" $config_path
   echo "tmux theme switched to $theme"
 }
 
@@ -334,9 +343,9 @@ function change-background() {
 
   # change alacritty
   case "$mode" in
-    "dark") alacritty-theme gruvbox_dark
+    "dark") alacritty-theme tokyonight-dark
     ;;
-    "light") alacritty-theme gruvbox_light
+    "light") alacritty-theme tokyonight-light
     ;;
   esac
 
@@ -358,21 +367,14 @@ function change-background() {
 
   # change tmux
   case "$mode" in
-    "dark") tmux-theme dark
+    "dark") tmux-theme tokyonight-dark
       tmux source-file ~/.tmux.conf
     ;;
-    "light") tmux-theme light
+    "light") tmux-theme tokyonight-light
       tmux source-file ~/.tmux.conf
     ;;
   esac
 }
-
-#-------------------------------------------------------------------------------
-#  PLUGINS
-#-------------------------------------------------------------------------------
-if exists zoxide; then
-  eval "$(zoxide init zsh)"
-fi
 
 #-------------------------------------------------------------------------------
 #               MAPPINGS
@@ -390,3 +392,12 @@ bindkey '^f' forward-word
 # autoload -Uz edit-command-line;
 # zle -N edit-command-line
 # bindkey -M vicmd v edit-command-line
+
+#-------------------------------------------------------------------------------
+#  PLUGINS
+#-------------------------------------------------------------------------------
+if exists zoxide; then
+  eval "$(zoxide init zsh)"
+fi
+
+eval "$(starship init zsh)"
