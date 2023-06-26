@@ -27,17 +27,16 @@ return {
   -- null-ls
   {
     "jose-elias-alvarez/null-ls.nvim",
-    config = function()
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "mason.nvim" },
+    opts = function()
       local nls = require("null-ls")
-      nls.setup({
-        debounce = 150,
-        save_after_format = false,
+      return {
         sources = {
           nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
         },
-        -- root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", ".git"),
-      })
+      }
     end,
   },
 
@@ -104,6 +103,7 @@ return {
             },
           },
         },
+        pyright = {},
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig

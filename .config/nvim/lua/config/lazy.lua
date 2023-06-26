@@ -17,6 +17,24 @@ require("lazy").setup({
     { import = "plugins.extras.lang.typescript" },
   },
   install = { colorscheme = { "tokyonight", "gruvbox" } },
+  performance = {
+    cache = {
+      enabled = true,
+    },
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "matchit",
+        "matchparen",
+        "netrwPlugin",
+        "rplugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
   ui = {
     border = "rounded",
   },

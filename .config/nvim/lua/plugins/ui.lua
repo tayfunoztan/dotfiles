@@ -5,11 +5,20 @@ return {
     event = "BufReadPre",
     config = function()
       require("incline").setup({
+        highlight = {
+          groups = {
+            InclineNormal = { guibg = "#F47A90", guifg = "#000000" },
+            InclineNormalNC = { guifg = "#F47A90", guibg = "000000" },
+          },
+        },
         window = {
           margin = {
             vertical = 2,
             horizontal = 2,
           },
+        },
+        hide = {
+          cursorline = true,
         },
         render = function(props)
           local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")

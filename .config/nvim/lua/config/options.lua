@@ -1,6 +1,6 @@
 local opt = vim.opt
 
--- vim.o.background = "dark"
+vim.o.background = "dark"
 
 opt.autowrite = true -- Enable auto write
 opt.clipboard = "unnamedplus" -- Sync with system clipboard
@@ -70,6 +70,12 @@ if vim.fn.has("nvim-0.8") == 1 then
   opt.backup = true
   opt.cmdheight = 0
   opt.backupdir = vim.fn.stdpath("state") .. "/backup"
+end
+
+if vim.g.neovide then
+  vim.opt.guifont = { "JetBrainsMono Nerd Font" }
+  -- vim.g.neovide_scale_factor = 0.3
+  vim.g.neovide_cursor_animation_length = 0
 end
 
 -- vim.g.node_host_prog = "/Users/folke/.pnpm-global/5/node_modules/neovim/bin/cli.js"
