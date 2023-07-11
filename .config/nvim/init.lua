@@ -146,11 +146,9 @@ require("lazy").setup({
 
 				if opts.setup[server] then
 					if opts.setup[server](server, server_opts) then
-						print("aaaaaaaaaaaaaa: ", server)
 						return
 					end
 				elseif opts.setup["*"] then
-					print("bbbbbbbbbbbbbb: ", server)
 					if opts.setup["*"](server, server_opts) then
 						return
 					end
@@ -308,11 +306,14 @@ require("lazy").setup({
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
-		version = false, -- last release is way too old and doesn't work on Windows
 		build = ":TSUpdate",
 		opts = {
 			highlight = { enable = true },
 			indent = { enable = true },
+			autopairs = { enable = true },
+			context_commentstring = {
+				enable = true,
+			},
 			ensure_installed = {
 				"go",
 				"gomod",
@@ -366,6 +367,7 @@ require("lazy").setup({
 			end,
 		},
 	},
+
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
@@ -380,6 +382,13 @@ require("lazy").setup({
 			})
 		end,
 	},
+	{
+		"windwp/nvim-ts-autotag",
+		ft = { "typescriptreact", "javascript", "javascriptreact", "html", "vue", "svelte" },
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		config = true,
+	},
+
 	{
 		"nvim-telescope/telescope.nvim",
 		cmd = "Telescope",
@@ -463,11 +472,16 @@ require("lazy").setup({
 		"numToStr/Comment.nvim",
 		keys = { "gcc", { "gc", mode = { "x", "n", "o" } } },
 		opts = function(_, opts)
-			-- local ok, integration = pcall(require, 'ts_context_commentstring.integrations.comment_nvim')
-			-- if ok then opts.pre_hook = integration.create_pre_hook() end
-			return {}
+			local ok, integration = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
+			if ok then
+				opts.pre_hook = integration.create_pre_hook()
+			end
 		end,
 	},
+	{
+		"JoosepAlviste/nvim-ts-context-commentstring",
+	},
+
 	{
 		"kylechui/nvim-surround",
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -522,7 +536,7 @@ require("lazy").setup({
 
 local opt = vim.opt
 
-opt.background = "light"
+opt.background = "dark"
 opt.autowrite = true -- Enable auto write
 opt.clipboard = "unnamedplus" -- Sync with system clipboard
 opt.completeopt = "menu,menuone,noselect"
