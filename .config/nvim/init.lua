@@ -23,9 +23,11 @@ vim.g.mapleader = ","
 vim.g.maplocalleader = " "
 
 ---------------------------------------------------------------------------
------------------ plugins
+----------------- plugins {{{1
 ---------------------------------------------------------------------------
 require("lazy").setup({
+
+  --- core plugins {{{2
   { "nvim-lua/plenary.nvim" },
   { "nvim-tree/nvim-web-devicons", lazy = true },
   { "MunifTanjim/nui.nvim",        lazy = true },
@@ -37,6 +39,8 @@ require("lazy").setup({
     "folke/which-key.nvim",
     opts = {},
   },
+  ---}}}
+
   {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
@@ -529,9 +533,10 @@ require("lazy").setup({
     end,
   },
 })
+---}}}
 
 ---------------------------------------------------------------------------
------------------ options
+----------------- options {{{1
 ---------------------------------------------------------------------------
 
 local opt = vim.opt
@@ -555,7 +560,7 @@ opt.mouse = "a"            -- Enable mouse mode
 opt.number = true          -- Print line number
 opt.pumblend = 10          -- Popup blend
 opt.pumheight = 10         -- Maximum number of entries in a popup
-opt.relativenumber = true  -- Relative line numbers
+opt.relativenumber = false  -- Relative line numbers
 opt.scrolloff = 4          -- Lines of context
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize" }
 opt.shiftround = true      -- Round indent
@@ -586,10 +591,11 @@ end
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
+---}}}
 ---------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------
------------------ autocmds
+----------------- autocmds {{{1
 ---------------------------------------------------------------------------
 
 -- Highlight on yank
@@ -639,11 +645,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
   end,
 })
-
+---}}}
 ---------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------
------------------ keymaps
+----------------- keymaps {{{1
 ---------------------------------------------------------------------------
 
 -- better up/down
@@ -693,4 +699,7 @@ vim.keymap.set("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer"
 -- vim.keymap.set("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 vim.keymap.set("n", "]t", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 vim.keymap.set("n", "[t", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+--}}}
 ---------------------------------------------------------------------------
+
+-- vim:foldmethod=marker nospell
