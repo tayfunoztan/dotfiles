@@ -73,8 +73,8 @@ if vim.fn.has("nvim-0.8") == 1 then
 end
 
 if vim.g.neovide then
-	-- vim.o.guifont = "Fira Code,Symbols Nerd Font Mono:h34"
-	vim.g.neovide_scale_factor = 0.3
+	vim.o.guifont = "JetBrainsMono Nerd Font:h13"
+	-- vim.g.neovide_scale_factor = 0.3
 end
 
 vim.g.loaded_python3_provider = 0
