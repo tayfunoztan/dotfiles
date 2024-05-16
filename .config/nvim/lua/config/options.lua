@@ -1,25 +1,25 @@
 local opt = vim.opt
 
-opt.autowrite = true -- Enable auto write
-opt.clipboard = "unnamedplus" -- Sync with system clipboard
+opt.autowrite = true           -- Enable auto write
+opt.clipboard = "unnamedplus"  -- Sync with system clipboard
 opt.completeopt = "menu,menuone,noselect"
-opt.conceallevel = 3 -- Hide * markup for bold and italic
-opt.confirm = true -- Confirm to save changes before exiting modified buffer
-opt.cursorline = true -- Enable highlighting of the current line
-opt.expandtab = true -- Use spaces instead of tabs
+opt.conceallevel = 3           -- Hide * markup for bold and italic
+opt.confirm = true             -- Confirm to save changes before exiting modified buffer
+opt.cursorline = true          -- Enable highlighting of the current line
+opt.expandtab = true           -- Use spaces instead of tabs
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
 opt.grepprg = "rg --vimgrep"
-opt.ignorecase = true -- Ignore case
+opt.ignorecase = true      -- Ignore case
 opt.inccommand = "nosplit" -- preview incremental substitute
-opt.laststatus = 0
-opt.list = true -- Show some invisible characters (tabs...
+-- opt.laststatus = 3
+opt.list = true            -- Show some invisible characters (tabs...
 opt.listchars = {
-	eol = nil,
-	tab = "  ", -- Alternatives: '▷▷',
-	extends = "…", -- Alternatives: … » ›
-	precedes = "░", -- Alternatives: … « ‹
-	trail = "•", -- BULLET (U+2022, UTF-8: E2 80 A2)
+  eol = nil,
+  tab = "  ", -- Alternatives: '▷▷',
+  extends = "…", -- Alternatives: … » ›
+  precedes = "░", -- Alternatives: … « ‹
+  trail = "•", -- BULLET (U+2022, UTF-8: E2 80 A2)
 }
 opt.mouse = "a" -- Enable mouse mode
 opt.number = true -- Print line number
@@ -45,36 +45,35 @@ opt.termguicolors = true -- True color support
 opt.timeoutlen = 300
 opt.undofile = true
 opt.undolevels = 10000
-opt.updatetime = 200 -- Save swap file and trigger CursorHold
+opt.updatetime = 200               -- Save swap file and trigger CursorHold
 opt.wildmode = "longest:full,full" -- Command-line completion mode
-opt.winminwidth = 5 -- Minimum window width
-opt.wrap = false -- Disable line wrap
+opt.winminwidth = 5                -- Minimum window width
+opt.wrap = false                   -- Disable line wrap
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
 
 vim.opt.fillchars = {
-	foldopen = "",
-	foldclose = "",
-	fold = " ",
-	foldsep = " ",
-	diff = "╱",
-	eob = " ",
+  foldopen = "",
+  foldclose = "",
+  fold = " ",
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
 }
 vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.o.foldcolumn = "0"
 
-if vim.fn.has("nvim-0.8") == 1 then
-	vim.opt.backup = true
-	vim.opt.cmdheight = 0
-	vim.opt.backupdir = vim.fn.stdpath("state") .. "/backup"
-end
+vim.opt.backup = true
+vim.opt.cmdheight = 0
+vim.opt.backupdir = vim.fn.stdpath("state") .. "/backup"
 
 if vim.g.neovide then
-	vim.o.guifont = "JetBrainsMono Nerd Font:h13"
-	-- vim.g.neovide_scale_factor = 0.3
+  vim.o.guifont = "JetBrainsMono Nerd Font:h13"
+  vim.g.neovide_cursor_animation_length = 0
+  -- vim.g.neovide_scale_factor = 0.3
 end
 
 vim.g.loaded_python3_provider = 0

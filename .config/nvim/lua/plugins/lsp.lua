@@ -1,44 +1,160 @@
+-- local servers = {
+--   gopls = {
+--     settings = {
+--       gopls = {
+--         gofumpt = true,
+--         codelenses = {
+--           gc_details = false,
+--           generate = true,
+--           regenerate_cgo = true,
+--           run_govulncheck = true,
+--           test = true,
+--           tidy = true,
+--           upgrade_dependency = true,
+--           vendor = true,
+--         },
+--         hints = {
+--           assignVariableTypes = true,
+--           compositeLiteralFields = true,
+--           compositeLiteralTypes = true,
+--           constantValues = true,
+--           functionTypeParameters = true,
+--           parameterNames = true,
+--           rangeVariableTypes = true,
+--         },
+--         analyses = {
+--           fieldalignment = true,
+--           nilness = true,
+--           unusedparams = true,
+--           unusedwrite = true,
+--           useany = true,
+--         },
+--         usePlaceholders = true,
+--         completeUnimported = true,
+--         staticcheck = true,
+--         directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+--         semanticTokens = true,
+--       },
+--     },
+--   },
+--   lua_ls = {
+--     settings = {
+--       Lua = {
+--         workspace = {
+--           checkThirdParty = false,
+--         },
+--         completion = {
+--           callSnippet = "Replace",
+--         },
+--       },
+--     },
+--   },
+-- }
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    -- vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = ev.buf, desc = "LSP: Goto Declaration" })
+    vim.keymap.set('n', 'gd', function() require("telescope.builtin").lsp_definitions({ reuse_win = true }) end,
+      { buffer = ev.buf, desc = "LSP: Goto Definition" })
+    vim.keymap.set('n', 'gr', "<cmd>Telescope lsp_references<cr>", { buffer = ev.buf, desc = "LSP: Goto References" })
+    vim.keymap.set('n', 'gi', function() require("telescope.builtin").lsp_implementations({ reuse_win = true }) end,
+      { buffer = ev.buf, desc = "LSP: Goto Implementation" })
+    vim.keymap.set('n', 'gy', function() require("telescope.builtin").lsp_type_definitions({ reuse_win = true }) end,
+      { buffer = ev.buf, desc = "LSP: Goto T[y]pe Definition" })
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = ev.buf, desc = "LSP: Hover" })
+    vim.keymap.set('n', 'gK', vim.lsp.buf.signature_help, { buffer = ev.buf, desc = "LSP: Signature Help" })
+    -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    -- vim.keymap.set('n', '<space>wl', function()
+    --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    -- end, opts)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = ev.buf, desc = "LSP: Rename" })
+    -- vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+    -- vim.keymap.set('n', '<space>f', function()
+    --   vim.lsp.buf.format { async = true }
+    -- end, opts)
+  end,
+})
+
 return {
-
-  {
-    "folke/neodev.nvim",
-    opts = {},
-  },
-
-  -- lspconfig
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      "mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      {
+        "folke/neodev.nvim",
+        opts = {}
+      },
+      { "williamboman/mason-lspconfig.nvim" },
+      { "hrsh7th/cmp-nvim-lsp" },
     },
-    opts = {},
     config = function(_, opts)
-      require("mason-lspconfig").setup()
-      require("lspconfig").lua_ls.setup {}
+      local mason_lspconfig = require("mason-lspconfig")
+      -- mason_lspconfig.setup({ ensure_installed = vim.tbl_keys(servers) })
+      mason_lspconfig.setup()
+      --
+      -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+      -- capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+      --
+      -- mason_lspconfig.setup_handlers({
+      --   function(server_name)
+      --     require("lspconfig")[server_name].setup({
+      --       capabilities = capabilities,
+      --       settings = servers[server_name],
+      --     })
+      --   end,
+      -- })
+
+
+
+
+
+      -- diagnostic
+      local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
+      for type, icon in pairs(signs) do
+        local hl = "DiagnosticSign" .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+      end
+
+      vim.diagnostic.config({
+        underline = true,
+        virtual_text = true,
+        update_in_insert = false,
+        severity_sort = true,
+      })
     end,
   },
-
-  -- cmdline tools and lsp servers
-  {
+ {
 
     "williamboman/mason.nvim",
     cmd = "Mason",
+    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
     build = ":MasonUpdate",
     opts = {
       ensure_installed = {
-        -- "stylua",
-        -- "selene",
-        -- "luacheck",
-        -- "shellcheck",
-        -- "shfmt",
+        "stylua",
+        "shfmt",
+        -- "flake8",
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
     config = function(_, opts)
       require("mason").setup(opts)
       local mr = require("mason-registry")
+      mr:on("package:install:success", function()
+        vim.defer_fn(function()
+          -- trigger FileType event to possibly load this newly installed LSP server
+          require("lazy.core.handler.event").trigger({
+            event = "FileType",
+            buf = vim.api.nvim_get_current_buf(),
+          })
+        end, 100)
+      end)
       local function ensure_installed()
         for _, tool in ipairs(opts.ensure_installed) do
           local p = mr.get_package(tool)
@@ -53,146 +169,4 @@ return {
         ensure_installed()
       end
     end,
-  },
-
-  {
-    "stevearc/conform.nvim",
-    event = "BufReadPre",
-    opts = {
-      formatters_by_ft = {
-        lua = { "stylua" },
-        -- javascript = { 'prettier' },
-      },
-      format_on_save = {
-        -- These options will be passed to conform.format()
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
-    },
-  },
-
-  {
-    "mfussenegger/nvim-lint",
-    event = "BufReadPre",
-    init = function()
-      vim.api.nvim_create_autocmd({ "TextChanged" }, {
-        callback = function()
-          require("lint").try_lint()
-        end,
-      })
-    end,
-    config = function()
-      require("lint").linters_by_ft = {
-        lua = { "selene", "luacheck" },
-        javascript = { "eslint" },
-        markdown = { "markdownlint" },
-        go = { "golangcilint" },
-      }
-    end,
-  },
-
-  -- snippets
-  {
-    "L3MON4D3/LuaSnip",
-    build = (not jit.os:find("Windows"))
-        and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
-        or nil,
-    dependencies = {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-      end,
-    },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-    },
-    -- stylua: ignore
-    keys = {
-      {
-        "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
-        expr = true,
-        silent = true,
-        mode = "i",
-      },
-      { "<tab>",   function() require("luasnip").jump(1) end,  mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-    },
-  },
-
-  -- auto completion
-  {
-    "hrsh7th/nvim-cmp",
-    version = false, -- last release is way too old
-    event = "InsertEnter",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "saadparwaiz1/cmp_luasnip",
-    },
-    opts = function()
-      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
-      local cmp = require("cmp")
-      local defaults = require("cmp.config.default")()
-      return {
-        completion = {
-          completeopt = "menu,menuone,noinsert",
-        },
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<S-CR>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-          }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<C-CR>"] = function(fallback)
-            cmp.abort()
-            fallback()
-          end,
-        }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "path" },
-        }, {
-          { name = "buffer" },
-        }),
-        -- formatting = {
-        -- 	format = function(_, item)
-        -- 		local icons = require("lazyvim.config").icons.kinds
-        -- 		if icons[item.kind] then
-        -- 			item.kind = icons[item.kind] .. item.kind
-        -- 		end
-        -- 		return item
-        -- 	end,
-        -- },
-        experimental = {
-          ghost_text = {
-            hl_group = "CmpGhostText",
-          },
-        },
-        sorting = defaults.sorting,
-      }
-    end,
-    config = function(_, opts)
-      for _, source in ipairs(opts.sources) do
-        source.group_index = source.group_index or 1
-      end
-      require("cmp").setup(opts)
-    end,
-  },
-}
+  },}
