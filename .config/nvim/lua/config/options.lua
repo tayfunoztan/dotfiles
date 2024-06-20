@@ -52,6 +52,14 @@ opt.ignorecase = true -- Ignore case
 opt.inccommand = "nosplit" -- preview incremental substitute
 opt.laststatus = 3 -- global statusline
 opt.list = true -- Show some invisible characters (tabs...
+opt.listchars = {
+  eol = nil,
+  tab = "  ", -- Alternatives: '▷▷',
+  extends = "…", -- Alternatives: … » ›
+  precedes = "░", -- Alternatives: … « ‹
+  trail = "•", -- BULLET (U+2022, UTF-8: E2 80 A2)
+}
+
 opt.mouse = "a" -- Enable mouse mode
 opt.number = true -- Print line number
 opt.pumblend = 10 -- Popup blend

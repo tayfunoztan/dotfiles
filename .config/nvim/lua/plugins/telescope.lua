@@ -14,6 +14,13 @@ return {
     },
     config = function()
       require("telescope").setup({
+        defaults = {
+          sorting_strategy = "ascending",
+          layout_config = {
+            vertical = { width = 0.8 },
+            prompt_position = "top",
+          },
+        },
         extensions = {
           fzf = {},
         },

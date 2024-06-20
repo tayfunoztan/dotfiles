@@ -2,7 +2,7 @@ return {
   { "nvim-lua/plenary.nvim", lazy = true },
   { "nvim-tree/nvim-web-devicons", lazy = true },
   { "MunifTanjim/nui.nvim", lazy = true },
-
+  { "tpope/vim-repeat", event = "VeryLazy" },
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
@@ -18,6 +18,7 @@ return {
         ["<leader><tab>"] = { name = "+tabs" },
         ["<leader>b"] = { name = "+buffer" },
         ["<leader>c"] = { name = "+code" },
+        ["<leader>d"] = { name = "+debug" },
         ["<leader>f"] = { name = "+file/find" },
         ["<leader>g"] = { name = "+git" },
         ["<leader>gh"] = { name = "+hunks" },
@@ -25,6 +26,7 @@ return {
         ["<leader>s"] = { name = "+search" },
         ["<leader>u"] = { name = "+ui" },
         ["<leader>w"] = { name = "+windows" },
+        ["<leader>t"] = { name = "+test" },
         ["<leader>x"] = { name = "+diagnostics/quickfix" },
       },
     },
