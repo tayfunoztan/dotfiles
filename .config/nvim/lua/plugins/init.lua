@@ -1,39 +1,14 @@
 return {
+  -- library used by other plugins
   { "nvim-lua/plenary.nvim", lazy = true },
-  { "nvim-tree/nvim-web-devicons", lazy = true },
   { "MunifTanjim/nui.nvim", lazy = true },
+  { "stevearc/dressing.nvim", lazy = true },
   { "tpope/vim-repeat", event = "VeryLazy" },
+
   {
-    "folke/which-key.nvim",
-    event = "VeryLazy",
-    opts = {
-      plugins = { spelling = true },
-      defaults = {
-        mode = { "n", "v" },
-        ["g"] = { name = "+goto" },
-        ["gs"] = { name = "+surround" },
-        ["z"] = { name = "+fold" },
-        ["]"] = { name = "+next" },
-        ["["] = { name = "+prev" },
-        ["<leader><tab>"] = { name = "+tabs" },
-        ["<leader>b"] = { name = "+buffer" },
-        ["<leader>c"] = { name = "+code" },
-        ["<leader>d"] = { name = "+debug" },
-        ["<leader>f"] = { name = "+file/find" },
-        ["<leader>g"] = { name = "+git" },
-        ["<leader>gh"] = { name = "+hunks" },
-        ["<leader>q"] = { name = "+quit/session" },
-        ["<leader>s"] = { name = "+search" },
-        ["<leader>u"] = { name = "+ui" },
-        ["<leader>w"] = { name = "+windows" },
-        ["<leader>t"] = { name = "+test" },
-        ["<leader>x"] = { name = "+diagnostics/quickfix" },
-      },
-    },
-    config = function(_, opts)
-      local wk = require("which-key")
-      wk.setup(opts)
-      wk.register(opts.defaults)
-    end,
+    "nvim-tree/nvim-web-devicons",
+    -- Lots of plugins will require this later.
+    lazy = true,
+    opts = {},
   },
 }
