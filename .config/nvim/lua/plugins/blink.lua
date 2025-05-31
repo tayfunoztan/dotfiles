@@ -34,7 +34,6 @@ return {
     },
     opts_extend = { "sources.default", "sources.providers" },
     config = function(_, opts)
-      print("1", vim.inspect(opts))
       require("blink.cmp").setup(opts)
 
       -- Extend neovim's client capabilities with the completion ones.
