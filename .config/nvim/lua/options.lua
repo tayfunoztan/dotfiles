@@ -45,7 +45,7 @@ vim.opt.clipboard = "unnamedplus" -- sync with system clipboard
 vim.o.undofile = true -- save undo history.
 
 vim.opt.signcolumn = "yes" -- always show the signcolumn, otherwise it would shift the text each time
-vim.opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
+-- vim.opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 
 -- case insensitive searching UNLESS /C or the search has capitals
 vim.opt.ignorecase = true -- ignore case
