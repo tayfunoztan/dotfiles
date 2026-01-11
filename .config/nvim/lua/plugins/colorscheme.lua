@@ -4,7 +4,7 @@ return {
     "catppuccin/nvim",
     name = "catppuccin",
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
+    -- priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       require("catppuccin").setup({
         flavour = "auto", -- latte, frappe, macchiato, mocha
@@ -31,33 +31,63 @@ return {
           which_key = true,
         },
       })
-      vim.cmd([[colorscheme catppuccin]])
-    end,
-    specs = {
-      {
-        "akinsho/bufferline.nvim",
-        optional = true,
-        opts = function(_, opts)
-          opts.highlights = require("catppuccin.groups.integrations.bufferline").get_theme()
-        end,
-      },
-    },
-  },
-  {
-    "projekt0n/github-nvim-theme",
-    name = "github-theme",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      require("github-theme").setup({
-        -- ...
-      })
 
-      -- vim.cmd("colorscheme github_dark_dimmed")
+      -- vim.cmd([[colorscheme catppuccin]])
+      -- vim.api.nvim_set_hl(0, "WinBar", { bg = "#303347", fg = "#f4dbd6" })
+    end,
+    -- specs = {
+    --   -- {
+    --   --   "akinsho/bufferline.nvim",
+    --   --   optional = true,
+    --   --   opts = function(_, opts)
+    --   --     opts.highlights = require("catppuccin.groups.integrations.bufferline").get_theme()
+    --   --   end,
+    --   -- },
+    -- },
+  },
+  {
+    "nickkadutskyi/jb.nvim",
+    -- lazy = false,
+    -- priority = 1000,
+    opts = {},
+    config = function()
+      -- require("jb").setup({transparent = true})
+      -- vim.cmd("colorscheme jb")
+      -- vim.api.nvim_set_hl(0, "WinBar", { bg = "#303347", fg = "#f4dbd6" })
     end,
   },
   {
-    "rose-pine/neovim",
-    name = "rose-pine",
+    "ellisonleao/gruvbox.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    config = function()
+      require("gruvbox").setup({
+        contrast = "hard", -- can be "hard", "soft" or empty string
+      })
+      -- vim.cmd([[colorscheme gruvbox]])
+      -- vim.api.nvim_set_hl(0, "WinBar", { bg = "#303347", fg = "#f4dbd6" })
+    end,
+  },
+  {
+    "sainnhe/gruvbox-material",
+    -- lazy = false,
+    -- priority = 1000,
+    config = function()
+      vim.g.gruvbox_material_foreground = "original"
+      vim.g.gruvbox_material_background = "hard"
+      vim.cmd.colorscheme("gruvbox-material")
+    end,
+  },
+  {
+    "navarasu/onedark.nvim",
+    -- priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require("onedark").setup({
+        style = "darker",
+      })
+      -- Enable theme
+      -- require('onedark').load()
+    end,
   },
 }

@@ -1,13 +1,36 @@
 local icons = require("globals").icons
 
+vim.api.nvim_set_hl(0, "WinbarFilename", { fg = "#fff06b", bold = true })
+
 local M = {}
+
+local MAX_PARTS = 5
 
 function M.render()
   local path = vim.fs.normalize(vim.fn.expand("%:p"))
   local cwd = vim.fs.normalize(vim.fn.getcwd())
-  local dir_name = vim.fs.normalize(vim.fs.basename(cwd))
+  local dir_name = vim.fs.basename(cwd)
   local path_from_root = path:sub(#cwd + 2)
-  return icons.symbol_kinds.Folder .. " " .. dir_name .. " > " .. path_from_root:gsub("/", " > ")
+
+  -- check empty buffer
+  if path_from_root == "" then
+    return icons.symbol_kinds.Folder .. " " .. dir_name
+  end
+
+  local parts = {}
+  for p in string.gmatch(path_from_root, "[^/]+") do
+    table.insert(parts, p)
+  end
+
+  if #parts > MAX_PARTS then
+    parts = { parts[1], "…", parts[#parts - 1] or "", parts[#parts] or "" }
+  end
+
+  if #parts > 0 and parts[#parts] then
+    parts[#parts] = "%#WinbarFilename#" .. parts[#parts] .. "%*"
+  end
+
+  return icons.symbol_kinds.Folder .. " " .. dir_name .. " > " .. table.concat(parts, " > ")
 end
 
 vim.api.nvim_create_autocmd("BufWinEnter", {

@@ -3,7 +3,8 @@ return {
     "nvim-lualine/lualine.nvim",
     opts = {
       options = {
-        theme = "catppuccin",
+        theme = "auto",
+        -- theme = "catppuccin",
       },
       extensions = {
         "quickfix",

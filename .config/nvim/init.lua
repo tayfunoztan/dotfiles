@@ -19,17 +19,18 @@ require("keymaps")
 require("autocmds")
 require("commands")
 require("lsp")
-require("winbar")
+if not vim.g.vscode then
+  require("winbar")
+end
 
 require("lazy").setup({
   spec = {
     -- import your plugins
     { import = "plugins" },
-    { import = "plugins/ai" },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "catppuccin-macchiato" } },
+  -- install = { colorscheme = { "gruvbox" } },
   -- automatically check for plugin updates
   checker = { enabled = false },
   performance = {
