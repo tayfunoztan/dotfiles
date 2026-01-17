@@ -100,6 +100,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
   once = true,
   callback = function()
+    -- Extend neovim's client capabilities with the completion ones.
+    vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities(nil, true) })
+
     local server_configs = vim
       .iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
       :map(function(file)

@@ -4,13 +4,7 @@ return {
     version = false,
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     build = ":TSUpdate",
-    keys = {
-      { "<c-space>", desc = "Increment Selection" },
-      { "<bs>", desc = "Decrement Selection", mode = "x" },
-    },
     opts = {
-      highlight = { enable = true },
-      indent = { enable = true },
       ensure_installed = {
         "bash",
         "c",
@@ -42,34 +36,15 @@ return {
         "xml",
         "yaml",
       },
+      highlight = { enable = true },
+      indent = { enable = true },
       incremental_selection = {
         enable = true,
         keymaps = {
-          init_selection = "<C-space>",
-          node_incremental = "<C-space>",
+          init_selection = "<cr>",
+          node_incremental = "<cr>",
           scope_incremental = false,
           node_decremental = "<bs>",
-        },
-      },
-      textobjects = {
-        move = {
-          enable = true,
-          goto_next_start = {
-            ["]f"] = "@function.outer",
-            ["]c"] = "@class.outer",
-            ["]a"] = "@parameter.inner",
-          },
-          goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
-          goto_previous_start = {
-            ["[f"] = "@function.outer",
-            ["[c"] = "@class.outer",
-            ["[a"] = "@parameter.inner",
-          },
-          goto_previous_end = {
-            ["[F"] = "@function.outer",
-            ["[C"] = "@class.outer",
-            ["[A"] = "@parameter.inner",
-          },
         },
       },
     },
@@ -84,7 +59,12 @@ return {
     version = false,
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
+      -- Avoid the sticky context from growing a lot.
       max_lines = 3,
+      -- Match the context lines to the source code.
+      multiline_threshold = 1,
+      -- Disable it when the window is too small.
+      min_window_height = 20,
     },
   },
 }
