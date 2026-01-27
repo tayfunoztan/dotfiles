@@ -1,7 +1,7 @@
 return {
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "norg", "rmd", "org", "codecompanion" },
-    opts = {},
-  },
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        ft = { 'markdown', 'norg', 'rmd', 'org', 'codecompanion' },
+        opts = {},
+    },
 }

@@ -1,6 +1,8 @@
 -- Install with
 -- mac: brew install llvm
 -- Arch: pacman -S clang
+
+---@type vim.lsp.Config
 return {
   cmd = {
     "clangd",
