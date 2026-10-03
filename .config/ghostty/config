@@ -1,0 +1,55 @@
+# theme = light:catppuccin-latte,dark:catppuccin-macchiato
+# theme = light:Gruvbox Light Hard,dark:Gruvbox Dark Hard
+theme = light:One Double Light,dark:One Double Dark
+
+shell-integration = fish
+shell-integration-features = no-cursor
+
+font-family = 'JetBrainsMono Nerd Font Mono'
+font-feature = -calt, -liga, -dlig
+font-thicken = true
+font-size = 14
+adjust-cell-width = -5%
+
+# cursor
+cursor-style-blink = false
+adjust-cursor-thickness = 150%
+cursor-style = block
+mouse-hide-while-typing = true
+cursor-color = F77B72
+cursor-text = 000000
+
+# The opacity level (opposite of transparency) of an unfocused split.
+# Unfocused splits by default are slightly faded out to make it easier to see
+# which split is focused. To disable this feature, set this value to 1.
+unfocused-split-opacity = 0.80
+# unfocused-split-fill = #202334
+split-divider-color = #f4dbd6
+
+# No shadow looks cleaner.
+macos-window-shadow = false
+
+# Stop Ghostty when I close everything.
+quit-after-last-window-closed = true
+
+# Let me close stuff in peace:
+confirm-close-surface = false
+
+# Padding
+window-padding-x = 4
+window-padding-y = 4
+
+macos-option-as-alt = true
+# This works only because I remmapped "Hide Ghostty" in macOS keyboards
+# settings to a different keybinding (F12)
+# https://github.com/alacritty/alacritty/issues/5346#issuecomment-1055695103keybind = super+h=goto_split:left
+# without zellij or tmux
+keybind = super+h=goto_split:left
+keybind = super+l=goto_split:right
+keybind = super+k=goto_split:top
+keybind = super+j=goto_split:bottom
+keybind = super+right=resize_split:right,30
+keybind = super+down=resize_split:down,30
+keybind = super+left=resize_split:left,30
+keybind = super+up=resize_split:up,30
+
