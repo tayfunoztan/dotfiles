@@ -18,6 +18,7 @@ vim.api.nvim_create_autocmd('FileType', {
     group = vim.api.nvim_create_augroup('tayfunoztan_close_with_q', { clear = true }),
     pattern = {
         'git',
+        'gitsigns-blame',
         'help',
         'man',
         'qf',

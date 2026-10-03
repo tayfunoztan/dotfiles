@@ -31,12 +31,12 @@ vim.wo.foldtext = ''
 
 -- UI characters
 vim.opt.fillchars = {
-    foldopen = icons.arrows.down,
-    foldclose = icons.arrows.right,
-    fold = ' ',
-    foldsep = ' ',
-    diff = '╱',
     eob = ' ',
+    fold = ' ',
+    foldclose = icons.arrows.right,
+    foldopen = icons.arrows.down,
+    foldsep = ' ',
+    msgsep = '─',
 }
 
 vim.opt.confirm = true -- confirm to save changes before exiting modified buffer
@@ -45,7 +45,6 @@ vim.opt.clipboard = 'unnamedplus' -- sync with system clipboard
 vim.o.undofile = true -- save undo history.
 
 vim.opt.signcolumn = 'yes' -- always show the signcolumn, otherwise it would shift the text each time
--- vim.opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 
 -- case insensitive searching UNLESS /C or the search has capitals
 vim.opt.ignorecase = true -- ignore case

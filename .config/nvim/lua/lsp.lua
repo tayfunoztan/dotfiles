@@ -32,8 +32,41 @@ local function on_attach(client, bufnr)
     -- 	})
     -- end
 
-    if client:supports_method(methods.textDocument_definition) then
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Goto Definition', buffer = bufnr })
+    -- if client:supports_method(methods.textDocument_definition) then
+    --     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { desc = 'Goto Definition', buffer = bufnr })
+    -- end
+
+    ---@param lhs string
+    ---@param rhs string|function
+    ---@param opts string|vim.keymap.set.Opts
+    ---@param mode? string|string[]
+    local function keymap(lhs, rhs, opts, mode)
+        mode = mode or 'n'
+        ---@cast opts vim.keymap.set.Opts
+        opts = type(opts) == 'string' and { desc = opts } or opts
+        opts.buffer = bufnr
+        vim.keymap.set(mode, lhs, rhs, opts)
+    end
+
+    if client:supports_method 'textDocument/references' then
+        keymap('grr', '<cmd>FzfLua lsp_references<cr>', 'vim.lsp.buf.references()')
+    end
+
+    if client:supports_method 'textDocument/typeDefinition' then
+        keymap('gy', '<cmd>FzfLua lsp_typedefs<cr>', 'Go to type definition')
+    end
+
+    if client:supports_method 'textDocument/documentSymbol' then
+        keymap('<leader>fs', '<cmd>FzfLua lsp_document_symbols<cr>', 'Document symbols')
+    end
+
+    if client:supports_method 'textDocument/definition' then
+        keymap('gd', function()
+            require('fzf-lua').lsp_definitions { jump1 = true }
+        end, 'Go to definition')
+        keymap('gD', function()
+            require('fzf-lua').lsp_definitions { jump1 = false }
+        end, 'Peek definition')
     end
 
     if client:supports_method(methods.textDocument_documentHighlight) then

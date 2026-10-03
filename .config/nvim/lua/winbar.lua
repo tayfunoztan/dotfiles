@@ -1,6 +1,15 @@
 local icons = require('globals').icons
 
-vim.api.nvim_set_hl(0, 'WinbarFilename', { fg = '#fff06b', bold = true })
+local function set_highlights()
+    vim.api.nvim_set_hl(0, 'WinbarFilename', { fg = '#fff06b', bold = true })
+end
+
+set_highlights()
+
+vim.api.nvim_create_autocmd('ColorScheme', {
+    group = vim.api.nvim_create_augroup('my.augroup.winbar_hl', { clear = true }),
+    callback = set_highlights,
+})
 
 local M = {}
 
